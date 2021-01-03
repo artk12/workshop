@@ -160,7 +160,7 @@ class AvailableItem extends StatelessWidget {
                               decoration: InputDecoration(border: InputBorder.none,
                                 contentPadding: EdgeInsets.symmetric(horizontal: 10,vertical: 15),
                                   labelText: 'شمارنده اول',
-                                  labelStyle: theme.textTheme.bodyText1
+                                  labelStyle: theme.textTheme.bodyText1!
                                       .copyWith(color: theme.primaryColor,fontSize: 16,height: 0.5)),
                               style: theme.textTheme.bodyText1,
                             ),

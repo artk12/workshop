@@ -2,10 +2,11 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
+
 class MyButton extends StatelessWidget {
-  final String title;
-  final Color backgroundColor;
-  final Function onPress;
+  final String? title;
+  final Color? backgroundColor;
+  final Function()? onPress;
 
   MyButton({this.title,this.backgroundColor,this.onPress});
 

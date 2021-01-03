@@ -3,9 +3,9 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 class StockAppbar extends StatelessWidget {
-  final List<Widget> rightWidget;
-  final List<Widget> leftWidget;
-  final String title;
+  final List<Widget>? rightWidget;
+  final List<Widget>? leftWidget;
+  final String? title;
   StockAppbar({this.rightWidget,this.leftWidget,this.title});
 
   @override
@@ -41,7 +41,7 @@ class StockAppbar extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text(title,
+                      Text(title!,
                           style: theme.textTheme.headline1),
                     ],
                   ),

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class StockBackground extends StatelessWidget {
 
-  final Widget child;
+  final Widget? child;
   StockBackground({this.child});
 
   @override
@@ -21,7 +21,7 @@ class StockBackground extends StatelessWidget {
             Container(
               color: Colors.black26,
             ),
-            child,
+            child!,
           ],
         ),
       ),
