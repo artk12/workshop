@@ -1,11 +1,6 @@
 {
-<<<<<<< HEAD
-    "name": "hello",
-    "short_name": "hello",
-=======
     "name": "workshop",
     "short_name": "workshop",
->>>>>>> aad42a4... first commit
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

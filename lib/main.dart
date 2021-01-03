@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:workshop/stock/entry_to_stock/add_available_item.dart';
+import 'package:workshop/stock/homepage.dart';
 import 'package:workshop/style/theme/theme.dart';
 
 void main() async{
