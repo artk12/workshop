@@ -1,0 +1,26 @@
+[
+  {
+    "family": "bold",
+    "fonts": [
+      {
+        "asset": "fonts/almarai-bold.ttf"
+      }
+    ]
+  },
+  {
+    "family": "light",
+    "fonts": [
+      {
+        "asset": "fonts/almarai-light.ttf"
+      }
+    ]
+  },
+  {
+    "family": "regular",
+    "fonts": [
+      {
+        "asset": "fonts/almarai-regular.ttf"
+      }
+    ]
+  }
+]

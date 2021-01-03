@@ -34,9 +34,16 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
+<<<<<<< HEAD
         applicationId "com.example.hello"
         minSdkVersion 16
         targetSdkVersion 30
+=======
+        applicationId "com.rhen.workshop"
+        minSdkVersion 16
+        targetSdkVersion 30
+        multiDexEnabled true
+>>>>>>> aad42a4... first commit
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }

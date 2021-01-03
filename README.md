@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 # hello
+=======
+# workshop
+>>>>>>> aad42a4... first commit
 
 A new Flutter project.
 

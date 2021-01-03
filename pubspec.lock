@@ -36,6 +36,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.5.0-nullsafety.3"
+<<<<<<< HEAD
   bazel_worker:
     dependency: transitive
     description:
@@ -43,6 +44,8 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.25"
+=======
+>>>>>>> aad42a4... first commit
   boolean_selector:
     dependency: transitive
     description:
@@ -50,6 +53,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0-nullsafety.3"
+<<<<<<< HEAD
   build:
     dependency: transitive
     description:
@@ -127,6 +131,8 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "7.1.0"
+=======
+>>>>>>> aad42a4... first commit
   characters:
     dependency: transitive
     description:
@@ -141,6 +147,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.0-nullsafety.3"
+<<<<<<< HEAD
   checked_yaml:
     dependency: transitive
     description:
@@ -148,6 +155,8 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.4"
+=======
+>>>>>>> aad42a4... first commit
   cli_util:
     dependency: transitive
     description:
@@ -162,6 +171,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.0-nullsafety.3"
+<<<<<<< HEAD
   code_builder:
     dependency: transitive
     description:
@@ -169,6 +179,8 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.5.0"
+=======
+>>>>>>> aad42a4... first commit
   collection:
     dependency: transitive
     description:
@@ -197,6 +209,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.5"
+<<<<<<< HEAD
   csslib:
     dependency: transitive
     description:
@@ -204,6 +217,8 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.16.2"
+=======
+>>>>>>> aad42a4... first commit
   cupertino_icons:
     dependency: "direct main"
     description:
@@ -211,6 +226,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.2"
+<<<<<<< HEAD
   dart_style:
     dependency: transitive
     description:
@@ -218,6 +234,8 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.3.10"
+=======
+>>>>>>> aad42a4... first commit
   fake_async:
     dependency: transitive
     description:
@@ -232,6 +250,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "6.0.0-nullsafety.4"
+<<<<<<< HEAD
   fixnum:
     dependency: transitive
     description:
@@ -239,6 +258,8 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.10.11"
+=======
+>>>>>>> aad42a4... first commit
   flutter:
     dependency: "direct main"
     description: flutter
@@ -254,11 +275,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+<<<<<<< HEAD
   flutter_web_plugins:
     dependency: "direct main"
     description: flutter
     source: sdk
     version: "0.0.0"
+=======
+>>>>>>> aad42a4... first commit
   fuchsia_remote_debug_protocol:
     dependency: transitive
     description: flutter
@@ -271,6 +295,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.0"
+<<<<<<< HEAD
   graphs:
     dependency: transitive
     description:
@@ -299,6 +324,8 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.1.4"
+=======
+>>>>>>> aad42a4... first commit
   integration_test:
     dependency: "direct dev"
     description: flutter
@@ -318,6 +345,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.6.3-nullsafety.3"
+<<<<<<< HEAD
   json_annotation:
     dependency: transitive
     description:
@@ -325,6 +353,8 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.1.1"
+=======
+>>>>>>> aad42a4... first commit
   json_rpc_2:
     dependency: transitive
     description:
@@ -353,6 +383,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.3.0-nullsafety.6"
+<<<<<<< HEAD
   mime:
     dependency: transitive
     description:
@@ -360,6 +391,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.9.7"
+=======
+  nested:
+    dependency: transitive
+    description:
+      name: nested
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.4"
+>>>>>>> aad42a4... first commit
   node_interop:
     dependency: transitive
     description:
@@ -374,6 +414,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.1"
+<<<<<<< HEAD
   node_preamble:
     dependency: transitive
     description:
@@ -381,6 +422,8 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.4.12"
+=======
+>>>>>>> aad42a4... first commit
   package_config:
     dependency: transitive
     description:
@@ -423,6 +466,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.0.0-nullsafety.4"
+<<<<<<< HEAD
   protobuf:
     dependency: transitive
     description:
@@ -430,6 +474,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.0"
+=======
+  provider:
+    dependency: "direct main"
+    description:
+      name: provider
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.3.2+3"
+>>>>>>> aad42a4... first commit
   pub_semver:
     dependency: transitive
     description:
@@ -437,6 +490,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.4.4"
+<<<<<<< HEAD
   pubspec_parse:
     dependency: transitive
     description:
@@ -486,6 +540,8 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.3"
+=======
+>>>>>>> aad42a4... first commit
   sky_engine:
     dependency: transitive
     description: flutter
@@ -526,6 +582,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0-nullsafety.3"
+<<<<<<< HEAD
   stream_transform:
     dependency: transitive
     description:
@@ -533,6 +590,8 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.0"
+=======
+>>>>>>> aad42a4... first commit
   string_scanner:
     dependency: transitive
     description:
@@ -554,6 +613,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.0-nullsafety.3"
+<<<<<<< HEAD
   test:
     dependency: transitive
     description:
@@ -561,6 +621,8 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.16.0-nullsafety.9"
+=======
+>>>>>>> aad42a4... first commit
   test_api:
     dependency: transitive
     description:
@@ -575,6 +637,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.3.12-nullsafety.9"
+<<<<<<< HEAD
   timing:
     dependency: transitive
     description:
@@ -582,6 +645,8 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.1+3"
+=======
+>>>>>>> aad42a4... first commit
   typed_data:
     dependency: transitive
     description:
@@ -624,6 +689,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.2"
+<<<<<<< HEAD
   webkit_inspection_protocol:
     dependency: transitive
     description:
@@ -631,6 +697,8 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.7.4"
+=======
+>>>>>>> aad42a4... first commit
   yaml:
     dependency: transitive
     description:
@@ -639,4 +707,9 @@ packages:
     source: hosted
     version: "2.2.1"
 sdks:
+<<<<<<< HEAD
   dart: ">=2.12.0-133.2.beta <3.0.0"
+=======
+  dart: ">=2.12.0-0.0 <3.0.0"
+  flutter: ">=1.16.0"
+>>>>>>> aad42a4... first commit
