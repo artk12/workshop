@@ -2,40 +2,14 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:workshop/style/app_bar/stock_appbar.dart';
 import 'package:workshop/style/background/stock_background.dart';
-import 'package:workshop/style/component/blur_background.dart';
-import 'package:workshop/style/component/custom_drop_down.dart';
 import 'package:workshop/style/component/default_textfield.dart';
 
-class AddAvailableItem extends StatelessWidget {
+class AddFabricItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     Widget space = SizedBox(
       height: 20,
-    );
-    Widget item = Container(
-      child: Padding(
-        padding: const EdgeInsets.only(bottom: 8.0),
-        child: Text(
-          'زیپ',
-          style: theme.textTheme.headline2!.copyWith(
-            fontFamily: 'bold',
-            fontSize: 28,
-            fontWeight: FontWeight.w800,
-            shadows: [
-              Shadow(
-                color: Colors.black,
-                blurRadius: 15,
-              )
-            ],
-          ),
-        ),
-      ),
-      decoration: BoxDecoration(
-        border: Border(
-          bottom: BorderSide(width: 1, color: theme.primaryColor),
-        ),
-      ),
     );
 
     return Scaffold(
@@ -47,47 +21,57 @@ class AddAvailableItem extends StatelessWidget {
                 title: 'اضافه به انبار',
               ),
               space,
-              item,
+              Container(
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: Text(
+                    'پارچه',
+                    style: theme.textTheme.headline2!.copyWith(
+                      fontFamily: 'bold',
+                      fontSize: 28,
+                      fontWeight: FontWeight.w800,
+                      shadows: [
+                        Shadow(
+                          color: Colors.black,
+                          blurRadius: 15,
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(width: 1, color: theme.primaryColor),
+                  ),
+                ),
+              ),
               space,
               Row(
                 children: [
                   Expanded(
-                      child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: DefaultTextField(
-                      label: 'شمارنده اول',
-                    ),
-                  )),
-                  Expanded(
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      height: 84,
-                      child: BlurBackground(
-                        child: CustomDropdownButtonHideUnderline(
-                          child: CustomDropdownButton<String>(
-                            icon: Icon(
-                              Icons.arrow_drop_down,
-                              color: Colors.white,
-                            ),
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            items: <String>['متر', 'کیلوگرم', 'بسته']
-                                .map((String value) {
-                              return new CustomDropdownMenuItem<String>(
-                                value: value,
-                                child: new Text(
-                                  value,
-                                  style: TextStyle(
-                                      fontFamily: 'light', color: Colors.white),
-                                ),
-                              );
-                            }).toList(),
-                            value: 'بسته',
-                            onChanged: (_) {},
-                          ),
-                        ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: DefaultTextField(
+                        label: 'سازنده',
                       ),
                     ),
                   ),
+                ],
+              ),
+
+              Row(
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: DefaultTextField(label: 'کالیته'),
+                    ),
+                  ),
+                  Expanded(
+                      child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: DefaultTextField(label: 'متراژ'),
+                  )),
                 ],
               ),
               Row(
@@ -95,18 +79,31 @@ class AddAvailableItem extends StatelessWidget {
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: DefaultTextField(label: 'شمارنده دوم'),
+                      child: DefaultTextField(label: 'رنگ'),
                     ),
                   ),
                   Expanded(
                       child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: DefaultTextField(label: 'تعداد هشدار'),
-                  )),
+                        padding: const EdgeInsets.all(8.0),
+                        child: DefaultTextField(label: 'تعداد تکه'),
+                      )),
+                ],
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: DefaultTextField(
+                        maxLine: 3,
+                        label: 'توضیحات',
+                      ),
+                    ),
+                  ),
                 ],
               ),
               SizedBox(
-                height: 70,
+                height: 40,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -187,6 +184,7 @@ class AddAvailableItem extends StatelessWidget {
                   ),
                 ],
               ),
+              space,
             ],
           ),
         ),

@@ -1,7 +1,8 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 class StockBackground extends StatelessWidget {
-
   final Widget? child;
   StockBackground({this.child});
 
@@ -11,15 +12,22 @@ class StockBackground extends StatelessWidget {
       body: SafeArea(
         child: Stack(
           children: [
-            Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: AssetImage('asset/images/background_image.jpeg')),
+            SafeArea(
+              child: Container(
+                margin: EdgeInsets.only(top:4),
+                child: Image.asset(
+                  'asset/images/background_image.jpg',
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
-            Container(
-              color: Colors.black26,
+            BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 3.9,sigmaY: 3.9),
+              child: Container(
+                color: Colors.black.withOpacity(0.3),
+              ),
             ),
             child!,
           ],

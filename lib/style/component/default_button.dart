@@ -3,12 +3,12 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 
-class MyButton extends StatelessWidget {
+class DefaultButton extends StatelessWidget {
   final String? title;
   final Color? backgroundColor;
-  final Function()? onPress;
+  final Function()? onPressed;
 
-  MyButton({this.title,this.backgroundColor,this.onPress});
+  DefaultButton({this.title,this.backgroundColor,this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +30,7 @@ class MyButton extends StatelessWidget {
           child: Container(
             margin: EdgeInsets.symmetric(horizontal: 5),
             child: OutlinedButton(
-              onPressed: onPress,
+              onPressed: onPressed,
               style: OutlinedButton.styleFrom(
                 shadowColor: Colors.black.withOpacity(0.5),
                 backgroundColor: backgroundColor??Colors.white.withOpacity(0.15),
@@ -42,7 +42,7 @@ class MyButton extends StatelessWidget {
                 ),
               ),
               child: Text(
-                'اضافه پارچه جدید',
+                title!,
                 style: TextStyle(color: Colors.white, fontFamily: 'light'),
               ),
             ),

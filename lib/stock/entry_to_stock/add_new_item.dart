@@ -6,36 +6,12 @@ import 'package:workshop/style/component/blur_background.dart';
 import 'package:workshop/style/component/custom_drop_down.dart';
 import 'package:workshop/style/component/default_textfield.dart';
 
-class AddAvailableItem extends StatelessWidget {
+class AddNewItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     Widget space = SizedBox(
       height: 20,
-    );
-    Widget item = Container(
-      child: Padding(
-        padding: const EdgeInsets.only(bottom: 8.0),
-        child: Text(
-          'زیپ',
-          style: theme.textTheme.headline2!.copyWith(
-            fontFamily: 'bold',
-            fontSize: 28,
-            fontWeight: FontWeight.w800,
-            shadows: [
-              Shadow(
-                color: Colors.black,
-                blurRadius: 15,
-              )
-            ],
-          ),
-        ),
-      ),
-      decoration: BoxDecoration(
-        border: Border(
-          bottom: BorderSide(width: 1, color: theme.primaryColor),
-        ),
-      ),
     );
 
     return Scaffold(
@@ -47,8 +23,72 @@ class AddAvailableItem extends StatelessWidget {
                 title: 'اضافه به انبار',
               ),
               space,
-              item,
+              Container(
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: Text(
+                    'آیتم جدید',
+                    style: theme.textTheme.headline2!.copyWith(
+                      fontFamily: 'bold',
+                      fontSize: 28,
+                      fontWeight: FontWeight.w800,
+                      shadows: [
+                        Shadow(
+                          color: Colors.black,
+                          blurRadius: 15,
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(width: 1, color: theme.primaryColor),
+                  ),
+                ),
+              ),
               space,
+              Row(
+                children: [
+                  Expanded(
+                      child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: DefaultTextField(
+                      label: 'اسم آیتم',
+                    ),
+                  )),
+                  Expanded(
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      height: 84,
+                      child: BlurBackground(
+                        child: CustomDropdownButtonHideUnderline(
+                          child: CustomDropdownButton<String>(
+                            icon: Icon(
+                              Icons.arrow_drop_down,
+                              color: Colors.white,
+                            ),
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            items: <String>['بسته بندی', 'خرج کار']
+                                .map((String value) {
+                              return new CustomDropdownMenuItem<String>(
+                                value: value,
+                                child: new Text(
+                                  value,
+                                  style: TextStyle(
+                                      fontFamily: 'light', color: Colors.white),
+                                ),
+                              );
+                            }).toList(),
+                            value: 'خرج کار',
+                            onChanged: (_) {},
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
               Row(
                 children: [
                   Expanded(

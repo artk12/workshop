@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:workshop/stock/entry_to_stock/add_available_item.dart';
+import 'package:workshop/stock/entry_to_stock/add_fabric_item.dart';
 import 'package:workshop/style/theme/theme.dart';
 
 void main() async{
@@ -9,7 +9,6 @@ void main() async{
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // Firebase.initializeApp();
     return MaterialApp(
       title: 'Flutter Demo',
       builder: (context , child)=>Directionality(textDirection: TextDirection.rtl, child: child!),
@@ -19,7 +18,7 @@ class MyApp extends StatelessWidget {
         // '/': (context) => StockHomePage(),
       },
       theme: light,
-      home: AvailableItem(),
+      home: AddFabricItem(),
     );
   }
 }

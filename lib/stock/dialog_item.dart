@@ -2,14 +2,15 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:workshop/style/component/custom_drop_down.dart';
-import 'package:workshop/style/mybutton.dart';
+import 'package:workshop/style/component/default_button.dart';
 
 class DialogItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
       backgroundColor: Colors.transparent,
-      child: ClipRect(
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(25),
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
           child: Container(
@@ -60,28 +61,25 @@ class DialogItem extends StatelessWidget {
                         onChanged: (_) {},
                       ),
                     ),
-                    ElevatedButton(
+                    DefaultButton(
+                      title: 'اعمال',
                       onPressed: () {},
-                      child: Text(
-                        'اعمال',
-                        style: TextStyle(color: Colors.white, fontFamily: 'light'),
-                      ),
                     ),
                   ],
                 ),
                 SizedBox(
                   height: 10,
                 ),
-                MyButton(
-                  title: 'اضافه پارچه',
-                  onPress: () {},
+                DefaultButton(
+                  title: 'اضافه پارچه جدید',
+                  onPressed: () {},
                 ),
                 SizedBox(
                   height: 10,
                 ),
-                MyButton(
+                DefaultButton(
                   title: 'اضافه آیتم جدید',
-                  onPress: () {},
+                  onPressed: () {},
                 ),
                 SizedBox(
                   height: 10,
