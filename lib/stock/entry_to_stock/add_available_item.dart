@@ -5,6 +5,7 @@ import 'package:workshop/style/background/stock_background.dart';
 import 'package:workshop/style/component/blur_background.dart';
 import 'package:workshop/style/component/custom_drop_down.dart';
 import 'package:workshop/style/component/default_textfield.dart';
+import 'package:workshop/style/component/icon_outline_button.dart';
 
 class AddAvailableItem extends StatelessWidget {
   @override
@@ -111,79 +112,13 @@ class AddAvailableItem extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Container(
-                    height: 45,
-                    width: MediaQuery.of(context).size.width / 3.5,
-                    decoration: BoxDecoration(boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.3),
-                        spreadRadius: 3,
-                        blurRadius: 8,
-                        offset: Offset(0, 0),
-                      ),
-                    ]),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(5),
-                      child: BackdropFilter(
-                        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                        child: OutlinedButton(
-                          onPressed: () {},
-                          style: OutlinedButton.styleFrom(
-                            shadowColor: Colors.black.withOpacity(0.5),
-                            backgroundColor: Colors.green.withOpacity(0.4),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5)),
-                            side: BorderSide(
-                              width: 1.0,
-                              color: Colors.white.withOpacity(0.2),
-                            ),
-                          ),
-                          child: Icon(
-                            Icons.check,
-                            color: Colors.white.withOpacity(0.85),
-                            size: 30,
-                          ),
-                        ),
-                      ),
-                    ),
+                  IconOutlineButton(
+                    color: Colors.green.withOpacity(0.4),
+                    icon: Icons.check,
                   ),
-                  Container(
-                    height: 45,
-                    width: MediaQuery.of(context).size.width / 3.5,
-                    decoration: BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.3),
-                          spreadRadius: 3,
-                          blurRadius: 8,
-                          offset: Offset(0, 0),
-                        ),
-                      ],
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(5),
-                      child: BackdropFilter(
-                        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                        child: OutlinedButton(
-                          onPressed: () {},
-                          style: OutlinedButton.styleFrom(
-                            shadowColor: Colors.black.withOpacity(0.5),
-                            backgroundColor: Colors.red.withOpacity(0.4),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5)),
-                            side: BorderSide(
-                              width: 1.0,
-                              color: Colors.white.withOpacity(0.2),
-                            ),
-                          ),
-                          child: Icon(
-                            Icons.close,
-                            color: Colors.white.withOpacity(0.85),
-                            size: 30,
-                          ),
-                        ),
-                      ),
-                    ),
+                  IconOutlineButton(
+                    color: Colors.red.withOpacity(0.4),
+                    icon: Icons.close,
                   ),
                 ],
               ),
