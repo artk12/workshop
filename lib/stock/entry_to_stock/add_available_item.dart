@@ -1,5 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:workshop/module/stockpile/item_available_name.dart';
+import 'package:workshop/request/request.dart';
 import 'package:workshop/style/app_bar/stock_appbar.dart';
 import 'package:workshop/style/background/stock_background.dart';
 import 'package:workshop/style/component/blur_background.dart';
@@ -8,6 +10,8 @@ import 'package:workshop/style/component/default_textfield.dart';
 import 'package:workshop/style/component/icon_outline_button.dart';
 
 class AddAvailableItem extends StatelessWidget {
+  final ItemNameAvailable? availableItem ;
+  AddAvailableItem({this.availableItem});
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
@@ -18,7 +22,7 @@ class AddAvailableItem extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.only(bottom: 8.0),
         child: Text(
-          'زیپ',
+          availableItem!.name,
           style: theme.textTheme.headline2!.copyWith(
             fontFamily: 'bold',
             fontSize: 28,
@@ -115,10 +119,16 @@ class AddAvailableItem extends StatelessWidget {
                   IconOutlineButton(
                     color: Colors.green.withOpacity(0.4),
                     icon: Icons.check,
+                    onPressed: (){
+                      MyRequest().sayHello();
+                    },
                   ),
                   IconOutlineButton(
                     color: Colors.red.withOpacity(0.4),
                     icon: Icons.close,
+                    onPressed: (){
+                      Navigator.pop(context);
+                    },
                   ),
                 ],
               ),

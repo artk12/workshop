@@ -112,10 +112,14 @@ class AddFabricItem extends StatelessWidget {
                   IconOutlineButton(
                     color: Colors.green.withOpacity(0.4),
                     icon: Icons.check,
+                    onPressed: (){},
                   ),
                   IconOutlineButton(
                     color: Colors.red.withOpacity(0.4),
                     icon: Icons.close,
+                    onPressed:(){
+                      Navigator.pop(context);
+                    }
                   ),
                 ],
               ),

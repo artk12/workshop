@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:workshop/stock/entry_to_stock/add_available_item.dart';
 import 'package:workshop/stock/entry_to_stock/add_fabric_item.dart';
 import 'package:workshop/stock/entry_to_stock/add_new_item.dart';
+import 'package:workshop/stock/entry_to_stock/stockpage.dart';
 import 'package:workshop/style/theme/theme.dart';
 
 void main() async{
@@ -16,10 +18,13 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
       routes: {
+        '/addFabric':(context)=>AddFabricItem(),
+        '/addNewItem':(context)=>AddNewItem(),
+        '/addAvailableItem':(context)=>AddAvailableItem(),
         // '/': (context) => StockHomePage(),
       },
       theme: light,
-      home: AddFabricItem(),
+      home: StockPage(),
     );
   }
 }

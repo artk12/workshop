@@ -1,12 +1,26 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:workshop/bloc/stockpile/dialog_item_bloc.dart';
+import 'package:workshop/module/stockpile/item_available_name.dart';
+import 'package:workshop/stock/entry_to_stock/add_fabric_item.dart';
+import 'package:workshop/stock/entry_to_stock/add_new_item.dart';
 import 'package:workshop/style/component/custom_drop_down.dart';
 import 'package:workshop/style/component/default_button.dart';
 
+import 'entry_to_stock/add_available_item.dart';
+
 class DialogItem extends StatelessWidget {
+
+  final List<ItemNameAvailable>? availableItems;
+  DialogItem({this.availableItems});
+
   @override
   Widget build(BuildContext context) {
+
+    DialogItemCubit dialogItemCubit = new DialogItemCubit(DialogItemState());
+
     return Dialog(
       backgroundColor: Colors.transparent,
       child: ClipRRect(
@@ -40,30 +54,43 @@ class DialogItem extends StatelessWidget {
                   children: [
                     Container(
                       width: 100,
-                      child: CustomDropdownButton<String>(
-                        icon: Icon(
-                          Icons.arrow_drop_down,
-                          color: Colors.white,
+                      child: BlocBuilder(
+                        cubit: dialogItemCubit,
+                        builder:(context,DialogItemState state)=> CustomDropdownButton<String>(
+                          icon: Icon(
+                            Icons.arrow_drop_down,
+                            color: Colors.white,
+                          ),
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          items: availableItems!
+                              .map((ItemNameAvailable value) {
+                            return new CustomDropdownMenuItem<String>(
+                              value: value.id,
+                              child: new Text(
+                                value.name,
+                                style: TextStyle(
+                                    fontFamily: 'light', color: Colors.white),
+                              ),
+                            );
+                          }).toList(),
+                          value: state.value,
+                          onChanged: (value) {
+                            dialogItemCubit.changeItem(value!);
+                          },
                         ),
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        items: <String>['زیب', 'دکمه', 'زیپ', 'دکمه']
-                            .map((String value) {
-                          return new CustomDropdownMenuItem<String>(
-                            value: value,
-                            child: new Text(
-                              value,
-                              style: TextStyle(
-                                  fontFamily: 'light', color: Colors.white),
-                            ),
-                          );
-                        }).toList(),
-                        value: 'زیپ',
-                        onChanged: (_) {},
                       ),
                     ),
                     DefaultButton(
                       title: 'اعمال',
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => AddAvailableItem(),
+                                settings:
+                                    RouteSettings(name: '/addAvailableItem')));
+                      },
                     ),
                   ],
                 ),
@@ -72,14 +99,28 @@ class DialogItem extends StatelessWidget {
                 ),
                 DefaultButton(
                   title: 'اضافه پارچه جدید',
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => AddFabricItem(),
+                            settings: RouteSettings(name: '/addFabric')));
+                  },
                 ),
                 SizedBox(
                   height: 10,
                 ),
                 DefaultButton(
                   title: 'اضافه آیتم جدید',
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => AddNewItem(),
+                            settings: RouteSettings(name: '/addNewItem')));
+                  },
                 ),
                 SizedBox(
                   height: 10,

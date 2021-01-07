@@ -159,6 +159,9 @@ class AddNewItem extends StatelessWidget {
                   IconOutlineButton(
                     color: Colors.red.withOpacity(0.4),
                     icon: Icons.close,
+                    onPressed: (){
+                      Navigator.pop(context);
+                    },
                   ),
                 ],
               ),

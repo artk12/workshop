@@ -6,7 +6,8 @@ import 'package:flutter/material.dart';
 class IconOutlineButton extends StatelessWidget {
   final IconData? icon;
   final Color? color;
-  IconOutlineButton({this.color,this.icon});
+  final Function()? onPressed;
+  IconOutlineButton({this.color,this.icon,this.onPressed});
   @override
   Widget build(BuildContext context) {
     return  Container(
@@ -27,7 +28,7 @@ class IconOutlineButton extends StatelessWidget {
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
           child: OutlinedButton(
-            onPressed: () {},
+            onPressed: onPressed,
             style: OutlinedButton.styleFrom(
               shadowColor: Colors.black.withOpacity(0.5),
               backgroundColor: color,

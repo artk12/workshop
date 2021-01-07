@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 
 class DefaultTextField extends StatelessWidget {
   final String label;
-  final int maxLine ;
-  DefaultTextField({this.label = '',this.maxLine = 1});
+  final int maxLine;
+  DefaultTextField({this.label = '', this.maxLine = 1});
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
@@ -25,6 +25,7 @@ class DefaultTextField extends StatelessWidget {
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaY: 35, sigmaX: 35),
           child: Container(
+            padding: EdgeInsets.all(7),
             decoration: BoxDecoration(
                 color: Colors.white.withOpacity(0.2),
                 borderRadius: BorderRadius.circular(15)),
@@ -33,11 +34,10 @@ class DefaultTextField extends StatelessWidget {
               maxLines: maxLine,
               decoration: InputDecoration(
                   border: InputBorder.none,
-                  contentPadding:
-                      EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                  contentPadding: EdgeInsets.all(2),
                   labelText: label,
-                  labelStyle: theme.textTheme.bodyText1!.copyWith(
-                      color: theme.primaryColor, fontSize: 16, height: 0.5)),
+                  labelStyle: theme.textTheme.bodyText1!
+                      .copyWith(color: theme.primaryColor, fontSize: 16)),
               style: theme.textTheme.bodyText1,
             ),
           ),
