@@ -1,5 +1,8 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:workshop/bloc/stockpile/single_drop_down_bloc.dart';
+import 'package:workshop/request/request.dart';
 import 'package:workshop/style/app_bar/stock_appbar.dart';
 import 'package:workshop/style/background/stock_background.dart';
 import 'package:workshop/style/component/blur_background.dart';
@@ -11,6 +14,18 @@ class AddNewItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
+    List<String> category = ['کیلوگرم', 'متر', 'بسته'];
+    List<String> nameCategory = ['خرج کار', 'بسته بندی'];
+    final TextEditingController newItemName = new TextEditingController();
+    final TextEditingController firstQuantifier = new TextEditingController();
+    final TextEditingController secondQuantifier = new TextEditingController();
+    final TextEditingController warning = new TextEditingController();
+
+    SingleDropDownItemCubit nameCategoryCubit =
+        new SingleDropDownItemCubit(SingleDropDownItemState(value: 'خرج کار'));
+    SingleDropDownItemCubit categoryCubit =
+        new SingleDropDownItemCubit(SingleDropDownItemState(value: 'کیلوگرم'));
+
     Widget space = SizedBox(
       height: 20,
     );
@@ -56,6 +71,7 @@ class AddNewItem extends StatelessWidget {
                     padding: const EdgeInsets.all(8.0),
                     child: DefaultTextField(
                       label: 'اسم آیتم',
+                      textEditingController: newItemName,
                     ),
                   )),
                   Expanded(
@@ -64,25 +80,33 @@ class AddNewItem extends StatelessWidget {
                       height: 84,
                       child: BlurBackground(
                         child: CustomDropdownButtonHideUnderline(
-                          child: CustomDropdownButton<String>(
-                            icon: Icon(
-                              Icons.arrow_drop_down,
-                              color: Colors.white,
+                          child: BlocBuilder(
+                            cubit: nameCategoryCubit,
+                            builder: (context, SingleDropDownItemState state) =>
+                                CustomDropdownButton<String>(
+                              icon: Icon(
+                                Icons.arrow_drop_down,
+                                color: Colors.white,
+                              ),
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              items: nameCategory.map((String value) {
+                                return new CustomDropdownMenuItem<String>(
+                                  value: value,
+                                  child: new Text(
+                                    value,
+                                    style: TextStyle(
+                                        fontFamily: 'light',
+                                        color: Colors.white),
+                                  ),
+                                );
+                              }).toList(),
+                              value: nameCategory
+                                  .where((element) => element == state.value)
+                                  .first,
+                              onChanged: (value) {
+                                nameCategoryCubit.changeItem(value!);
+                              },
                             ),
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            items: <String>['بسته بندی', 'خرج کار']
-                                .map((String value) {
-                              return new CustomDropdownMenuItem<String>(
-                                value: value,
-                                child: new Text(
-                                  value,
-                                  style: TextStyle(
-                                      fontFamily: 'light', color: Colors.white),
-                                ),
-                              );
-                            }).toList(),
-                            value: 'خرج کار',
-                            onChanged: (_) {},
                           ),
                         ),
                       ),
@@ -97,6 +121,8 @@ class AddNewItem extends StatelessWidget {
                     padding: const EdgeInsets.all(8.0),
                     child: DefaultTextField(
                       label: 'شمارنده اول',
+                      textEditingController: firstQuantifier,
+                      textInputType: TextInputType.number,
                     ),
                   )),
                   Expanded(
@@ -105,25 +131,33 @@ class AddNewItem extends StatelessWidget {
                       height: 84,
                       child: BlurBackground(
                         child: CustomDropdownButtonHideUnderline(
-                          child: CustomDropdownButton<String>(
-                            icon: Icon(
-                              Icons.arrow_drop_down,
-                              color: Colors.white,
+                          child: BlocBuilder(
+                            cubit: categoryCubit,
+                            builder: (context, SingleDropDownItemState state) =>
+                                CustomDropdownButton<String>(
+                              icon: Icon(
+                                Icons.arrow_drop_down,
+                                color: Colors.white,
+                              ),
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              items: category.map((String value) {
+                                return new CustomDropdownMenuItem<String>(
+                                  value: value,
+                                  child: new Text(
+                                    value,
+                                    style: TextStyle(
+                                        fontFamily: 'light',
+                                        color: Colors.white),
+                                  ),
+                                );
+                              }).toList(),
+                              value: category
+                                  .where((element) => element == state.value)
+                                  .first,
+                              onChanged: (value) {
+                                categoryCubit.changeItem(value!);
+                              },
                             ),
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            items: <String>['متر', 'کیلوگرم', 'بسته']
-                                .map((String value) {
-                              return new CustomDropdownMenuItem<String>(
-                                value: value,
-                                child: new Text(
-                                  value,
-                                  style: TextStyle(
-                                      fontFamily: 'light', color: Colors.white),
-                                ),
-                              );
-                            }).toList(),
-                            value: 'بسته',
-                            onChanged: (_) {},
                           ),
                         ),
                       ),
@@ -136,13 +170,20 @@ class AddNewItem extends StatelessWidget {
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: DefaultTextField(label: 'شمارنده دوم'),
+                      child: DefaultTextField(
+                        label: 'شمارنده دوم',
+                        textEditingController: secondQuantifier,
+                      ),
                     ),
                   ),
                   Expanded(
                       child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: DefaultTextField(label: 'تعداد هشدار'),
+                    child: DefaultTextField(
+                      label: 'تعداد هشدار',
+                      textEditingController: warning,
+                      textInputType: TextInputType.number,
+                    ),
                   )),
                 ],
               ),
@@ -155,11 +196,38 @@ class AddNewItem extends StatelessWidget {
                   IconOutlineButton(
                     color: Colors.green.withOpacity(0.4),
                     icon: Icons.check,
+                    onPressed: () async {
+                      if (newItemName.text.isEmpty ||
+                          firstQuantifier.text.isEmpty ||
+                          secondQuantifier.text.isEmpty ||
+                          warning.text.isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text('لطفا تمامی فیلدها رو پر کنید.'),
+                        ));
+                      } else {
+                        String quantify = category
+                            .where((element) =>
+                                element == categoryCubit.state.value)
+                            .first;
+                        String nameQuantify = nameCategory
+                            .where((element) =>
+                                element == nameCategoryCubit.state.value)
+                            .first;
+                        String res = await MyRequest.addNewItems(
+                            newItemName.text,
+                            nameQuantify,
+                            firstQuantifier.text,
+                            secondQuantifier.text,
+                            quantify,
+                            warning.text);
+                        print(res);
+                      }
+                    },
                   ),
                   IconOutlineButton(
                     color: Colors.red.withOpacity(0.4),
                     icon: Icons.close,
-                    onPressed: (){
+                    onPressed: () {
                       Navigator.pop(context);
                     },
                   ),

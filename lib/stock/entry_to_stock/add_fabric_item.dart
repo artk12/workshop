@@ -1,18 +1,28 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:workshop/request/query/insert.dart';
+import 'package:workshop/request/request.dart';
 import 'package:workshop/style/app_bar/stock_appbar.dart';
 import 'package:workshop/style/background/stock_background.dart';
 import 'package:workshop/style/component/default_textfield.dart';
 import 'package:workshop/style/component/icon_outline_button.dart';
+import 'package:workshop/style/theme/show_snackbar.dart';
 
 class AddFabricItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    TextEditingController manufactureController = new TextEditingController();
+    TextEditingController caliteController = new TextEditingController();
+    TextEditingController metricController = new TextEditingController();
+    TextEditingController colorController = new TextEditingController();
+    TextEditingController piecesController = new TextEditingController();
+    TextEditingController descriptionController = new TextEditingController();
+
+
     ThemeData theme = Theme.of(context);
     Widget space = SizedBox(
       height: 20,
     );
-
     return Scaffold(
       body: StockBackground(
         child: SingleChildScrollView(
@@ -54,6 +64,7 @@ class AddFabricItem extends StatelessWidget {
                       padding: const EdgeInsets.all(8.0),
                       child: DefaultTextField(
                         label: 'سازنده',
+                        textEditingController: manufactureController,
                       ),
                     ),
                   ),
@@ -65,13 +76,13 @@ class AddFabricItem extends StatelessWidget {
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: DefaultTextField(label: 'کالیته'),
+                      child: DefaultTextField(label: 'کالیته',textEditingController: caliteController,),
                     ),
                   ),
                   Expanded(
                       child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: DefaultTextField(label: 'متراژ'),
+                    child: DefaultTextField(label: 'متراژ',textEditingController: metricController,textInputType: TextInputType.number,),
                   )),
                 ],
               ),
@@ -80,13 +91,13 @@ class AddFabricItem extends StatelessWidget {
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: DefaultTextField(label: 'رنگ'),
+                      child: DefaultTextField(label: 'رنگ',textEditingController: colorController,),
                     ),
                   ),
                   Expanded(
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: DefaultTextField(label: 'تعداد تکه'),
+                        child: DefaultTextField(label: 'تعداد تکه',textEditingController: piecesController,textInputType: TextInputType.number,),
                       )),
                 ],
               ),
@@ -98,6 +109,7 @@ class AddFabricItem extends StatelessWidget {
                       child: DefaultTextField(
                         maxLine: 3,
                         label: 'توضیحات',
+                        textEditingController: descriptionController,
                       ),
                     ),
                   ),
@@ -112,7 +124,22 @@ class AddFabricItem extends StatelessWidget {
                   IconOutlineButton(
                     color: Colors.green.withOpacity(0.4),
                     icon: Icons.check,
-                    onPressed: (){},
+                    onPressed: ()async{
+                      String manufacture = manufactureController.text;
+                      String calite = caliteController.text;
+                      String metric = metricController.text;
+                      String color = colorController.text;
+                      String pieces = piecesController.text;
+                      String description = descriptionController.text;
+
+                      
+                      if(manufacture.isEmpty|| calite.isEmpty|| metric.isEmpty|| color.isEmpty|| pieces.isEmpty){
+                        MyShowSnackBar.showSnackBar(context, "لطفا تمامی فیلدها را پر کنید.");
+                      }else{
+                        String res = await MyRequest.simpleQueryRequest('stockpile/insert.php', Insert.queryAddFabricToStockpile(manufacture, calite, metric, color, pieces, description));
+                        print(res);
+                      }
+                    },
                   ),
                   IconOutlineButton(
                     color: Colors.red.withOpacity(0.4),

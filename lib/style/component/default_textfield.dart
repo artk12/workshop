@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 class DefaultTextField extends StatelessWidget {
   final String label;
   final int maxLine;
-  DefaultTextField({this.label = '', this.maxLine = 1});
+  final TextInputType textInputType;
+  final TextEditingController? textEditingController;
+  DefaultTextField({this.label = '', this.maxLine = 1,this.textInputType = TextInputType.text,this.textEditingController});
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
@@ -30,8 +32,10 @@ class DefaultTextField extends StatelessWidget {
                 color: Colors.white.withOpacity(0.2),
                 borderRadius: BorderRadius.circular(15)),
             child: TextField(
+              controller: textEditingController,
               cursorColor: theme.primaryColor,
               maxLines: maxLine,
+              keyboardType: textInputType,
               decoration: InputDecoration(
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.all(2),

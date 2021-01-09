@@ -1,0 +1,9 @@
+
+import 'package:flutter/material.dart';
+
+class MyShowSnackBar{
+
+  static showSnackBar(BuildContext context,String content){
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(content,style: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 14),)));
+  }
+}

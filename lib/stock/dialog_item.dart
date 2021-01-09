@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:workshop/bloc/stockpile/dialog_item_bloc.dart';
+import 'package:workshop/bloc/stockpile/single_drop_down_bloc.dart';
 import 'package:workshop/module/stockpile/item_available_name.dart';
 import 'package:workshop/stock/entry_to_stock/add_fabric_item.dart';
 import 'package:workshop/stock/entry_to_stock/add_new_item.dart';
@@ -19,7 +19,7 @@ class DialogItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    DialogItemCubit dialogItemCubit = new DialogItemCubit(DialogItemState());
+    SingleDropDownItemCubit dialogItemCubit = new SingleDropDownItemCubit(SingleDropDownItemState(value: availableItems![0].id));
 
     return Dialog(
       backgroundColor: Colors.transparent,
@@ -56,7 +56,7 @@ class DialogItem extends StatelessWidget {
                       width: 100,
                       child: BlocBuilder(
                         cubit: dialogItemCubit,
-                        builder:(context,DialogItemState state)=> CustomDropdownButton<String>(
+                        builder:(context,SingleDropDownItemState state)=> CustomDropdownButton<String>(
                           icon: Icon(
                             Icons.arrow_drop_down,
                             color: Colors.white,
@@ -87,7 +87,7 @@ class DialogItem extends StatelessWidget {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => AddAvailableItem(),
+                                builder: (context) => AddAvailableItem(availableItem: availableItems!.where((element) => element.id == dialogItemCubit.state.value).first,),
                                 settings:
                                     RouteSettings(name: '/addAvailableItem')));
                       },
