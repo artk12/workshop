@@ -136,7 +136,8 @@ class AddFabricItem extends StatelessWidget {
                       if(manufacture.isEmpty|| calite.isEmpty|| metric.isEmpty|| color.isEmpty|| pieces.isEmpty){
                         MyShowSnackBar.showSnackBar(context, "لطفا تمامی فیلدها را پر کنید.");
                       }else{
-                        String res = await MyRequest.simpleQueryRequest('stockpile/insert.php', Insert.queryAddFabricToStockpile(manufacture, calite, metric, color, pieces, description));
+                        DateTime dateTime = new DateTime.now();
+                        String res = await MyRequest.simpleQueryRequest('stockpile/insert.php', Insert.queryAddFabricToStockpile(manufacture, calite, metric, color, pieces, description,dateTime.year,dateTime.month,dateTime.day));
                         print(res);
                       }
                     },

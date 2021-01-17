@@ -4,11 +4,18 @@ import 'package:flutter/material.dart';
 
 class BlurBackground extends StatelessWidget {
   final Widget? child;
-  BlurBackground({@required this.child});
+  final EdgeInsets padding;
+  final double radius;
+  final double blur;
+  BlurBackground(
+      {@required this.child,
+      this.padding = const EdgeInsets.all(8.0),
+      this.radius = 15,
+      this.blur = 35});
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(8.0),
+      padding: padding,
       decoration: BoxDecoration(
         boxShadow: [
           BoxShadow(
@@ -19,14 +26,14 @@ class BlurBackground extends StatelessWidget {
         ],
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(15),
+        borderRadius: BorderRadius.circular(radius),
         child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaY: 35, sigmaX: 35),
+          filter: ImageFilter.blur(sigmaY: blur, sigmaX: blur),
           child: Container(
               decoration: BoxDecoration(
                   color: Colors.white.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(15)),
-              child: child!),
+                  borderRadius: BorderRadius.circular(radius)),
+              child: child),
         ),
       ),
     );

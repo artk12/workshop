@@ -7,7 +7,7 @@ import 'package:workshop/request/request.dart';
 
 class MyList {
 
-  Future<List<ItemNameAvailable>> getAvailableItems() async{
+  static Future<List<ItemNameAvailable>> getAvailableItems() async{
     String body = await MyRequest.simpleQueryRequest('stockpile/getResult.php',GetData.getAvailableItem);
     final  json = jsonDecode(body).cast<Map<String, dynamic>>();
     List<ItemNameAvailable> items = json.map<ItemNameAvailable>((json) => ItemNameAvailable.fromJson(json)).toList();

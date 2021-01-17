@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:workshop/stock/entry_to_stock/add_available_item.dart';
 import 'package:workshop/stock/entry_to_stock/add_fabric_item.dart';
 import 'package:workshop/stock/entry_to_stock/add_new_item.dart';
-import 'package:workshop/stock/entry_to_stock/stockpage.dart';
+import 'package:workshop/stock/landing/stockpage.dart';
 import 'package:workshop/style/theme/theme.dart';
 
 void main() async{
@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
         // '/': (context) => StockHomePage(),
       },
       theme: light,
-      home: StockPage(),
+      home: StockPage()
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workshop/bloc/stockpile/single_drop_down_bloc.dart';
 import 'package:workshop/module/stockpile/item_available_name.dart';
@@ -57,123 +58,143 @@ class AddAvailableItem extends StatelessWidget {
     return Scaffold(
       body: StockBackground(
         child: SingleChildScrollView(
-          child:Column(
-              children: [
-                StockAppbar(
-                  title: 'اضافه به انبار',
-                ),
-                space,
-                item,
-                space,
-                Row(
-                  children: [
-                    Expanded(
-                        child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: DefaultTextField(
-                        textInputType: TextInputType.number,
-                        textEditingController: firstQuantifier,
-                        label: 'شمارنده اول',
-                      ),
-                    )),
-                    Expanded(
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        height: 84,
-                        child: BlurBackground(
-                          child: BlocBuilder(
-                            cubit: singleDropDownItemCubit,
-                            builder: (context, SingleDropDownItemState state) =>
-                                CustomDropdownButtonHideUnderline(
-                              child: CustomDropdownButton<String>(
-                                icon: Icon(
-                                  Icons.arrow_drop_down,
-                                  color: Colors.white,
-                                ),
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                items: category.map((String value) {
-                                  return new CustomDropdownMenuItem<String>(
-                                    value: value,
-                                    child: new Text(
-                                      value,
-                                      style: TextStyle(
-                                          fontFamily: 'light',
-                                          color: Colors.white),
-                                    ),
-                                  );
-                                }).toList(),
-                                value: category
-                                    .where((element) => element == state.value)
-                                    .first,
-                                onChanged: (value) {
-                                  singleDropDownItemCubit.changeItem(value!);
-                                },
+          child: Column(
+            children: [
+              StockAppbar(
+                title: 'اضافه به انبار',
+              ),
+              space,
+              item,
+              space,
+              Row(
+                children: [
+                  Expanded(
+                      child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: DefaultTextField(
+                      textInputType: TextInputType.number,
+                      textEditingController: firstQuantifier,
+                      label: 'شمارنده اول',
+                    ),
+                  )),
+                  Expanded(
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      height: 84,
+                      child: BlurBackground(
+                        child: BlocBuilder(
+                          cubit: singleDropDownItemCubit,
+                          builder: (context, SingleDropDownItemState state) =>
+                              CustomDropdownButtonHideUnderline(
+                            child: CustomDropdownButton<String>(
+                              icon: Icon(
+                                Icons.arrow_drop_down,
+                                color: Colors.white,
                               ),
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              items: category.map((String value) {
+                                return new CustomDropdownMenuItem<String>(
+                                  value: value,
+                                  child: new Text(
+                                    value,
+                                    style: TextStyle(
+                                        fontFamily: 'light',
+                                        color: Colors.white),
+                                  ),
+                                );
+                              }).toList(),
+                              value: category
+                                  .where((element) => element == state.value)
+                                  .first,
+                              onChanged: (value) {
+                                singleDropDownItemCubit.changeItem(value!);
+                              },
                             ),
                           ),
                         ),
                       ),
                     ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: DefaultTextField(
-                          label: 'شمارنده دوم',
-                          textEditingController: secondQuantifier,
-                        ),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: DefaultTextField(
+                        label: 'شمارنده دوم',
+                        textEditingController: secondQuantifier,
                       ),
                     ),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: DefaultTextField(
-                          label: 'تعداد هشدار',
-                          textEditingController: warning,
-                          textInputType: TextInputType.number,
-                        ),
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: DefaultTextField(
+                        label: 'تعداد هشدار',
+                        textEditingController: warning,
+                        textInputType: TextInputType.number,
                       ),
                     ),
-                  ],
-                ),
-                SizedBox(
-                  height: 70,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    IconOutlineButton(
-                      color: Colors.green.withOpacity(0.4),
-                      icon: Icons.check,
-                      onPressed: () async{
-                        String quantify = category
-                            .where((element) =>
-                        element == singleDropDownItemCubit.state.value)
-                            .first;
-                        if(firstQuantifier.text.isEmpty || secondQuantifier.text.isEmpty || warning.text.isEmpty){
-                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('لطفا تمامی فیلدها را پر کنید.',style: theme.textTheme.bodyText1,)));
-                        }
-                        String query = Insert.queryAddAvailableItemToStockpile(availableItem!.id, firstQuantifier.text, quantify, secondQuantifier.text, warning.text);
-                        String body = await MyRequest.simpleQueryRequest('stockpile/insert.php',query);
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 70,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  IconOutlineButton(
+                    color: Colors.green.withOpacity(0.4),
+                    icon: Icons.check,
+                    onPressed: () async {
+                      String quantify = category
+                          .where((element) =>
+                              element == singleDropDownItemCubit.state.value)
+                          .first;
+                      if (firstQuantifier.text.isEmpty ||
+                          secondQuantifier.text.isEmpty ||
+                          warning.text.isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              'لطفا تمامی فیلدها را پر کنید.',
+                              style: theme.textTheme.bodyText1,
+                            ),
+                          ),
+                        );
+                      } else {
+                        DateTime dateTime = DateTime.now();
+                        String query = Insert.queryAddAvailableItemToStockpile(
+                            availableItem!.id,
+                            firstQuantifier.text,
+                            quantify,
+                            secondQuantifier.text,
+                            warning.text,
+                            dateTime.year,
+                            dateTime.month,
+                            dateTime.day);
+                        String body = await MyRequest.simpleQueryRequest(
+                            'stockpile/insert.php', query);
                         print(body);
-                      },
-                    ),
-                    IconOutlineButton(
-                      color: Colors.red.withOpacity(0.4),
-                      icon: Icons.close,
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                  ],
-                ),
-              ],
-            ),
+                      }
+                    },
+                  ),
+                  IconOutlineButton(
+                    color: Colors.red.withOpacity(0.4),
+                    icon: Icons.close,
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                ],
+              ),
+            ],
           ),
         ),
+      ),
     );
   }
 }
