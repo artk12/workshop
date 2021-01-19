@@ -4,23 +4,22 @@ import 'package:flutter/material.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workshop/bloc/stockpile/single_drop_down_bloc.dart';
-import 'package:workshop/module/stockpile/item_available_name.dart';
-import 'package:workshop/stock/entry_to_stock/add_fabric_item.dart';
-import 'package:workshop/stock/entry_to_stock/add_new_item.dart';
+import 'package:workshop/module/stockpile/item.dart';
+import 'package:workshop/stock/import_to_stock/add_fabric_item.dart';
+import 'package:workshop/stock/import_to_stock/add_new_item.dart';
 import 'package:workshop/style/component/custom_drop_down.dart';
 import 'package:workshop/style/component/default_button.dart';
-
-import 'entry_to_stock/add_available_item.dart';
+import 'import_to_stock/update_item.dart';
 
 class DialogItem extends StatelessWidget {
 
-  final List<ItemNameAvailable>? availableItems;
-  DialogItem({this.availableItems});
+  final List<Item>? item;
+  DialogItem({this.item});
 
   @override
   Widget build(BuildContext context) {
 
-    SingleDropDownItemCubit dialogItemCubit = new SingleDropDownItemCubit(SingleDropDownItemState(value: availableItems![0].id));
+    SingleDropDownItemCubit dialogItemCubit = new SingleDropDownItemCubit(SingleDropDownItemState(value: item![0].id));
 
     return Dialog(
       backgroundColor: Colors.transparent,
@@ -65,12 +64,12 @@ class DialogItem extends StatelessWidget {
                               color: Colors.white,
                             ),
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            items: availableItems!
-                                .map((ItemNameAvailable value) {
+                            items: item!
+                                .map((Item value) {
                               return new CustomDropdownMenuItem<String>(
                                 value: value.id,
                                 child: new Text(
-                                  value.name,
+                                  value.name!,
                                   style: TextStyle(
                                       fontFamily: 'light', color: Colors.white),
                                 ),
@@ -90,7 +89,7 @@ class DialogItem extends StatelessWidget {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => AddAvailableItem(availableItem: availableItems!.where((element) => element.id == dialogItemCubit.state.value).first,),
+                                  builder: (context) => UpdateItem(item: item!.where((element) => element.id == dialogItemCubit.state.value).first,),
                                   settings:
                                       RouteSettings(name: '/addAvailableItem')));
                         },

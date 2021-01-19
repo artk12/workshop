@@ -1,23 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:workshop/module/stockpile/item_available_name.dart';
-import 'package:workshop/style/app_bar/stock_appbar.dart';
-import 'package:workshop/style/background/stock_background.dart';
+import 'package:workshop/module/stockpile/item.dart';
 import 'package:workshop/style/component/dashboard_card_background_blur.dart';
-import 'package:workshop/style/component/dashboard_card_blur_background.dart';
 import 'package:workshop/style/component/stockpile/message_stock_Card.dart';
 import 'package:workshop/style/component/stockpile/stock_action_stock_Card.dart';
 import 'package:workshop/style/component/stockpile/stock_stock_Card.dart';
 import 'package:workshop/style/component/stockpile/warning_stock_Card.dart';
 
-import '../dialog_item.dart';
-
 class StockDashboardPage extends StatelessWidget {
-  final List<ItemNameAvailable>? availableItems;
-  StockDashboardPage({this.availableItems});
+  final List<Item>? items;
+  StockDashboardPage({this.items});
   @override
   Widget build(BuildContext context) {
-    // List<ItemNameAvailable> availableItems =
-    //     Provider.of<List<ItemNameAvailable>>(context) ?? [];
+
     ThemeData theme = Theme.of(context);
     return SafeArea(
       child: SingleChildScrollView(

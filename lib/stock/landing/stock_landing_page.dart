@@ -1,13 +1,10 @@
-import 'dart:async';
-import 'dart:typed_data';
-import 'dart:ui' as ui;
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:provider/provider.dart';
-import 'package:workshop/module/stockpile/item_available_name.dart';
+import 'package:workshop/module/stockpile/fabric.dart';
+import 'package:workshop/module/stockpile/item.dart';
+import 'package:workshop/stock/export_from_stock/export_from_stock.dart';
 import 'package:workshop/stock/landing/stock_dashboard_page.dart';
 import 'package:workshop/stock/landing/stockpile_list_page.dart';
 import 'package:workshop/stock/landing/stockpile_messages_page.dart';
@@ -21,9 +18,9 @@ class StockLandingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final GlobalKey<ScaffoldState> _scaffoldKey =
-        new GlobalKey<ScaffoldState>(); // ADD THIS LINE
-    List<ItemNameAvailable> availableItems =
-        Provider.of<List<ItemNameAvailable>>(context) ?? [];
+        new GlobalKey<ScaffoldState>();
+    List<Item> items = Provider.of<List<Item>>(context) ?? [];
+    List<Fabric> fabrics = Provider.of<List<Fabric>>(context) ?? [];
     PageController pageController = new PageController();
     ThemeData theme = Theme.of(context);
 
@@ -38,17 +35,17 @@ class StockLandingPage extends StatelessWidget {
           child: Container(
             width: 200,
             child: ListView(
-              // Important: Remove any padding from the ListView.
               padding: EdgeInsets.zero,
               children: <Widget>[
                 Container(
                   width: 200,
                   height: 200,
                   decoration: BoxDecoration(
-                      image: DecorationImage(
-                    fit: BoxFit.contain,
-                    image: AssetImage('asset/images/profile.jpg'),
-                  )),
+                    image: DecorationImage(
+                      fit: BoxFit.contain,
+                      image: AssetImage('asset/images/profile.jpg'),
+                    ),
+                  ),
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8),
                     child: Column(
@@ -84,6 +81,15 @@ class StockLandingPage extends StatelessWidget {
                       ],
                     ),
                   ),
+                ),
+                ListTile(
+                  title: Text(
+                    'پیام ها',
+                    style: theme.textTheme.headline1!.copyWith(
+                        fontSize: 18,
+                        shadows: [Shadow(color: Colors.black, blurRadius: 7)]),
+                  ),
+                  onTap: () {},
                 ),
                 ListTile(
                   title: Text(
@@ -130,28 +136,38 @@ class StockLandingPage extends StatelessWidget {
                 ),
                 IconButton(
                     icon: Icon(
-                      Icons.notifications_none,
+                      Icons.refresh,
                     ),
                     onPressed: () {}),
               ],
               title: 'داشبورد',
               leftWidget: [
                 IconButton(
-                  icon: Icon(Icons.add),
+                  icon: Icon(Icons.download_outlined),
                   onPressed: () {
                     showDialog(
                       context: context,
                       builder: (context) => DialogItem(
-                        availableItems: availableItems,
+                        item: items,
                       ),
                     );
                   },
                 ),
                 IconButton(
-                    icon: Icon(
-                      Icons.refresh,
-                    ),
-                    onPressed: () {}),
+                  icon: Icon(Icons.upload_outlined),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ExportFromStock(
+                          items:items,
+                          fabrics:fabrics,
+                        ),
+                        settings: RouteSettings(name: '/ExportFromStock'),
+                      ),
+                    );
+                  },
+                ),
               ],
             ),
             Expanded(
@@ -159,7 +175,7 @@ class StockLandingPage extends StatelessWidget {
                 controller: pageController,
                 children: [
                   StockDashboardPage(
-                    availableItems: availableItems,
+                    items: items,
                   ),
                   StockMessageList(),
                   StockPileList(),

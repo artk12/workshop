@@ -1,10 +1,40 @@
+class Insert {
+  // 0 means output in log
+  //1 means input in log
 
-class Insert{
-
-  static String queryAddAvailableItemToStockpile(String availableItemId,String firstQuantifier,String quantify,String secondQuantifier,String warning,int year,int month,int day) {
-    return "INSERT INTO `item`(`item_id`, `quantifier_one`, `quantify`, `quantifier_two`, `warning`,`year`,`month`,`day`) VALUES ('${int.parse(availableItemId)}','$firstQuantifier','$quantify','$secondQuantifier','$warning','$year','$month','$day')";
-  }
-  static String queryAddFabricToStockpile(String manufacture,String calite,String metric,String color,String pieces,String description,int year,int month,int day){
+  static String queryInsertFabricToStockpile(
+      String manufacture,
+      String calite,
+      String metric,
+      String color,
+      String pieces,
+      String description,
+      int year,
+      int month,
+      int day) {
     return "INSERT INTO `fabric`(`manufacture`, `calite`, `metric`, `color`, `pieces`, `description`,`year`,`month`,`day`) VALUES ('$manufacture','$calite','$metric','$color','$pieces','$description','$year','$month','$day')";
   }
+  static String queryInsertInputToLog(
+      String itemId,
+      int amount,
+      int year,
+      int month,
+      int day,) {
+    return "INSERT INTO `stock_pile_logs`(`item_id`,`amount`,`log`, `person`, `year`, `month`, `day`, `description`) VALUES ('$itemId','$amount','1','-','$year','$month','$day','-')";
+  }
+
+  static String queryInsertOutputToLog(
+    String amount,
+    int year,
+    int month,
+    int day,
+    String person,
+    String description) {
+    return "INSERT INTO `stock_pile_logs`(`amount`,`log`, `person`, `year`, `month`, `day`, `message`) VALUES ('$amount','0','$person','$year','$month','$day','$description')";
+  }
+
+  static String queryInsertToFabricLog(String fabricId,String log,String description,int year,int month,int day,String person){
+    return "INSERT INTO `stock_pile_fabric_logs`(`fabric_id`,`person`, `log`, `description`, `year`, `month`, `day`) VALUES ('$fabricId','$person','$log','$description','$year','$month','$day')";
+  }
+
 }

@@ -7,12 +7,14 @@ class DefaultTextField extends StatelessWidget {
   final int maxLine;
   final TextInputType textInputType;
   final TextEditingController? textEditingController;
-  DefaultTextField({this.label = '', this.maxLine = 1,this.textInputType = TextInputType.text,this.textEditingController});
+  final double? width;
+  DefaultTextField({this.label = '', this.maxLine = 1,this.textInputType = TextInputType.text,this.textEditingController,this.width});
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     return Container(
       padding: const EdgeInsets.all(8.0),
+      width: width,
       decoration: BoxDecoration(
         boxShadow: [
           BoxShadow(

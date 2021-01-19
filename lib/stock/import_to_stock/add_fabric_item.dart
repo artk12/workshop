@@ -18,7 +18,6 @@ class AddFabricItem extends StatelessWidget {
     TextEditingController piecesController = new TextEditingController();
     TextEditingController descriptionController = new TextEditingController();
 
-
     ThemeData theme = Theme.of(context);
     Widget space = SizedBox(
       height: 20,
@@ -70,19 +69,25 @@ class AddFabricItem extends StatelessWidget {
                   ),
                 ],
               ),
-
               Row(
                 children: [
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: DefaultTextField(label: 'کالیته',textEditingController: caliteController,),
+                      child: DefaultTextField(
+                        label: 'کالیته',
+                        textEditingController: caliteController,
+                      ),
                     ),
                   ),
                   Expanded(
                       child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: DefaultTextField(label: 'متراژ',textEditingController: metricController,textInputType: TextInputType.number,),
+                    child: DefaultTextField(
+                      label: 'متراژ',
+                      textEditingController: metricController,
+                      textInputType: TextInputType.number,
+                    ),
                   )),
                 ],
               ),
@@ -91,14 +96,21 @@ class AddFabricItem extends StatelessWidget {
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: DefaultTextField(label: 'رنگ',textEditingController: colorController,),
+                      child: DefaultTextField(
+                        label: 'رنگ',
+                        textEditingController: colorController,
+                      ),
                     ),
                   ),
                   Expanded(
                       child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: DefaultTextField(label: 'تعداد تکه',textEditingController: piecesController,textInputType: TextInputType.number,),
-                      )),
+                    padding: const EdgeInsets.all(8.0),
+                    child: DefaultTextField(
+                      label: 'تعداد تکه',
+                      textEditingController: piecesController,
+                      textInputType: TextInputType.number,
+                    ),
+                  )),
                 ],
               ),
               Row(
@@ -124,7 +136,7 @@ class AddFabricItem extends StatelessWidget {
                   IconOutlineButton(
                     color: Colors.green.withOpacity(0.4),
                     icon: Icons.check,
-                    onPressed: ()async{
+                    onPressed: () async {
                       String manufacture = manufactureController.text;
                       String calite = caliteController.text;
                       String metric = metricController.text;
@@ -132,23 +144,36 @@ class AddFabricItem extends StatelessWidget {
                       String pieces = piecesController.text;
                       String description = descriptionController.text;
 
-                      
-                      if(manufacture.isEmpty|| calite.isEmpty|| metric.isEmpty|| color.isEmpty|| pieces.isEmpty){
-                        MyShowSnackBar.showSnackBar(context, "لطفا تمامی فیلدها را پر کنید.");
-                      }else{
+                      if (manufacture.isEmpty ||
+                          calite.isEmpty ||
+                          metric.isEmpty ||
+                          color.isEmpty ||
+                          pieces.isEmpty) {
+                        MyShowSnackBar.showSnackBar(
+                            context, "لطفا تمامی فیلدها را پر کنید.");
+                      } else {
                         DateTime dateTime = new DateTime.now();
-                        String res = await MyRequest.simpleQueryRequest('stockpile/insert.php', Insert.queryAddFabricToStockpile(manufacture, calite, metric, color, pieces, description,dateTime.year,dateTime.month,dateTime.day));
-                        print(res);
+                        String res = await MyRequest.simpleQueryRequest(
+                            'stockpile/runQuery.php',
+                            Insert.queryInsertFabricToStockpile(
+                                manufacture,
+                                calite,
+                                metric,
+                                color,
+                                pieces,
+                                description,
+                                dateTime.year,
+                                dateTime.month,
+                                dateTime.day));
                       }
                     },
                   ),
                   IconOutlineButton(
-                    color: Colors.red.withOpacity(0.4),
-                    icon: Icons.close,
-                    onPressed:(){
-                      Navigator.pop(context);
-                    }
-                  ),
+                      color: Colors.red.withOpacity(0.4),
+                      icon: Icons.close,
+                      onPressed: () {
+                        Navigator.pop(context);
+                      }),
                 ],
               ),
               space,

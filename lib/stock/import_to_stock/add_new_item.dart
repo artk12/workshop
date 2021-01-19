@@ -19,7 +19,6 @@ class AddNewItem extends StatelessWidget {
     List<String> nameCategory = ['خرج کار', 'بسته بندی'];
     final TextEditingController newItemName = new TextEditingController();
     final TextEditingController firstQuantifier = new TextEditingController();
-    final TextEditingController secondQuantifier = new TextEditingController();
     final TextEditingController warning = new TextEditingController();
 
     SingleDropDownItemCubit nameCategoryCubit =
@@ -169,15 +168,6 @@ class AddNewItem extends StatelessWidget {
               Row(
                 children: [
                   Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: DefaultTextField(
-                        label: 'شمارنده دوم',
-                        textEditingController: secondQuantifier,
-                      ),
-                    ),
-                  ),
-                  Expanded(
                       child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: DefaultTextField(
@@ -186,6 +176,7 @@ class AddNewItem extends StatelessWidget {
                       textInputType: TextInputType.number,
                     ),
                   )),
+                  Expanded(child:Container()),
                 ],
               ),
               SizedBox(
@@ -200,7 +191,6 @@ class AddNewItem extends StatelessWidget {
                     onPressed: () async {
                       if (newItemName.text.isEmpty ||
                           firstQuantifier.text.isEmpty ||
-                          secondQuantifier.text.isEmpty ||
                           warning.text.isEmpty) {
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           content: Text('لطفا تمامی فیلدها رو پر کنید.'),
@@ -218,7 +208,6 @@ class AddNewItem extends StatelessWidget {
                             newItemName.text,
                             nameQuantify,
                             firstQuantifier.text,
-                            secondQuantifier.text,
                             quantify,
                             warning.text);
                         print(res);

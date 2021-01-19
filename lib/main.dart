@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:workshop/stock/entry_to_stock/add_available_item.dart';
-import 'package:workshop/stock/entry_to_stock/add_fabric_item.dart';
-import 'package:workshop/stock/entry_to_stock/add_new_item.dart';
+import 'package:workshop/stock/import_to_stock/update_item.dart';
+import 'package:workshop/stock/import_to_stock/add_fabric_item.dart';
+import 'package:workshop/stock/import_to_stock/add_new_item.dart';
 import 'package:workshop/stock/landing/stockpage.dart';
 import 'package:workshop/style/theme/theme.dart';
 
@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/addFabric':(context)=>AddFabricItem(),
         '/addNewItem':(context)=>AddNewItem(),
-        '/addAvailableItem':(context)=>AddAvailableItem(),
+        '/addAvailableItem':(context)=>UpdateItem(),
         // '/': (context) => StockHomePage(),
       },
       theme: light,

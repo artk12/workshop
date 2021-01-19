@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class StockActionsList extends StatelessWidget {
+class StockLogsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container();
