@@ -17,7 +17,7 @@ class WarningStockCard extends StatelessWidget {
         children: [
           Text(
             'زیپ کمتر از 10',
-            style: theme.textTheme.headline2!.copyWith(fontSize: 14),
+            style: theme.textTheme.headline2.copyWith(fontSize: 14),
           ),
         ],
       ),

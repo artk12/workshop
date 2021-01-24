@@ -2,14 +2,16 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:workshop/bloc/ignoreButtonsBloc.dart';
 import 'package:workshop/bloc/stockpile/single_drop_down_bloc.dart';
 import 'package:workshop/request/request.dart';
 import 'package:workshop/style/app_bar/stock_appbar.dart';
 import 'package:workshop/style/background/stock_background.dart';
 import 'package:workshop/style/component/blur_background.dart';
-import 'package:workshop/style/component/custom_drop_down.dart';
 import 'package:workshop/style/component/default_textfield.dart';
+import 'package:workshop/style/component/dropdownWithOutNullSafety.dart';
 import 'package:workshop/style/component/icon_outline_button.dart';
+import 'package:workshop/style/theme/show_snackbar.dart';
 
 class AddNewItem extends StatelessWidget {
   @override
@@ -25,6 +27,7 @@ class AddNewItem extends StatelessWidget {
         new SingleDropDownItemCubit(SingleDropDownItemState(value: 'خرج کار'));
     SingleDropDownItemCubit categoryCubit =
         new SingleDropDownItemCubit(SingleDropDownItemState(value: 'کیلوگرم'));
+    IgnoreButtonCubit ignoreButtonCubit = IgnoreButtonCubit(IgnoreButtonState(ignore: false));
 
     Widget space = SizedBox(
       height: 20,
@@ -44,7 +47,7 @@ class AddNewItem extends StatelessWidget {
                   padding: const EdgeInsets.only(bottom: 8.0),
                   child: Text(
                     'آیتم جدید',
-                    style: theme.textTheme.headline2!.copyWith(
+                    style: theme.textTheme.headline2.copyWith(
                       fontFamily: 'bold',
                       fontSize: 28,
                       fontWeight: FontWeight.w800,
@@ -104,7 +107,7 @@ class AddNewItem extends StatelessWidget {
                                   .where((element) => element == state.value)
                                   .first,
                               onChanged: (value) {
-                                nameCategoryCubit.changeItem(value!);
+                                nameCategoryCubit.changeItem(value);
                               },
                             ),
                           ),
@@ -155,7 +158,7 @@ class AddNewItem extends StatelessWidget {
                                   .where((element) => element == state.value)
                                   .first,
                               onChanged: (value) {
-                                categoryCubit.changeItem(value!);
+                                categoryCubit.changeItem(value);
                               },
                             ),
                           ),
@@ -182,46 +185,54 @@ class AddNewItem extends StatelessWidget {
               SizedBox(
                 height: 70,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  IconOutlineButton(
-                    color: Colors.green.withOpacity(0.4),
-                    icon: Icons.check,
-                    onPressed: () async {
-                      if (newItemName.text.isEmpty ||
-                          firstQuantifier.text.isEmpty ||
-                          warning.text.isEmpty) {
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text('لطفا تمامی فیلدها رو پر کنید.'),
-                        ));
-                      } else {
-                        String quantify = category
-                            .where((element) =>
-                                element == categoryCubit.state.value)
-                            .first;
-                        String nameQuantify = nameCategory
-                            .where((element) =>
-                                element == nameCategoryCubit.state.value)
-                            .first;
-                        String res = await MyRequest.addNewItems(
-                            newItemName.text,
-                            nameQuantify,
-                            firstQuantifier.text,
-                            quantify,
-                            warning.text);
-                        print(res);
-                      }
-                    },
+              BlocBuilder(
+                cubit: ignoreButtonCubit,
+                builder: (BuildContext context, IgnoreButtonState state) => IgnorePointer(
+                  ignoring: state.ignore,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      IconOutlineButton(
+                        color: Colors.green.withOpacity(0.4),
+                        icon: Icons.check,
+                        onPressed: () async {
+                          if (newItemName.text.isEmpty ||
+                              firstQuantifier.text.isEmpty ||
+                              warning.text.isEmpty) {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text('لطفا تمامی فیلدها رو پر کنید.'),
+                            ));
+                          } else {
+                            ignoreButtonCubit.update(true);
+                            MyShowSnackBar.showSnackBar(context, "کمی صبرکنید...");
+                            String quantify = category
+                                .where((element) => element == categoryCubit.state.value).first;
+                            String nameQuantify = nameCategory
+                                .where((element) => element == nameCategoryCubit.state.value).first;
+                            String res = await MyRequest.addNewItem(
+                                newItemName.text,
+                                nameQuantify,
+                                firstQuantifier.text,
+                                quantify,
+                                warning.text);
+                            if(res.trim() == "OK"){
+                              ignoreButtonCubit.update(false);
+                              MyShowSnackBar.hideSnackBar(context);
+                              Navigator.of(context).pop();
+                            }
+                          }
+                        },
+                      ),
+                      IconOutlineButton(
+                        color: Colors.red.withOpacity(0.4),
+                        icon: Icons.close,
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ],
                   ),
-                  IconOutlineButton(
-                    color: Colors.red.withOpacity(0.4),
-                    icon: Icons.close,
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                ],
+                ),
               ),
             ],
           ),

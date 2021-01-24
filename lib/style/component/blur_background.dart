@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 class BlurBackground extends StatelessWidget {
-  final Widget? child;
+  final Widget child;
   final EdgeInsets padding;
   final double radius;
   final double blur;

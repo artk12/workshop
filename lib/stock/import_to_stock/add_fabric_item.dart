@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:workshop/request/query/insert.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:workshop/bloc/ignoreButtonsBloc.dart';
 import 'package:workshop/request/request.dart';
 import 'package:workshop/style/app_bar/stock_appbar.dart';
 import 'package:workshop/style/background/stock_background.dart';
@@ -17,6 +18,7 @@ class AddFabricItem extends StatelessWidget {
     TextEditingController colorController = new TextEditingController();
     TextEditingController piecesController = new TextEditingController();
     TextEditingController descriptionController = new TextEditingController();
+    IgnoreButtonCubit ignoreButtonCubit = IgnoreButtonCubit(IgnoreButtonState(ignore: false));
 
     ThemeData theme = Theme.of(context);
     Widget space = SizedBox(
@@ -36,7 +38,7 @@ class AddFabricItem extends StatelessWidget {
                   padding: const EdgeInsets.only(bottom: 8.0),
                   child: Text(
                     'پارچه',
-                    style: theme.textTheme.headline2!.copyWith(
+                    style: theme.textTheme.headline2.copyWith(
                       fontFamily: 'bold',
                       fontSize: 28,
                       fontWeight: FontWeight.w800,
@@ -130,51 +132,50 @@ class AddFabricItem extends StatelessWidget {
               SizedBox(
                 height: 40,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  IconOutlineButton(
-                    color: Colors.green.withOpacity(0.4),
-                    icon: Icons.check,
-                    onPressed: () async {
-                      String manufacture = manufactureController.text;
-                      String calite = caliteController.text;
-                      String metric = metricController.text;
-                      String color = colorController.text;
-                      String pieces = piecesController.text;
-                      String description = descriptionController.text;
+              BlocBuilder(
+                cubit: ignoreButtonCubit,
+                builder: (BuildContext context,IgnoreButtonState state) => IgnorePointer(
+                  ignoring: state.ignore,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      IconOutlineButton(
+                        color: Colors.green.withOpacity(0.4),
+                        icon: Icons.check,
+                        onPressed: () async {
+                          String manufacture = manufactureController.text;
+                          String calite = caliteController.text;
+                          String metric = metricController.text;
+                          String color = colorController.text;
+                          String pieces = piecesController.text;
+                          String description = descriptionController.text;
 
-                      if (manufacture.isEmpty ||
-                          calite.isEmpty ||
-                          metric.isEmpty ||
-                          color.isEmpty ||
-                          pieces.isEmpty) {
-                        MyShowSnackBar.showSnackBar(
-                            context, "لطفا تمامی فیلدها را پر کنید.");
-                      } else {
-                        DateTime dateTime = new DateTime.now();
-                        String res = await MyRequest.simpleQueryRequest(
-                            'stockpile/runQuery.php',
-                            Insert.queryInsertFabricToStockpile(
-                                manufacture,
-                                calite,
-                                metric,
-                                color,
-                                pieces,
-                                description,
-                                dateTime.year,
-                                dateTime.month,
-                                dateTime.day));
-                      }
-                    },
+                          if (manufacture.isEmpty ||
+                              calite.isEmpty ||
+                              metric.isEmpty ||
+                              color.isEmpty ||
+                              pieces.isEmpty) {
+                            MyShowSnackBar.showSnackBar(context, "لطفا تمامی فیلدها را پر کنید.");
+                          } else {
+                            MyShowSnackBar.showSnackBar(context, "کمی صبرکنید...");
+                            String res = await MyRequest.addNewFabric(manufacture, calite, metric, color, pieces, description);
+                            if(res == "OK"){
+                              ignoreButtonCubit.update(false);
+                              MyShowSnackBar.hideSnackBar(context);
+                              Navigator.pop(context);
+                            }
+                          }
+                        },
+                      ),
+                      IconOutlineButton(
+                          color: Colors.red.withOpacity(0.4),
+                          icon: Icons.close,
+                          onPressed: () {
+                            Navigator.pop(context);
+                          }),
+                    ],
                   ),
-                  IconOutlineButton(
-                      color: Colors.red.withOpacity(0.4),
-                      icon: Icons.close,
-                      onPressed: () {
-                        Navigator.pop(context);
-                      }),
-                ],
+                ),
               ),
               space,
             ],

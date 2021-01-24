@@ -18,7 +18,7 @@ class ActionStockCard extends StatelessWidget {
           children: [
             Text(
               check?'10' + ' بسته زیپ '+'اضافه شد':'10' + ' بسته زیپ '+'کم شد',
-              style: theme.textTheme.headline2!.copyWith(fontSize: 14),
+              style: theme.textTheme.headline2.copyWith(fontSize: 14),
             ),
             // SizedBox(
             //   height: 6,

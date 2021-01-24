@@ -20,21 +20,25 @@ class Insert {
       int year,
       int month,
       int day,) {
-    return "INSERT INTO `stock_pile_logs`(`item_id`,`amount`,`log`, `person`, `year`, `month`, `day`, `description`) VALUES ('$itemId','$amount','1','-','$year','$month','$day','-')";
+    return "INSERT INTO `stock_pile_item_logs`(`item_id`,`amount`,`log`, `person`, `year`, `month`, `day`, `description`) VALUES ('$itemId','$amount','1','-','$year','$month','$day','-')";
   }
 
-  static String queryInsertOutputToLog(
+  static String queryInsertOutputToLog(String itemId,
     String amount,
     int year,
     int month,
     int day,
     String person,
     String description) {
-    return "INSERT INTO `stock_pile_logs`(`amount`,`log`, `person`, `year`, `month`, `day`, `message`) VALUES ('$amount','0','$person','$year','$month','$day','$description')";
+    return "INSERT INTO `stock_pile_item_logs`(`item_id`,`amount`,`log`, `person`, `year`, `month`, `day`, `description`) VALUES ('$itemId','$amount','0','$person','$year','$month','$day','$description')";
   }
 
-  static String queryInsertToFabricLog(String fabricId,String log,String description,int year,int month,int day,String person){
-    return "INSERT INTO `stock_pile_fabric_logs`(`fabric_id`,`person`, `log`, `description`, `year`, `month`, `day`) VALUES ('$fabricId','$person','$log','$description','$year','$month','$day')";
+  static String queryExportToFabricLog(String fabricId,String description,int year,int month,int day,String person){
+    return "INSERT INTO `stock_pile_fabric_logs`(`fabric_id`,`person`, `log`, `description`, `year`, `month`, `day`) VALUES ('$fabricId','$person','0','$description','$year','$month','$day')";
+  }
+
+  static String queryInputToFabricLog(String fabricId,int year,int month,int day){
+    return "INSERT INTO `stock_pile_fabric_logs`(`fabric_id`,`person`, `log`, `description`, `year`, `month`, `day`) VALUES ('$fabricId','-','1','-','$year','$month','$day')";
   }
 
 }

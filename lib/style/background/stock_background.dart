@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 class StockBackground extends StatelessWidget {
-  final Widget? child;
+  final Widget child;
   StockBackground({this.child});
 
   @override
@@ -29,7 +29,7 @@ class StockBackground extends StatelessWidget {
                 color: Colors.black.withOpacity(0.3),
               ),
             ),
-            child!,
+            child,
           ],
         ),
       ),

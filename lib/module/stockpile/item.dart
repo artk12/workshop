@@ -1,13 +1,13 @@
 class Item {
-  final String? id;
-  final String? name;
-  final String? category;
-  final String? quantifierOne;
-  final String? quantify;
-  final String? warning;
-  final String? year;
-  final String? month;
-  final String? day;
+  final String id;
+  final String name;
+  final String category;
+  final String quantifierOne;
+  final String quantify;
+  final String warning;
+  final String year;
+  final String month;
+  final String day;
 
   Item(
       {this.id,

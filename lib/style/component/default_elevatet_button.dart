@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class DefaultElevatedButton extends StatelessWidget {
-  final Function()? onPressed;
+  final Function() onPressed;
   final String title;
 
   DefaultElevatedButton({this.onPressed, this.title = ''});

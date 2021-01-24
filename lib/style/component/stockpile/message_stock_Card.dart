@@ -18,14 +18,14 @@ class MessageCard extends StatelessWidget {
           children: [
             Text(
               'موضوع',
-              style: theme.textTheme.headline2!.copyWith(fontSize: 14),
+              style: theme.textTheme.headline2.copyWith(fontSize: 14),
             ),
             SizedBox(
               height: 6,
             ),
             Text(
               'این توضیحات است',
-              style: theme.textTheme.bodyText1!.copyWith(fontSize: 14),
+              style: theme.textTheme.bodyText1.copyWith(fontSize: 14),
             ),
           ],
         ),

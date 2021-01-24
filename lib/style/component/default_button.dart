@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 
 
 class DefaultButton extends StatelessWidget {
-  final String? title;
-  final Color? backgroundColor;
-  final Function()? onPressed;
+  final String title;
+  final Color backgroundColor;
+  final Function() onPressed;
 
   DefaultButton({this.title,this.backgroundColor,this.onPressed});
 
@@ -42,7 +42,7 @@ class DefaultButton extends StatelessWidget {
                 ),
               ),
               child: Text(
-                title!,
+                title,
                 style: TextStyle(color: Colors.white, fontFamily: 'light'),
               ),
             ),

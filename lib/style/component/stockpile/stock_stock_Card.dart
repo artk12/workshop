@@ -18,17 +18,17 @@ class StockCard extends StatelessWidget {
               children: [
                 Text(
                   'زیپ',
-                  style: theme.textTheme.headline2!.copyWith(fontSize: 14),
+                  style: theme.textTheme.headline2.copyWith(fontSize: 14),
                 ),
                 SizedBox(width: 5,),
                 Text(
                   '10',
-                  style: theme.textTheme.bodyText1!.copyWith(fontSize: 18),
+                  style: theme.textTheme.bodyText1.copyWith(fontSize: 18),
                 ),
                 SizedBox(width: 5,),
                 Text(
                   'بسته',
-                  style: theme.textTheme.bodyText1!.copyWith(fontSize: 14),
+                  style: theme.textTheme.bodyText1.copyWith(fontSize: 14),
                 ),
               ],
             ),

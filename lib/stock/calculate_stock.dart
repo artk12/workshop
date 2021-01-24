@@ -1,0 +1,23 @@
+
+import 'package:workshop/module/stockpile/all_items.dart';
+import 'package:workshop/module/stockpile/fabric.dart';
+import 'package:workshop/module/stockpile/item.dart';
+
+class CalculateStock{
+
+  static List<AllItem> mergeFabricAndItem(List<Item> items,List<Fabric> fabrics){
+    List<AllItem> allItems = [];
+    for(int i = 0 ; i < items.length;i++){
+      Item item = items[i];
+      allItems.add(AllItem(id: item.id,category: 'item',item: item,dateTime: DateTime(int.parse(item.year),int.parse(item.month),int.parse(item.day))));
+    }
+    for(int i = 0 ; i < fabrics.length;i++){
+      Fabric fabric = fabrics[i];
+      allItems.add(AllItem(id: fabric.id,category: 'fabric',fabric: fabric,dateTime: DateTime(int.parse(fabric.year),int.parse(fabric.month),int.parse(fabric.day))));
+    }
+    return allItems;
+  }
+  static void sortAllItem(List<AllItem> allItems){
+     allItems.sort((a,b) => a.dateTime.compareTo(b.dateTime));
+  }
+}

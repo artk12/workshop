@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:provider/provider.dart';
 import 'package:workshop/module/stockpile/fabric.dart';
+import 'package:workshop/module/stockpile/fabric_log.dart';
 import 'package:workshop/module/stockpile/item.dart';
+import 'package:workshop/module/stockpile/item_log.dart';
 import 'package:workshop/stock/export_from_stock/export_from_stock.dart';
 import 'package:workshop/stock/landing/stock_dashboard_page.dart';
-import 'package:workshop/stock/landing/stockpile_list_page.dart';
-import 'package:workshop/stock/landing/stockpile_messages_page.dart';
-import 'package:workshop/stock/landing/stockpile_warning_page.dart';
+import 'package:workshop/stock/landing/stock_page.dart';
 import 'package:workshop/style/app_bar/stock_appbar.dart';
 import 'package:workshop/style/background/stock_background.dart';
 import 'package:workshop/style/component/blur_background.dart';
@@ -21,7 +21,9 @@ class StockLandingPage extends StatelessWidget {
         new GlobalKey<ScaffoldState>();
     List<Item> items = Provider.of<List<Item>>(context) ?? [];
     List<Fabric> fabrics = Provider.of<List<Fabric>>(context) ?? [];
-    PageController pageController = new PageController();
+    List<ItemLog> itemLogs = Provider.of<List<ItemLog>>(context);
+    List<FabricLog> fabricLogs = Provider.of<List<FabricLog>>(context);
+    PageController pageController = new PageController(initialPage: 1);
     ThemeData theme = Theme.of(context);
 
     return StockBackground(
@@ -54,7 +56,7 @@ class StockLandingPage extends StatelessWidget {
                       children: [
                         Text(
                           'مدیریت انبار',
-                          style: theme.textTheme.headline2!.copyWith(
+                          style: theme.textTheme.headline2.copyWith(
                             color: Colors.black.withOpacity(0.7),
                             fontSize: 14,
                             shadows: [
@@ -67,7 +69,7 @@ class StockLandingPage extends StatelessWidget {
                         ),
                         Text(
                           "محمد اسحاقی",
-                          style: theme.textTheme.headline1!.copyWith(
+                          style: theme.textTheme.headline1.copyWith(
                             color: Colors.black.withOpacity(0.7),
                             fontSize: 14,
                             shadows: [
@@ -85,7 +87,7 @@ class StockLandingPage extends StatelessWidget {
                 ListTile(
                   title: Text(
                     'پیام ها',
-                    style: theme.textTheme.headline1!.copyWith(
+                    style: theme.textTheme.headline1.copyWith(
                         fontSize: 18,
                         shadows: [Shadow(color: Colors.black, blurRadius: 7)]),
                   ),
@@ -94,7 +96,7 @@ class StockLandingPage extends StatelessWidget {
                 ListTile(
                   title: Text(
                     'انبار',
-                    style: theme.textTheme.headline1!.copyWith(
+                    style: theme.textTheme.headline1.copyWith(
                         fontSize: 18,
                         shadows: [Shadow(color: Colors.black, blurRadius: 7)]),
                   ),
@@ -103,7 +105,7 @@ class StockLandingPage extends StatelessWidget {
                 ListTile(
                   title: Text(
                     'هشدارها',
-                    style: theme.textTheme.headline1!.copyWith(
+                    style: theme.textTheme.headline1.copyWith(
                         fontSize: 18,
                         shadows: [Shadow(color: Colors.black, blurRadius: 7)]),
                   ),
@@ -112,7 +114,7 @@ class StockLandingPage extends StatelessWidget {
                 ListTile(
                   title: Text(
                     'ورودی و خروجی ها',
-                    style: theme.textTheme.headline1!.copyWith(
+                    style: theme.textTheme.headline1.copyWith(
                         fontSize: 18,
                         shadows: [Shadow(color: Colors.black, blurRadius: 7)]),
                   ),
@@ -131,7 +133,7 @@ class StockLandingPage extends StatelessWidget {
                     Icons.menu,
                   ),
                   onPressed: () {
-                    _scaffoldKey.currentState!.openDrawer();
+                    _scaffoldKey.currentState.openDrawer();
                   },
                 ),
                 IconButton(
@@ -173,13 +175,18 @@ class StockLandingPage extends StatelessWidget {
             Expanded(
               child: PageView(
                 controller: pageController,
+                physics: NeverScrollableScrollPhysics(),
                 children: [
                   StockDashboardPage(
                     items: items,
+                    pageController:pageController,
                   ),
-                  StockMessageList(),
-                  StockPileList(),
-                  StockWarningList(),
+                  StockPage(
+                    fabricLogs: fabricLogs,
+                    fabrics: fabrics,
+                    itemLogs: itemLogs,
+                    items: items,
+                  ),
                 ],
               ),
             ),

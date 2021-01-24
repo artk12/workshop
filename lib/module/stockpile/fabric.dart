@@ -1,14 +1,14 @@
 class Fabric {
-  String? id;
-  String? manufacture;
-  String? calite;
-  String? metric;
-  String? color;
-  String? pieces;
-  String? description;
-  String? year;
-  String? month;
-  String? day;
+  String id;
+  String manufacture;
+  String calite;
+  String metric;
+  String color;
+  String pieces;
+  String description;
+  String year;
+  String month;
+  String day;
 
   Fabric(
       {this.id,

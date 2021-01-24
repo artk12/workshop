@@ -3,8 +3,8 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 class DashboardBlurBackgroundCard extends StatelessWidget {
-  final Widget? child;
-  final Color? color;
+  final Widget child;
+  final Color color;
   DashboardBlurBackgroundCard({@required this.child,this.color});
   @override
   Widget build(BuildContext context) {

@@ -7,19 +7,19 @@ import 'package:workshop/bloc/stockpile/single_drop_down_bloc.dart';
 import 'package:workshop/module/stockpile/item.dart';
 import 'package:workshop/stock/import_to_stock/add_fabric_item.dart';
 import 'package:workshop/stock/import_to_stock/add_new_item.dart';
-import 'package:workshop/style/component/custom_drop_down.dart';
 import 'package:workshop/style/component/default_button.dart';
+import 'package:workshop/style/component/dropdownWithOutNullSafety.dart';
 import 'import_to_stock/update_item.dart';
 
 class DialogItem extends StatelessWidget {
 
-  final List<Item>? item;
+  final List<Item> item;
   DialogItem({this.item});
 
   @override
   Widget build(BuildContext context) {
 
-    SingleDropDownItemCubit dialogItemCubit = new SingleDropDownItemCubit(SingleDropDownItemState(value: item![0].id));
+    SingleDropDownItemCubit dialogItemCubit = new SingleDropDownItemCubit(SingleDropDownItemState(value: item[0].id));
 
     return Dialog(
       backgroundColor: Colors.transparent,
@@ -64,12 +64,12 @@ class DialogItem extends StatelessWidget {
                               color: Colors.white,
                             ),
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            items: item!
+                            items: item
                                 .map((Item value) {
                               return new CustomDropdownMenuItem<String>(
                                 value: value.id,
                                 child: new Text(
-                                  value.name!,
+                                  value.name,
                                   style: TextStyle(
                                       fontFamily: 'light', color: Colors.white),
                                 ),
@@ -77,7 +77,7 @@ class DialogItem extends StatelessWidget {
                             }).toList(),
                             value: state.value,
                             onChanged: (value) {
-                              dialogItemCubit.changeItem(value!);
+                              dialogItemCubit.changeItem(value);
                             },
                           ),
                         ),
@@ -89,7 +89,7 @@ class DialogItem extends StatelessWidget {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => UpdateItem(item: item!.where((element) => element.id == dialogItemCubit.state.value).first,),
+                                  builder: (context) => UpdateItem(item: item.where((element) => element.id == dialogItemCubit.state.value).first,),
                                   settings:
                                       RouteSettings(name: '/addAvailableItem')));
                         },

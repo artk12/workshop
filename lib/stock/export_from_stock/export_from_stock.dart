@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:workshop/bloc/ignoreButtonsBloc.dart';
 import 'package:workshop/bloc/stockpile/export_from_stock_bloc.dart';
 import 'package:workshop/bloc/stockpile/single_drop_down_bloc.dart';
 import 'package:workshop/module/stockpile/fabric.dart';
@@ -11,15 +12,15 @@ import 'package:workshop/request/request.dart';
 import 'package:workshop/style/app_bar/stock_appbar.dart';
 import 'package:workshop/style/background/stock_background.dart';
 import 'package:workshop/style/component/blur_background.dart';
-import 'package:workshop/style/component/custom_drop_down.dart';
 import 'package:workshop/style/component/default_textfield.dart';
+import 'package:workshop/style/component/dropdownWithOutNullSafety.dart';
 import 'package:workshop/style/component/icon_outline_button.dart';
 import 'package:workshop/style/theme/show_snackbar.dart';
 
 class ExportFromStock extends StatelessWidget {
   // final List<ItemName>? itemNamesAvailable;
-  final List<Item>? items;
-  final List<Fabric>? fabrics;
+  final List<Item> items;
+  final List<Fabric> fabrics;
   ExportFromStock({this.items, this.fabrics});
 
   @override
@@ -36,6 +37,7 @@ class ExportFromStock extends StatelessWidget {
 
     List<String> nameCategory = ['خرج کار', 'بسته بندی', 'پارچه'];
     Widget space(double height) => SizedBox(height: height);
+    IgnoreButtonCubit ignoreButtonCubit = IgnoreButtonCubit(IgnoreButtonState(ignore: false));
 
     TextEditingController person = new TextEditingController();
     TextEditingController description = new TextEditingController();
@@ -81,7 +83,7 @@ class ExportFromStock extends StatelessWidget {
                               }).toList(),
                               value: state.value,
                               onChanged: (value) {
-                                categoryCubit.changeItem(value!);
+                                categoryCubit.changeItem(value);
                                 if (value == 'پارچه') {
                                   exportFromStockPileCubit
                                       .changeToFabric('fabric');
@@ -93,7 +95,7 @@ class ExportFromStock extends StatelessWidget {
                                   itemCubit.changeItem(null);
                                   exportFromStockPileCubit.changeItem(null);
                                   exportFromStockPileCubit.updateItems(
-                                    items!
+                                    items
                                         .where((element) =>
                                             element.category == value)
                                         .toList(),
@@ -126,23 +128,23 @@ class ExportFromStock extends StatelessWidget {
                                 ),
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 items: itemState.itemSelected == 'fabric'
-                                    ? fabrics!.map((fabric) {
+                                    ? fabrics.map((fabric) {
                                         return CustomDropdownMenuItem<String>(
                                           value: fabric.id,
                                           child: new Text(
-                                            fabric.calite!,
+                                            fabric.calite,
                                             style: TextStyle(
                                                 fontFamily: 'light',
                                                 color: Colors.white),
                                           ),
                                         );
                                       }).toList()
-                                    : itemState.items!
+                                    : itemState.items
                                         .map((Item value) {
                                         return CustomDropdownMenuItem<String>(
                                           value: value.id,
                                           child: new Text(
-                                            value.name!,
+                                            value.name,
                                             style: TextStyle(
                                                 fontFamily: 'light',
                                                 color: Colors.white),
@@ -151,15 +153,15 @@ class ExportFromStock extends StatelessWidget {
                                       }).toList(),
                                 value: state.value,
                                 onChanged: (value) {
-                                  itemCubit.changeItem(value!);
+                                  itemCubit.changeItem(value);
                                   if (itemState.itemSelected == 'fabric') {
-                                    Fabric myFabric = fabrics!
+                                    Fabric myFabric = fabrics
                                         .where((element) => element.id == value)
                                         .first;
                                     exportFromStockPileCubit
                                         .updateFabric(myFabric);
                                   } else {
-                                    Item myItem = items!
+                                    Item myItem = items
                                         .where((element) =>
                                             element.id == value)
                                         .first;
@@ -199,7 +201,7 @@ class ExportFromStock extends StatelessWidget {
                                       children: [
                                         Text(
                                           'موجودی : ',
-                                          style: theme.textTheme.headline1!
+                                          style: theme.textTheme.headline1
                                               .copyWith(
                                                   fontWeight: FontWeight.w900,
                                                   fontSize: 25,
@@ -218,8 +220,8 @@ class ExportFromStock extends StatelessWidget {
                                               Text(
                                             state.item == null
                                                 ? '0'
-                                                : state.item!.quantifierOne!,
-                                            style: theme.textTheme.headline1!
+                                                : state.item.quantifierOne,
+                                            style: theme.textTheme.headline1
                                                 .copyWith(
                                               fontWeight: FontWeight.w900,
                                               fontSize: 25,
@@ -244,6 +246,7 @@ class ExportFromStock extends StatelessWidget {
                                       padding: const EdgeInsets.all(8.0),
                                       child: DefaultTextField(
                                         label: 'مقدار',
+                                        textInputType: TextInputType.number,
                                         textEditingController: amount,
                                       ),
                                     ),
@@ -271,9 +274,9 @@ class ExportFromStock extends StatelessWidget {
                                                   Text(
                                                 state.item == null
                                                     ? ' انتخاب نشده '
-                                                    : state.item!.quantify!,
+                                                    : state.item.quantify,
                                                 style: theme
-                                                    .textTheme.headline1!
+                                                    .textTheme.headline1
                                                     .copyWith(
                                                   fontWeight: FontWeight.w900,
                                                   fontSize: 25,
@@ -313,61 +316,77 @@ class ExportFromStock extends StatelessWidget {
                 ),
               ),
               space(20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  IconOutlineButton(
-                    color: Colors.green.withOpacity(0.4),
-                    icon: Icons.check,
-                    onPressed: () async {
-                      DateTime dateTime = DateTime.now();
-                      if (exportFromStockPileCubit.state.itemSelected == 'item') {
-                        if (exportFromStockPileCubit.state.item == null) {
-                          MyShowSnackBar.showSnackBar(
-                              context, 'کالایی انتخاب نشده است.');
-                        } else {
-                          int inventory = int.parse(exportFromStockPileCubit
-                              .state.item!.quantifierOne!);
-                          int amountInt = int.parse(amount.text);
-                          if (amountInt > inventory) {
-                            MyShowSnackBar.showSnackBar(context,
-                                'مقدار ورودی شما بیشتر از موجودی انبار است.');
+              BlocBuilder(
+                cubit: ignoreButtonCubit,
+                builder: (BuildContext context,IgnoreButtonState state) => IgnorePointer(
+                  ignoring: state.ignore,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      IconOutlineButton(
+                        color: Colors.green.withOpacity(0.4),
+                        icon: Icons.check,
+                        onPressed: () async {
+                          DateTime dateTime = DateTime.now();
+                          if (exportFromStockPileCubit.state.itemSelected == 'item') {
+                            if (exportFromStockPileCubit.state.item == null) {
+                              MyShowSnackBar.showSnackBar(
+                                  context, 'کالایی انتخاب نشده است.');
+                            } else {
+                              int inventory = int.parse(exportFromStockPileCubit
+                                  .state.item.quantifierOne);
+                              int amountInt = int.parse(amount.text);
+                              if (amountInt > inventory) {
+                                MyShowSnackBar.showSnackBar(context,
+                                    'مقدار ورودی شما بیشتر از موجودی انبار است.');
+                              } else {
+                                ignoreButtonCubit.update(true);
+                                MyShowSnackBar.showSnackBar(context, "کمی صبرکنید...");
+                                String insert = Insert.queryInsertOutputToLog( exportFromStockPileCubit
+                                    .state.item.id,amount.text, dateTime.year, dateTime.month,
+                                    dateTime.day, person.text, description.text);
+                                String update = Update.queryUpdateStockQuantifier(
+                                    exportFromStockPileCubit.state.item.id,
+                                    (inventory - amountInt).toString());
+                                String body = await MyRequest.simple2QueryRequest(
+                                    'stockpile/run2Query.php', insert, update);
+                                if(body == "OK"){
+                                  ignoreButtonCubit.update(false);
+                                  MyShowSnackBar.hideSnackBar(context);
+                                  Navigator.pop(context);
+                                }
+                              }
+                            }
                           } else {
-                            String insert = Insert.queryInsertOutputToLog(
-                                amount.text,
-                                dateTime.year,
-                                dateTime.month,
-                                dateTime.day,
-                                person.text,
-                                description.text);
-                            String update = Update.queryUpdateStockQuantifier(
-                                exportFromStockPileCubit.state.item!.id!,
-                                amount.text);
-                            await MyRequest.simple2QueryRequest(
-                                'stockpile/run2Query.php', insert, update);
+                            if(exportFromStockPileCubit.state.fabric == null){
+                              MyShowSnackBar.showSnackBar(context, 'کالیته ای انتخاب نشده است.');
+                            }else{
+                              MyShowSnackBar.showSnackBar(context, "کمی صبرکنید...");
+                              ignoreButtonCubit.update(true);
+                              Fabric fabric = exportFromStockPileCubit.state.fabric;
+                              String insert = Insert.queryExportToFabricLog(fabric.id, description.text, dateTime.year, dateTime.month, dateTime.day, person.text);
+                              String update = Update.queryUpdateLogInFabricTable(fabric.id, '0');
+                              String body = await MyRequest.simple2QueryRequest(
+                                  'stockpile/run2Query.php', insert, update);
+                              if(body == "OK"){
+                                ignoreButtonCubit.update(false);
+                                MyShowSnackBar.hideSnackBar(context);
+                                Navigator.pop(context);
+                              }
+                            }
                           }
-                        }
-                      } else {
-                        if(exportFromStockPileCubit.state.fabric == null){
-                          MyShowSnackBar.showSnackBar(context, 'کالیته ای انتخاب نشده است.');
-                        }else{
-                          Fabric fabric = exportFromStockPileCubit.state.fabric!;
-                          String insert = Insert.queryInsertToFabricLog(fabric.id!, '0', description.text, dateTime.year, dateTime.month, dateTime.day, person.text);
-                          String update = Update.queryUpdateLogInFabricTable(fabric.id!, '0');
-                          await MyRequest.simple2QueryRequest(
-                              'stockpile/run2Query.php', insert, update);
-                        }
-                      }
-                    },
+                        },
+                      ),
+                      IconOutlineButton(
+                        color: Colors.red.withOpacity(0.4),
+                        icon: Icons.close,
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ],
                   ),
-                  IconOutlineButton(
-                    color: Colors.red.withOpacity(0.4),
-                    icon: Icons.close,
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                ],
+                ),
               ),
             ],
           ),

@@ -1,20 +1,26 @@
 import 'dart:ui';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class DefaultTextField extends StatelessWidget {
   final String label;
   final int maxLine;
   final TextInputType textInputType;
-  final TextEditingController? textEditingController;
-  final double? width;
-  DefaultTextField({this.label = '', this.maxLine = 1,this.textInputType = TextInputType.text,this.textEditingController,this.width});
+  final TextEditingController textEditingController;
+  final double width;
+  final double height;
+  final String hint;
+  final EdgeInsets padding;
+  DefaultTextField({this.label, this.maxLine = 1,this.textInputType = TextInputType.text
+    ,this.textEditingController,this.width,this.hint,this.height,this.padding = const EdgeInsets.all(8)});
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     return Container(
-      padding: const EdgeInsets.all(8.0),
+      padding: padding,
       width: width,
+      height: height,
       decoration: BoxDecoration(
         boxShadow: [
           BoxShadow(
@@ -37,12 +43,15 @@ class DefaultTextField extends StatelessWidget {
               controller: textEditingController,
               cursorColor: theme.primaryColor,
               maxLines: maxLine,
+              // textAlign: TextAlign.start,
               keyboardType: textInputType,
               decoration: InputDecoration(
+                  hintText: hint,
+                  hintStyle: theme.textTheme.bodyText1.copyWith(color: Colors.white.withOpacity(0.5)),
                   border: InputBorder.none,
-                  contentPadding: EdgeInsets.all(2),
+                  // contentPadding: EdgeInsets.all(2),
                   labelText: label,
-                  labelStyle: theme.textTheme.bodyText1!
+                  labelStyle: theme.textTheme.bodyText1
                       .copyWith(color: theme.primaryColor, fontSize: 16)),
               style: theme.textTheme.bodyText1,
             ),

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:workshop/stock/import_to_stock/update_item.dart';
 import 'package:workshop/stock/import_to_stock/add_fabric_item.dart';
 import 'package:workshop/stock/import_to_stock/add_new_item.dart';
-import 'package:workshop/stock/landing/stockpage.dart';
+import 'package:workshop/stock/landing/stockpile.dart';
 import 'package:workshop/style/theme/theme.dart';
 
 void main() async{
@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      builder: (context , child)=>Directionality(textDirection: TextDirection.rtl, child: child!),
+      builder: (context , child)=>Directionality(textDirection: TextDirection.rtl, child: child),
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
       routes: {
@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
         // '/': (context) => StockHomePage(),
       },
       theme: light,
-      home: StockPage()
+      home: StockPile()
     );
   }
 }
