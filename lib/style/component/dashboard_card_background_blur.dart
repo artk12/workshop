@@ -21,8 +21,9 @@ class DashboardCardBackgroundBlur extends StatelessWidget {
       child: ClipRRect(
         // borderRadius: BorderRadius.circular(15),
         child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaY: 40, sigmaX: 40),
+          filter: ImageFilter.blur(sigmaY: 10, sigmaX: 10),
           child: Container(
+            color: Colors.white.withOpacity(0.1),
               // decoration: BoxDecoration(
               //   boxShadow: [
                   // BoxShadow(color: Colors.black.withOpacity(0.0),blurRadius: 3),

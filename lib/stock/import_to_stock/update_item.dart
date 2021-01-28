@@ -214,7 +214,6 @@ class UpdateItem extends StatelessWidget {
                                 int.parse(firstQuantifier.text);
                             int itemQuantifier =
                                 int.parse(item.quantifierOne);
-                            DateTime dateTime = new DateTime.now();
                             String update = Update.queryUpdateItemInStockpile(
                                 item.id,
                                 firstQuantifier.text,
@@ -224,10 +223,7 @@ class UpdateItem extends StatelessWidget {
                             String insert = Insert.queryInsertInputToLog(
                                 item.id,
                                 int.parse(firstQuantifier.text) -
-                                    int.parse(item.quantifierOne),
-                                dateTime.year,
-                                dateTime.month,
-                                dateTime.day);
+                                    int.parse(item.quantifierOne));
                             ignoreButtonCubit.update(true);
                             if (currentQuantifier - itemQuantifier == 0) {
                               //update

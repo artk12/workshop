@@ -9,6 +9,7 @@ class Fabric {
   String year;
   String month;
   String day;
+  String log;
 
   Fabric(
       {this.id,
@@ -20,7 +21,8 @@ class Fabric {
       this.pieces,
       this.metric,
       this.calite,
-      this.manufacture});
+      this.manufacture,
+      this.log});
 
   factory Fabric.fromJson(Map map) {
     return Fabric(
@@ -33,6 +35,7 @@ class Fabric {
         description: map['description'],
         manufacture: map['manufacture'],
         metric: map['metric'],
-        pieces: map['pieces']);
+        pieces: map['pieces'],
+        log: map['log']);
   }
 }

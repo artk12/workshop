@@ -2,6 +2,13 @@
 import 'package:workshop/module/stockpile/all_items.dart';
 import 'package:workshop/module/stockpile/fabric.dart';
 import 'package:workshop/module/stockpile/item.dart';
+import 'package:workshop/module/stockpile/warning.dart';
+
+extension NumberParsing on String {
+  int parseInt() {
+    return int.parse(this);
+  }
+}
 
 class CalculateStock{
 
@@ -18,6 +25,21 @@ class CalculateStock{
     return allItems;
   }
   static void sortAllItem(List<AllItem> allItems){
-     allItems.sort((a,b) => a.dateTime.compareTo(b.dateTime));
+     allItems.sort((a,b) => b.dateTime.compareTo(a.dateTime));
   }
+
+  static void sortFabric(List<Fabric> fabrics){
+    fabrics.sort((a,b)=>DateTime(a.year.parseInt(),a.month.parseInt(),a.day.parseInt()).compareTo(DateTime(b.year.parseInt(),b.month.parseInt(),b.day.parseInt())));
+  }
+
+  static List<Warning> generateWarningList(List<Item> items){
+    List<Warning> warnings = [];
+    items.forEach((element) {
+      if(element.quantifierOne.parseInt() < element.warning.parseInt()){
+        warnings.add(Warning(warning: element.warning,quantify: element.quantify,name: element.name));
+      }
+    });
+    return warnings;
+  }
+
 }

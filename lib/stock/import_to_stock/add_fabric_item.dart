@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workshop/bloc/ignoreButtonsBloc.dart';
+import 'package:workshop/request/query/insert.dart';
 import 'package:workshop/request/request.dart';
 import 'package:workshop/style/app_bar/stock_appbar.dart';
 import 'package:workshop/style/background/stock_background.dart';
@@ -158,7 +159,8 @@ class AddFabricItem extends StatelessWidget {
                             MyShowSnackBar.showSnackBar(context, "لطفا تمامی فیلدها را پر کنید.");
                           } else {
                             MyShowSnackBar.showSnackBar(context, "کمی صبرکنید...");
-                            String res = await MyRequest.addNewFabric(manufacture, calite, metric, color, pieces, description);
+                            String insert = Insert.queryInsertFabricToStockpile(manufacture,calite,metric,color,pieces,description);
+                            String res = await MyRequest.simpleQueryRequest('stockpile/runQuery.php', insert);
                             if(res == "OK"){
                               ignoreButtonCubit.update(false);
                               MyShowSnackBar.hideSnackBar(context);

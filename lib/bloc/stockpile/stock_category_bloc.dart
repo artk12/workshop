@@ -1,6 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:workshop/module/stockpile/all_items.dart';
+import 'package:workshop/module/stockpile/fabric.dart';
+import 'package:workshop/module/stockpile/fabric_log.dart';
+import 'package:workshop/module/stockpile/item_log.dart';
 import 'package:workshop/style/component/stockpile/fabricCardMobile.dart';
 import 'package:workshop/style/component/stockpile/fabricCardTablet.dart';
 import 'package:workshop/style/component/stockpile/itemCardMobile.dart';
@@ -20,14 +23,20 @@ class StockCategoryCubit extends Cubit<StockCategoryState> {
           .toList();
 
       currentList.forEach((element) {
-        if (device == 'phone') {
-          myList.add(FabricCardMobile(
-            fabric: element.fabric,
-          ));
-        } else {
-          myList.add(FabricCardTablet(
-            fabric: element.fabric,
-          ));
+        if(element.fabric.log == "1"){
+          if (device == 'phone') {
+            myList.add(FabricCardMobile(
+              fabrics: state.getFabrics,
+              fabricLogs: state.fabricLogs,
+              fabric: element.fabric,
+            ));
+          } else {
+            myList.add(FabricCardTablet(
+              fabrics: state.getFabrics,
+              fabricLogs: state.fabricLogs,
+              fabric: element.fabric,
+            ));
+          }
         }
       });
     } else {
@@ -35,10 +44,10 @@ class StockCategoryCubit extends Cubit<StockCategoryState> {
           .where((element) =>
               element.category == 'item' && element.item.category == category)
           .toList();
-
       currentList.forEach((element) {
         if (device == 'phone') {
           myList.add(ItemCardMobile(
+            itemLogs: state.itemLogs,
             item: element.item,
           ));
         } else {
@@ -56,18 +65,24 @@ class StockCategoryCubit extends Cubit<StockCategoryState> {
 
     allItems.forEach((element) {
       if (element.category == "fabric") {
-        if (device == 'phone') {
-          myList.add(FabricCardMobile(
-            fabric: element.fabric,
-          ));
-        } else {
-          myList.add(FabricCardTablet(
-            fabric: element.fabric,
-          ));
+        if(element.fabric.log == "1"){
+          if (device == 'phone') {
+            myList.add(FabricCardMobile(
+              fabrics: state.getFabrics,
+              fabric: element.fabric,
+            ));
+          } else {
+            myList.add(FabricCardTablet(
+              fabrics: state.getFabrics,
+              fabricLogs: state.fabricLogs,
+              fabric: element.fabric,
+            ));
+          }
         }
       } else {
         if (device == 'phone') {
           myList.add(ItemCardMobile(
+            itemLogs: state.itemLogs,
             item: element.item,
           ));
         } else {
@@ -92,6 +107,7 @@ class StockCategoryCubit extends Cubit<StockCategoryState> {
     currentList.forEach((element) {
       if (device == 'phone') {
         myList.add(ItemCardMobile(
+          itemLogs: state.itemLogs,
           item: element.item,
         ));
       } else {
@@ -109,8 +125,10 @@ class StockCategoryCubit extends Cubit<StockCategoryState> {
 
     allItems.forEach((element) {
       if (element.category == "fabric") {
-        if (element.fabric.calite.contains(value)) {
-          filterItems.add(element);
+        if(element.fabric.log == "1"){
+          if (element.fabric.calite.contains(value)) {
+            filterItems.add(element);
+          }
         }
       } else {
         if (element.item.name.contains(value)) {
@@ -120,25 +138,41 @@ class StockCategoryCubit extends Cubit<StockCategoryState> {
     });
     List<Widget> myList = [];
 
-    if(device == "phone"){
-      filterItems.forEach((element){
-        if(element.category == "fabric"){
-          myList.add(FabricCardMobile(fabric: element.fabric,));
-        }else{
-          myList.add(ItemCardMobile(item: element.item,));
+    if (device == "phone") {
+      filterItems.forEach((element) {
+        if (element.category == "fabric") {
+          if(element.fabric.log == "1"){
+            myList.add(FabricCardMobile(
+              fabrics: state.getFabrics,
+              fabric: element.fabric,
+            ));
+          }
+        } else {
+          myList.add(ItemCardMobile(
+            itemLogs: state.itemLogs,
+            item: element.item,
+          ));
         }
       });
-    }else{
-      filterItems.forEach((element){
-        if(element.category == "fabric"){
-          myList.add(FabricCardTablet(fabric: element.fabric,));
-        }else{
-          myList.add(ItemCardTablet(item: element.item,));
+    } else {
+      filterItems.forEach((element) {
+        if (element.category == "fabric") {
+          if(element.fabric.log == "1"){
+            myList.add(FabricCardTablet(
+              fabrics: state.getFabrics,
+              fabricLogs: state.fabricLogs,
+              fabric: element.fabric,
+            ));
+          }
+        } else {
+          myList.add(ItemCardTablet(
+            item: element.item,
+          ));
         }
       });
     }
 
-    return StockCategoryState(allItem: filterItems,myList: myList);
+    return StockCategoryState(allItem: filterItems, myList: myList);
   }
 
   void noFilter(List<AllItem> allItems, String device) =>
@@ -147,11 +181,24 @@ class StockCategoryCubit extends Cubit<StockCategoryState> {
       emit(changeCategory(allItems, category, device));
   void warningFilter(List<AllItem> allItems, String device) =>
       emit(changeToWarningFilter(allItems, device));
-  void search(List<AllItem> allItems,String value,String device)=>emit(searchFilter(value, allItems, device));
+  void search(List<AllItem> allItems, String value, String device) =>
+      emit(searchFilter(value, allItems, device));
 }
 
 class StockCategoryState {
   List<AllItem> allItem;
   List<Widget> myList;
-  StockCategoryState({this.allItem, this.myList});
+  List<FabricLog> fabricLogs;
+  List<ItemLog> itemLogs;
+  StockCategoryState({this.allItem, this.myList, this.fabricLogs, this.itemLogs});
+
+  List<Fabric> get getFabrics {
+    List<Fabric> fabrics = [];
+    allItem.forEach((element) {
+      if(element.category == 'fabric'){
+        fabrics.add(element.fabric);
+      }
+    });
+    return fabrics;
+  }
 }

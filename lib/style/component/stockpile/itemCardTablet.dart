@@ -18,7 +18,7 @@ class ItemCardTablet extends StatelessWidget {
         children: [
           Container(
             decoration: BoxDecoration(
-              image: DecorationImage(image: item.category == "خرج کار"?AssetImage('asset/images/img_3.jpg'):AssetImage('asset/images/img_1.jpg'), fit: BoxFit.cover),
+              image: DecorationImage(image: item.category == "خرج کار"?AssetImage('asset/images/img_2.jpg'):AssetImage('asset/images/img_1.jpg'), fit: BoxFit.cover),
             ),
           ),
           Container(

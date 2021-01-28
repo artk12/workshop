@@ -3,6 +3,12 @@ import 'package:flutter/material.dart';
 import '../dashboard_card_blur_background.dart';
 
 class StockCard extends StatelessWidget {
+  final String quantify;
+  final String name;
+  final String quantifier;
+
+  StockCard({this.quantify,this.name,this.quantifier});
+
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
@@ -17,17 +23,17 @@ class StockCard extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  'زیپ',
+                 name,
                   style: theme.textTheme.headline2.copyWith(fontSize: 14),
                 ),
                 SizedBox(width: 5,),
                 Text(
-                  '10',
+                  quantifier,
                   style: theme.textTheme.bodyText1.copyWith(fontSize: 18),
                 ),
                 SizedBox(width: 5,),
                 Text(
-                  'بسته',
+                  quantify,
                   style: theme.textTheme.bodyText1.copyWith(fontSize: 14),
                 ),
               ],

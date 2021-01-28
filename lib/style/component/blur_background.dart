@@ -31,7 +31,7 @@ class BlurBackground extends StatelessWidget {
           filter: ImageFilter.blur(sigmaY: blur, sigmaX: blur),
           child: Container(
               decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.2),
+                  color: Colors.white.withOpacity(0.05),
                   borderRadius: BorderRadius.circular(radius)),
               child: child),
         ),

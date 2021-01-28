@@ -1,5 +1,8 @@
-// ignore: import_of_legacy_library_into_null_safe
+import 'dart:convert';
+
 import 'package:http/http.dart' as http;
+import 'package:workshop/module/stockpile/user.dart';
+import 'package:workshop/request/query/get_data.dart';
 
 class MyRequest {
   static String baseUrl = "http://www.rhen.ir/backend/";
@@ -35,6 +38,15 @@ class MyRequest {
         .post(baseUrl + 'stockpile/insert_new_item.php', body: params);
     return response.body;
   }
+
+  static Future<User> getUserDetail(String user,String pass)async{
+      http.Response response = await http
+          .post(baseUrl + 'stockpile/getResult.php', body: {'query': GetData.getUser(user, pass)});
+    List<dynamic> map = jsonDecode(response.body);
+    User currentUser = User.fromJson(map[0]);
+    return currentUser;
+  }
+
   static Future<String> addNewFabric(String manufacture, String calite,
       String metric, String color, String pieces,String description) async {
     Map<String, dynamic> params = {

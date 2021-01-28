@@ -24,9 +24,9 @@ class StockBackground extends StatelessWidget {
               ),
             ),
             BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 3.9,sigmaY: 3.9),
+              filter: ImageFilter.blur(sigmaX: 20,sigmaY: 20),
               child: Container(
-                color: Colors.black.withOpacity(0.3),
+                color: Colors.black.withOpacity(0.4),
               ),
             ),
             child,

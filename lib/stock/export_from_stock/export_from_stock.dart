@@ -327,7 +327,6 @@ class ExportFromStock extends StatelessWidget {
                         color: Colors.green.withOpacity(0.4),
                         icon: Icons.check,
                         onPressed: () async {
-                          DateTime dateTime = DateTime.now();
                           if (exportFromStockPileCubit.state.itemSelected == 'item') {
                             if (exportFromStockPileCubit.state.item == null) {
                               MyShowSnackBar.showSnackBar(
@@ -343,8 +342,7 @@ class ExportFromStock extends StatelessWidget {
                                 ignoreButtonCubit.update(true);
                                 MyShowSnackBar.showSnackBar(context, "کمی صبرکنید...");
                                 String insert = Insert.queryInsertOutputToLog( exportFromStockPileCubit
-                                    .state.item.id,amount.text, dateTime.year, dateTime.month,
-                                    dateTime.day, person.text, description.text);
+                                    .state.item.id,amount.text,person.text, description.text);
                                 String update = Update.queryUpdateStockQuantifier(
                                     exportFromStockPileCubit.state.item.id,
                                     (inventory - amountInt).toString());
@@ -364,7 +362,7 @@ class ExportFromStock extends StatelessWidget {
                               MyShowSnackBar.showSnackBar(context, "کمی صبرکنید...");
                               ignoreButtonCubit.update(true);
                               Fabric fabric = exportFromStockPileCubit.state.fabric;
-                              String insert = Insert.queryExportToFabricLog(fabric.id, description.text, dateTime.year, dateTime.month, dateTime.day, person.text);
+                              String insert = Insert.queryExportToFabricLog(fabric.id, description.text, person.text);
                               String update = Update.queryUpdateLogInFabricTable(fabric.id, '0');
                               String body = await MyRequest.simple2QueryRequest(
                                   'stockpile/run2Query.php', insert, update);

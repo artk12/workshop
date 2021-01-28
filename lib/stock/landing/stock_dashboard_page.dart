@@ -1,46 +1,65 @@
 import 'package:flutter/material.dart';
+import 'package:workshop/module/stockpile/all_items.dart';
+import 'package:workshop/module/stockpile/fabric.dart';
 import 'package:workshop/module/stockpile/item.dart';
+import 'package:workshop/module/stockpile/item_log.dart';
+import 'package:workshop/module/stockpile/message.dart';
+import 'package:workshop/module/stockpile/warning.dart';
+import 'package:workshop/stock/calculate_stock.dart';
 import 'package:workshop/style/component/dashboard_card_background_blur.dart';
 import 'package:workshop/style/component/stockpile/message_stock_Card.dart';
-import 'package:workshop/style/component/stockpile/stock_action_stock_Card.dart';
+import 'package:workshop/style/component/stockpile/stock_log_dialog_Card.dart';
 import 'package:workshop/style/component/stockpile/stock_stock_Card.dart';
 import 'package:workshop/style/component/stockpile/warning_stock_Card.dart';
 
 class StockDashboardPage extends StatelessWidget {
   final List<Item> items;
+  final List<ItemLog> itemLogs;
   final PageController pageController;
-  StockDashboardPage({this.items,this.pageController});
+  final List<Fabric> fabrics;
+  final List<Message> messages;
+  StockDashboardPage(
+      {this.items, this.pageController, this.itemLogs, this.fabrics,this.messages});
+
   @override
   Widget build(BuildContext context) {
-
     ThemeData theme = Theme.of(context);
-    Widget title(String title,IconData icon , Function() onPress){
+    List<Warning> warnings = CalculateStock.generateWarningList(items);
+    List<AllItem> allItems = CalculateStock.mergeFabricAndItem(items, fabrics);
+    CalculateStock.sortAllItem(allItems);
+
+    Widget title(String title, IconData icon, Function() onPress) {
       return GestureDetector(
         onTap: onPress,
         child: Row(
           children: [
+            SizedBox(
+              width: 6,
+            ),
+            Icon(
+              icon,
+              size: 22,
+            ),
             Container(
               padding: EdgeInsets.only(bottom: 8),
               decoration: BoxDecoration(
                 border: Border(
-                  bottom:
-                  BorderSide(width: 1, color: theme.primaryColor),
+                  bottom: BorderSide(width: 1, color: theme.primaryColor),
                 ),
               ),
-              margin:
-              EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+              margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
               child: Text(
                 title,
-                style: theme.textTheme.headline2.copyWith(shadows: [
-                  Shadow(color: Colors.black, blurRadius: 8)
-                ]),
+                style: theme.textTheme.headline2.copyWith(
+                  shadows: [Shadow(color: Colors.black, blurRadius: 8)],
+                ),
               ),
             ),
-            Icon(icon,size: 22,),
           ],
         ),
       );
     }
+
     return SafeArea(
       child: SingleChildScrollView(
         child: Column(
@@ -63,8 +82,8 @@ class StockDashboardPage extends StatelessWidget {
                     Expanded(
                       child: ListView.builder(
                           scrollDirection: Axis.horizontal,
-                          itemCount: 20,
-                          itemBuilder: (context, index) => MessageCard()),
+                          itemCount: messages.length,
+                          itemBuilder: (context, index) => MessageCard(message:messages[index])),
                     ),
                   ],
                 ),
@@ -81,15 +100,36 @@ class StockDashboardPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    title('انبار', Icons.home_outlined, () {pageController.animateToPage(1,curve: Curves.easeIn,duration: Duration(milliseconds: 200));}),
+                    title(
+                      'انبار',
+                      Icons.home_filled,
+                      () {
+                        pageController.animateToPage(1,
+                            curve: Curves.easeIn,
+                            duration: Duration(milliseconds: 200));
+                      },
+                    ),
                     SizedBox(
                       height: 2,
                     ),
                     Expanded(
                       child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: 20,
-                          itemBuilder: (context, index) => StockCard()),
+                        scrollDirection: Axis.horizontal,
+                        itemCount: allItems.length,
+                        itemBuilder: (context, index) =>
+                            allItems[index].category == 'fabric'
+                                ? StockCard(
+                                    name: ' پارچه ',
+                                    quantifier: allItems[index].fabric.metric,
+                                    quantify: 'متر',
+                                  )
+                                : StockCard(
+                                    quantify: allItems[index].item.quantify,
+                                    quantifier:
+                                        allItems[index].item.quantifierOne,
+                                    name: allItems[index].item.name,
+                                  ),
+                      ),
                     ),
                   ],
                 ),
@@ -111,10 +151,21 @@ class StockDashboardPage extends StatelessWidget {
                       height: 2,
                     ),
                     Expanded(
-                      child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: 20,
-                          itemBuilder: (context, index) => WarningStockCard()),
+                      child: warnings.length == 0
+                          ? Center(
+                              child: Text(
+                              'هشداری وجود ندارد.',
+                              style: theme.textTheme.bodyText1,
+                            ))
+                          : ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: warnings.length,
+                              itemBuilder: (context, index) => WarningStockCard(
+                                name: warnings[index].name,
+                                quantify: warnings[index].quantify,
+                                warning: warnings[index].warning,
+                              ),
+                            ),
                     ),
                   ],
                 ),
@@ -138,9 +189,11 @@ class StockDashboardPage extends StatelessWidget {
                     Expanded(
                       child: ListView.builder(
                           scrollDirection: Axis.horizontal,
-                          itemCount: 20,
-                          itemBuilder: (context, index) => ActionStockCard(
-                                check: index % 2 == 0 ? true : false,
+                          itemCount: 10,
+                          itemBuilder: (context, index) => LogStockCard(
+                                item: items.firstWhere((element) =>
+                                    element.id == itemLogs[index].itemId),
+                                itemLog: itemLogs[index],
                               )),
                     ),
                   ],
@@ -153,7 +206,6 @@ class StockDashboardPage extends StatelessWidget {
           ],
         ),
       ),
-
     );
   }
 }

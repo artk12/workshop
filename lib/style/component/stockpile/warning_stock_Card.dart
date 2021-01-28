@@ -3,6 +3,11 @@ import 'package:flutter/material.dart';
 import '../dashboard_card_blur_background.dart';
 
 class WarningStockCard extends StatelessWidget {
+  final String name;
+  final String warning;
+  final String quantify;
+  WarningStockCard({this.name,this.quantify,this.warning});
+
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
@@ -14,7 +19,7 @@ class WarningStockCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             Text(
-              'زیپ کمتر از 10',
+              name + ' به کمتر از '+warning+' '+quantify+' رسید. ',
               style: theme.textTheme.headline2.copyWith(fontSize: 14),
             ),
           ],
