@@ -1,17 +1,17 @@
 [
   {
-    "family": "bold",
+    "family": "icon",
     "fonts": [
       {
-        "asset": "fonts/almarai-bold.ttf"
+        "asset": "fonts/icon.ttf"
       }
     ]
   },
   {
-    "family": "light",
+    "family": "bold",
     "fonts": [
       {
-        "asset": "fonts/almarai-light.ttf"
+        "asset": "fonts/almarai-bold.ttf"
       }
     ]
   },

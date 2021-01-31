@@ -6,7 +6,6 @@ import 'package:workshop/stock/import_to_stock/add_fabric_item.dart';
 import 'package:workshop/stock/import_to_stock/add_new_item.dart';
 import 'package:workshop/stock/landing/stockpile.dart';
 import 'package:workshop/style/theme/theme.dart';
-
 import 'bloc/refresh_provider.dart';
 
 void main() async {

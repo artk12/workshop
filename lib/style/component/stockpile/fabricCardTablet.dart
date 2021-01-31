@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:workshop/module/stockpile/fabric.dart';
 import 'package:workshop/module/stockpile/fabric_log.dart';
 import 'package:workshop/stock/landing/dialog_fabric.dart';
-import 'package:workshop/style/component/blur_background.dart';
 
 class FabricCardTablet extends StatelessWidget {
   final Fabric fabric;
@@ -22,21 +21,17 @@ class FabricCardTablet extends StatelessWidget {
       onTap: (){
         showDialog(context: context,builder: (context)=>FabricLogDialog(fabric: fabric,fabricLogs: fabricLogs,fabrics: fabrics,));
       },
-      child: BlurBackground(
+      child: Container(
+        margin: const EdgeInsets.all(8.0),
+        decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.05),
+            borderRadius: BorderRadius.circular(5)),
         child: Stack(
           children: [
             Container(
               decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage('asset/images/img_3.jpg'),
-                      fit: BoxFit.cover)),
-            ),
-            Container(
-              decoration: BoxDecoration(
-                boxShadow: [
-                  BoxShadow(color: Colors.black.withOpacity(0.7),spreadRadius: 20,blurRadius: 5),
-                ],
-                // color: Colors.black.withOpacity(0.5),
+                color: Color(0xff9c9972).withOpacity(0.1),
+                borderRadius: BorderRadius.circular(5),
               ),
             ),
             Align(
@@ -53,7 +48,7 @@ class FabricCardTablet extends StatelessWidget {
                       children: [
                         Text(
                           'پارچه',
-                          style: theme.textTheme.bodyText1.copyWith(fontSize: 16,shadows: [Shadow(color: Colors.black,blurRadius: 8)]),
+                          style: theme.textTheme.bodyText1.copyWith(fontSize: 16),
                         ),
                         SizedBox(width: 10,),
                       ],
@@ -71,7 +66,7 @@ class FabricCardTablet extends StatelessWidget {
                           ),
                           child: Text(
                            fabric.calite,
-                            style: theme.textTheme.headline1.copyWith(shadows: [Shadow(color: Colors.black,blurRadius: 8)]),
+                            style: theme.textTheme.headline1,
                           ),
                         ),
                       ],
@@ -85,11 +80,11 @@ class FabricCardTablet extends StatelessWidget {
                         children: [
                           Text(
                             fabric.pieces+' تیکه ',
-                            style: theme.textTheme.headline1.copyWith(fontSize: 17,shadows: [Shadow(color: Colors.black,blurRadius: 8)]),
+                            style: theme.textTheme.headline1,
                           ),
                           Text(
-                            'سفید',
-                            style: theme.textTheme.headline1.copyWith(fontSize: 17,shadows: [Shadow(color: Colors.black,blurRadius: 8)]),
+                            fabric.color,
+                            style: theme.textTheme.headline1,
                           ),
                         ],
                       ),
@@ -103,11 +98,11 @@ class FabricCardTablet extends StatelessWidget {
                         children: [
                           Text(
                            fabric.manufacture,
-                            style: theme.textTheme.headline1.copyWith(fontSize: 17,shadows: [Shadow(color: Colors.black,blurRadius: 8)]),
+                            style: theme.textTheme.headline1,
                           ),
                           Text(
                             fabric.metric+' متر ',
-                            style: theme.textTheme.headline1.copyWith(fontSize: 17,shadows: [Shadow(color: Colors.black,blurRadius: 8)]),
+                            style: theme.textTheme.headline1,
                           ),
                         ],
                       ),

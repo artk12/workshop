@@ -10,11 +10,11 @@ import 'package:workshop/request/query/update.dart';
 import 'package:workshop/request/request.dart';
 import 'package:workshop/style/app_bar/stock_appbar.dart';
 import 'package:workshop/style/background/stock_background.dart';
-import 'package:workshop/style/component/blur_background.dart';
+import 'package:workshop/style/component/drop_down_background.dart';
 import 'package:workshop/style/component/default_textfield.dart';
 import 'package:workshop/style/component/dropdownWithOutNullSafety.dart';
-import 'package:workshop/style/component/icon_outline_button.dart';
 import 'package:workshop/style/theme/show_snackbar.dart';
+import 'package:workshop/style/theme/textstyle.dart';
 
 class UpdateItem extends StatelessWidget {
   final Item item;
@@ -42,20 +42,7 @@ class UpdateItem extends StatelessWidget {
     Widget itemNameWidget = Container(
       child: Padding(
         padding: const EdgeInsets.only(bottom: 8.0),
-        child: Text(
-          item.name,
-          style: theme.textTheme.headline2.copyWith(
-            fontFamily: 'bold',
-            fontSize: 28,
-            fontWeight: FontWeight.w800,
-            shadows: [
-              Shadow(
-                color: Colors.black,
-                blurRadius: 15,
-              )
-            ],
-          ),
-        ),
+        child: Text(item.name, style: MyTextStyle.disPlay1),
       ),
       decoration: BoxDecoration(
         border: Border(
@@ -91,16 +78,12 @@ class UpdateItem extends StatelessWidget {
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       height: 84,
-                      child: BlurBackground(
+                      child: DropDownBackground(
                         child: BlocBuilder(
                           cubit: categoryCubit,
                           builder: (context, SingleDropDownItemState state) =>
                               CustomDropdownButtonHideUnderline(
                             child: CustomDropdownButton<String>(
-                              icon: Icon(
-                                Icons.arrow_drop_down,
-                                color: Colors.white,
-                              ),
                               mainAxisAlignment: MainAxisAlignment.start,
                               items: category.map((String value) {
                                 return new CustomDropdownMenuItem<String>(
@@ -143,16 +126,12 @@ class UpdateItem extends StatelessWidget {
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       height: 84,
-                      child: BlurBackground(
+                      child: DropDownBackground(
                         child: BlocBuilder(
                           cubit: quantifyCubit,
                           builder: (context, SingleDropDownItemState state) =>
                               CustomDropdownButtonHideUnderline(
                             child: CustomDropdownButton<String>(
-                              icon: Icon(
-                                Icons.arrow_drop_down,
-                                color: Colors.white,
-                              ),
                               mainAxisAlignment: MainAxisAlignment.start,
                               items: quantify.map((String value) {
                                 return new CustomDropdownMenuItem<String>(
@@ -190,65 +169,89 @@ class UpdateItem extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      IconOutlineButton(
-                        color: Colors.green.withOpacity(0.4),
-                        icon: Icons.check,
-                        onPressed: () async {
-                          if (firstQuantifier.text.isEmpty ||
-                              warning.text.isEmpty) {
-                            MyShowSnackBar.showSnackBar(
-                                context, "لطفا تمامی فیلدها را پر کنید.");
-                          } else if (int.parse(warning.text) >
-                              int.parse(firstQuantifier.text)) {
-                            MyShowSnackBar.showSnackBar(context,
-                                "تعداد هشدار شما بیشتر از تعداد ورودی است.");
-                          } else if (int.parse(item.quantifierOne) >
-                              int.parse(firstQuantifier.text)) {
-                            MyShowSnackBar.showSnackBar(context,
-                                "تعداد ورودی کمتر از قبل است لطفابرای خروج کالا از انبار از صفحه اصلی آیکون خروجی وارد شوید.");
-                          } else {
-                            MyShowSnackBar.showSnackBar(
-                                context, "کمی صبرکنید...");
-                            String body;
-                            int currentQuantifier =
-                                int.parse(firstQuantifier.text);
-                            int itemQuantifier =
-                                int.parse(item.quantifierOne);
-                            String update = Update.queryUpdateItemInStockpile(
-                                item.id,
-                                firstQuantifier.text,
-                                quantifyCubit.state.value,
-                                categoryCubit.state.value,
-                                warning.text);
-                            String insert = Insert.queryInsertInputToLog(
-                                item.id,
-                                int.parse(firstQuantifier.text) -
-                                    int.parse(item.quantifierOne));
-                            ignoreButtonCubit.update(true);
-                            if (currentQuantifier - itemQuantifier == 0) {
-                              //update
-                              body = await MyRequest.simpleQueryRequest(
-                                  'stockpile/runQuery.php', update);
-                            } else {
-                              //insert update
-                              body = await MyRequest.simple2QueryRequest(
-                                  'stockpile/run2Query.php', update, insert);
-                            }
-                            if (body == "OK") {
-                              MyShowSnackBar.hideSnackBar(context);
-                              ignoreButtonCubit.update(false);
+                      Expanded(child: Container(),flex: 1,),
+                      Expanded(
+                        flex: 2,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal:8.0),
+                          child: TextButton(
+                            style: ButtonStyle(
+                              foregroundColor: MaterialStateProperty.resolveWith((states) => Colors.green.withOpacity(0.4),),
+                              backgroundColor: MaterialStateProperty.resolveWith((states) => Colors.green.withOpacity(0.4),),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text('j',style: MyTextStyle.iconStyle.copyWith(fontSize: 30),),
+                            ),
+                            onPressed: () async {
+                              if (firstQuantifier.text.isEmpty ||
+                                  warning.text.isEmpty) {
+                                MyShowSnackBar.showSnackBar(
+                                    context, "لطفا تمامی فیلدها را پر کنید.");
+                              } else if (int.parse(warning.text) >
+                                  int.parse(firstQuantifier.text)) {
+                                MyShowSnackBar.showSnackBar(context,
+                                    "تعداد هشدار شما بیشتر از تعداد ورودی است.");
+                              } else if (int.parse(item.quantifierOne) >
+                                  int.parse(firstQuantifier.text)) {
+                                MyShowSnackBar.showSnackBar(context,
+                                    "تعداد ورودی کمتر از قبل است لطفابرای خروج کالا از انبار از صفحه اصلی آیکون خروجی وارد شوید.");
+                              } else {
+                                MyShowSnackBar.showSnackBar(
+                                    context, "کمی صبرکنید...");
+                                String body;
+                                int currentQuantifier =
+                                    int.parse(firstQuantifier.text);
+                                int itemQuantifier = int.parse(item.quantifierOne);
+                                String update = Update.queryUpdateItemInStockpile(
+                                    item.id,
+                                    firstQuantifier.text,
+                                    quantifyCubit.state.value,
+                                    categoryCubit.state.value,
+                                    warning.text);
+                                String insert = Insert.queryInsertInputToLog(
+                                    item.id,
+                                    int.parse(firstQuantifier.text) -
+                                        int.parse(item.quantifierOne));
+                                ignoreButtonCubit.update(true);
+                                if (currentQuantifier - itemQuantifier == 0) {
+                                  //update
+                                  body = await MyRequest.simpleQueryRequest(
+                                      'stockpile/runQuery.php', update);
+                                } else {
+                                  //insert update
+                                  body = await MyRequest.simple2QueryRequest(
+                                      'stockpile/run2Query.php', update, insert);
+                                }
+                                if (body == "OK") {
+                                  MyShowSnackBar.hideSnackBar(context);
+                                  ignoreButtonCubit.update(false);
+                                  Navigator.pop(context);
+                                }
+                              }
+                            },
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal:8.0),
+                          child: TextButton(
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.resolveWith((states) => Colors.red.withOpacity(0.4),),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text('e',style: MyTextStyle.iconStyle.copyWith(fontSize: 30),),
+                            ),
+                            onPressed: () {
                               Navigator.pop(context);
-                            }
-                          }
-                        },
+                            },
+                          ),
+                        ),
                       ),
-                      IconOutlineButton(
-                        color: Colors.red.withOpacity(0.4),
-                        icon: Icons.close,
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                      ),
+                      Expanded(child: Container(),flex: 1,),
                     ],
                   ),
                 ),

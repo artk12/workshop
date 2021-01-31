@@ -11,29 +11,23 @@ class DashboardCardBackgroundBlur extends StatelessWidget {
       // padding: const EdgeInsets.all(8.0),
       decoration: BoxDecoration(
         boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.3),
-            blurRadius: 15,
-            spreadRadius: 1,
-          )
+          // BoxShadow(
+          //   color: Colors.black.withOpacity(0.3),
+          //   blurRadius: 3,
+          //   spreadRadius: 0,
+          // )
         ],
       ),
-      child: ClipRRect(
-        // borderRadius: BorderRadius.circular(15),
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaY: 10, sigmaX: 10),
-          child: Container(
-            color: Colors.white.withOpacity(0.1),
-              // decoration: BoxDecoration(
-              //   boxShadow: [
-                  // BoxShadow(color: Colors.black.withOpacity(0.0),blurRadius: 3),
-                // ]
-                // color: Colors.white.withOpacity(0.1),
-                // borderRadius: BorderRadius.circular(15),
-              // ),
-              child: child),
-        ),
-      ),
+      child: Container(
+        color: Color(0xff4a4a4a).withOpacity(0.2),
+          // decoration: BoxDecoration(
+          //   boxShadow: [
+              // BoxShadow(color: Colors.black.withOpacity(0.0),blurRadius: 3),
+            // ]
+            // color: Colors.white.withOpacity(0.1),
+            // borderRadius: BorderRadius.circular(15),
+          // ),
+          child: child),
     );
   }
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-// ignore: import_of_legacy_library_into_null_safe
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workshop/bloc/stockpile/single_drop_down_bloc.dart';
 import 'package:workshop/bloc/stockpile/stock_category_bloc.dart';
@@ -10,14 +9,13 @@ import 'package:workshop/module/stockpile/item.dart';
 import 'package:workshop/module/stockpile/item_log.dart';
 import 'package:workshop/stock/calculate_stock.dart';
 import 'package:workshop/style/background/stock_background.dart';
-import 'package:workshop/style/component/blur_background.dart';
 import 'package:workshop/style/component/dropdownWithOutNullSafety.dart';
-import 'package:workshop/style/component/icon_outline_button.dart';
 import 'package:workshop/style/component/stockpile/fabricCardMobile.dart';
 import 'package:workshop/style/component/stockpile/fabricCardTablet.dart';
 import 'package:workshop/style/component/stockpile/itemCardMobile.dart';
 import 'package:workshop/style/component/stockpile/itemCardTablet.dart';
 import 'package:workshop/style/device_detector.dart';
+import 'package:workshop/style/theme/textstyle.dart';
 
 class StockPage extends StatelessWidget {
   final List<ItemLog> itemLogs;
@@ -88,9 +86,8 @@ class StockPage extends StatelessWidget {
       child: StockBackground(
         child: Column(
           children: [
-            BlurBackground(
-              padding: EdgeInsets.zero,
-              radius: 0,
+            Container(
+              color: Colors.black.withOpacity(0.3),
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15.0),
                 child: Row(
@@ -137,58 +134,48 @@ class StockPage extends StatelessWidget {
                         child: BlocBuilder(
                           cubit: categoryCubit,
                           builder: (context, SingleDropDownItemState state) =>
-                              Theme(
-                            data: theme.copyWith(canvasColor: Color(0xff4d5566)),
-                            child: CustomDropdownButtonHideUnderline(
-                              child: CustomDropdownButton<String>(
-                                icon: Icon(
-                                  Icons.arrow_drop_down,
-                                  color: Colors.white,
-                                ),
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                items: category.map((String value) {
-                                  return new CustomDropdownMenuItem<String>(
-                                    value: value,
-                                    child: new Text(
-                                      value,
-                                      style: TextStyle(
-                                          fontFamily: 'light',
-                                          color: Colors.white),
-                                    ),
-                                  );
-                                }).toList(),
-                                value: category
-                                    .where((element) => element == state.value)
-                                    .first,
-                                onChanged: (value) {
-                                  categoryCubit.changeItem(value);
-                                  if (value == "همه") {
-                                    stockCategoryCubit.noFilter(allItems, device);
-                                  } else {
-                                    if (value == "پارچه") {
-                                      stockCategoryCubit.categoryFilter(
-                                          allItems, 'fabric', device);
+                              CustomDropdownButtonHideUnderline(
+                                child: CustomDropdownButton<String>(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  items: category.map((String value) {
+                                    return new CustomDropdownMenuItem<String>(
+                                      value: value,
+                                      child: new Text(
+                                        value,
+                                        style: theme.textTheme.headline6,
+                                      ),
+                                    );
+                                  }).toList(),
+                                  value: category
+                                      .where((element) => element == state.value)
+                                      .first,
+                                  onChanged: (value) {
+                                    categoryCubit.changeItem(value);
+                                    if (value == "همه") {
+                                      stockCategoryCubit.noFilter(allItems, device);
                                     } else {
-                                      stockCategoryCubit.categoryFilter(
-                                          allItems, value, device);
+                                      if (value == "پارچه") {
+                                        stockCategoryCubit.categoryFilter(
+                                            allItems, 'fabric', device);
+                                      } else {
+                                        stockCategoryCubit.categoryFilter(
+                                            allItems, value, device);
+                                      }
                                     }
-                                  }
-                                },
+                                  },
+                                ),
                               ),
-                            ),
-                          ),
                         ),
                       ),
                     ),
                     Container(
                       width: 70,
                       height: 40,
-                      child: IconOutlineButton(
-                        blur: 0,
-                        border: 0,
-                        icon: Icons.warning,
-                        color: Color(0xff5e3443),
-                        boxShadow: 0,
+                      child: TextButton(
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.resolveWith((states) => Color(0xff5e3443))
+                        ),
+                        child: Text('f',style: MyTextStyle.iconStyle.copyWith(fontSize: 25),),
                         onPressed: () {
                           stockCategoryCubit.warningFilter(allItems, device);
                         },

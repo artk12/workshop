@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:workshop/module/stockpile/item.dart';
-import 'package:workshop/style/component/blur_background.dart';
 
 class ItemCardTablet extends StatelessWidget {
   final Item item;
@@ -13,22 +12,17 @@ class ItemCardTablet extends StatelessWidget {
           height: height,
         );
     ThemeData theme = Theme.of(context);
-    return BlurBackground(
+    return Container(
+      margin: const EdgeInsets.all(8.0),
+      decoration: BoxDecoration(
+          color: Colors.white.withOpacity(0.05),
+          borderRadius: BorderRadius.circular(5)),
       child: Stack(
         children: [
           Container(
             decoration: BoxDecoration(
-              image: DecorationImage(image: item.category == "خرج کار"?AssetImage('asset/images/img_2.jpg'):AssetImage('asset/images/img_1.jpg'), fit: BoxFit.cover),
-            ),
-          ),
-          Container(
-            decoration: BoxDecoration(
-              boxShadow: [
-                BoxShadow(
-                    color: Colors.black.withOpacity(0.65),
-                    spreadRadius: 20,
-                    blurRadius: 10),
-              ],
+                color:item.category == "خرج کار"?Color(0xff79a4a6).withOpacity(0.1):Color(0xffab6954).withOpacity(0.1),
+                borderRadius: BorderRadius.circular(5)
             ),
           ),
           Align(
@@ -47,8 +41,9 @@ class ItemCardTablet extends StatelessWidget {
                         item.category,
                         style: theme.textTheme.bodyText1.copyWith(fontSize: 16),
                       ),
-                      SizedBox(width: 10,),
-
+                      SizedBox(
+                        width: 10,
+                      ),
                     ],
                   ),
                   space(8),
@@ -57,17 +52,18 @@ class ItemCardTablet extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
-                        padding: EdgeInsets.only(bottom:8),
+                        padding: EdgeInsets.only(bottom: 8),
                         margin: EdgeInsets.symmetric(horizontal: 10),
                         decoration: BoxDecoration(
-                          border:Border(bottom: BorderSide(color: Colors.white.withOpacity(0.4),width: 1.5))
-                        ),
+                            border: Border(
+                                bottom: BorderSide(
+                                    color: Colors.white.withOpacity(0.4),
+                                    width: 1.5))),
                         child: Text(
                           item.name,
                           style: theme.textTheme.headline1,
                         ),
                       ),
-
                     ],
                   ),
                   space(24),

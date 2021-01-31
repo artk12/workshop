@@ -1,7 +1,5 @@
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
-// ignore: import_of_legacy_library_into_null_safe
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workshop/bloc/stockpile/single_drop_down_bloc.dart';
 import 'package:workshop/module/stockpile/item.dart';
@@ -10,7 +8,7 @@ import 'package:workshop/stock/import_to_stock/add_new_item.dart';
 import 'package:workshop/style/component/default_button.dart';
 import 'package:workshop/style/component/dialog_bg.dart';
 import 'package:workshop/style/component/dropdownWithOutNullSafety.dart';
-import 'import_to_stock/update_item.dart';
+import 'update_item.dart';
 
 class ImportItemDialog extends StatelessWidget {
   final List<Item> item;
@@ -18,6 +16,7 @@ class ImportItemDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ThemeData theme = Theme.of(context);
     SingleDropDownItemCubit dialogItemCubit =
         new SingleDropDownItemCubit(SingleDropDownItemState(value: item[0].id));
 
@@ -30,11 +29,7 @@ class ImportItemDialog extends StatelessWidget {
           ),
           Text(
             'اضافه کالا جدید',
-            style: TextStyle(
-                // fontWeight: FontWeight.bold,
-                fontSize: 18,
-                fontFamily: 'bold',
-                color: Colors.white),
+            style: theme.textTheme.headline2
           ),
           SizedBox(
             height: 20,
@@ -48,18 +43,13 @@ class ImportItemDialog extends StatelessWidget {
                   cubit: dialogItemCubit,
                   builder: (context, SingleDropDownItemState state) =>
                       CustomDropdownButton<String>(
-                    icon: Icon(
-                      Icons.arrow_drop_down,
-                      color: Colors.white,
-                    ),
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     items: item.map((Item value) {
                       return new CustomDropdownMenuItem<String>(
                         value: value.id,
                         child: new Text(
                           value.name,
-                          style: TextStyle(
-                              fontFamily: 'light', color: Colors.white),
+                          style: theme.textTheme.headline6,
                         ),
                       );
                     }).toList(),

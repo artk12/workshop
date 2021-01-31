@@ -35,7 +35,7 @@ class LogDashboardCard extends StatelessWidget {
           children: [
             Text(
               log == '1'? import():export(),
-              style: theme.textTheme.headline2.copyWith(fontSize: 14,height: 2),
+              style: theme.textTheme.bodyText2,
             ),
           ],
         ),

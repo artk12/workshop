@@ -13,8 +13,8 @@ import 'package:workshop/stock/landing/stock_dashboard_page.dart';
 import 'package:workshop/stock/landing/stock_page.dart';
 import 'package:workshop/style/app_bar/stock_appbar.dart';
 import 'package:workshop/style/background/stock_background.dart';
-import 'package:workshop/style/component/blur_background.dart';
-import '../import_item_dialog.dart';
+import 'package:workshop/style/component/my_icon_button.dart';
+import '../import_to_stock/dialog_import_item.dart';
 
 class StockLandingPage extends StatelessWidget {
   final RefreshProvider refreshProvider;
@@ -51,148 +51,119 @@ class StockLandingPage extends StatelessWidget {
       child: Scaffold(
         key: _scaffoldKey,
         backgroundColor: Colors.transparent,
-        drawer: BlurBackground(
-          blur: 5,
-          padding: EdgeInsets.zero,
-          radius: 0,
-          child: items == null ||
-                  fabrics == null ||
-                  itemLogs == null ||
-                  fabricLogs == null ||
-                  messages == null
-              ? Container()
-              : Container(
-                  width: 200,
-                  child: ListView(
-                    padding: EdgeInsets.zero,
-                    children: <Widget>[
-                      Container(
-                        width: 200,
-                        height: 200,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            fit: BoxFit.contain,
-                            image: NetworkImage(
-                                MyRequest.baseUrl + '/' + user.profile),
-                          ),
+        drawer: items == null ||
+                fabrics == null ||
+                itemLogs == null ||
+                fabricLogs == null ||
+                messages == null
+            ? Container()
+            : Container(
+                color: Colors.black,
+                width: 200,
+                child: ListView(
+                  padding: EdgeInsets.zero,
+                  children: <Widget>[
+                    Container(
+                      width: 200,
+                      height: 200,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          fit: BoxFit.contain,
+                          image: NetworkImage(
+                              MyRequest.baseUrl + '/' + user.profile),
                         ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                user.side,
-                                style: theme.textTheme.headline2.copyWith(
-                                  color: Colors.black.withOpacity(0.7),
-                                  fontSize: 14,
-                                  shadows: [
-                                    Shadow(color: Colors.black, blurRadius: 8)
-                                  ],
-                                ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              user.side,
+                              style: theme.textTheme.headline2.copyWith(
+                                color: Colors.black.withOpacity(0.7),
+                                fontSize: 14,
+                                shadows: [
+                                  Shadow(color: Colors.black, blurRadius: 3)
+                                ],
                               ),
-                              SizedBox(
-                                height: 10,
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text(
+                              user.name,
+                              style: theme.textTheme.headline1.copyWith(
+                                color: Colors.black.withOpacity(0.7),
+                                fontSize: 14,
                               ),
-                              Text(
-                                user.name,
-                                style: theme.textTheme.headline1.copyWith(
-                                  color: Colors.black.withOpacity(0.7),
-                                  fontSize: 14,
-                                  shadows: [
-                                    Shadow(color: Colors.black, blurRadius: 8)
-                                  ],
-                                ),
-                              ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                            ],
-                          ),
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                          ],
                         ),
                       ),
-                      ListTile(
-                        title: Text(
-                          'پیام ها',
-                          style: theme.textTheme.headline1.copyWith(
-                              fontSize: 18,
-                              shadows: [
-                                Shadow(color: Colors.black, blurRadius: 7)
-                              ]),
-                        ),
-                        onTap: () {},
+                    ),
+                    ListTile(
+                      title: Text(
+                        'پیام ها',
+                        style: theme.textTheme.headline2,
                       ),
-                      ListTile(
-                        title: Text(
-                          'انبار',
-                          style: theme.textTheme.headline1.copyWith(
-                              fontSize: 18,
-                              shadows: [
-                                Shadow(color: Colors.black, blurRadius: 7)
-                              ]),
-                        ),
-                        onTap: () {
-                          _scaffoldKey.currentState.openEndDrawer();
-                          pageController.animateToPage(1,duration: Duration(milliseconds: 250),curve: Curves.easeIn);
-                        },
-                      ),
-                      ListTile(
-                        title: Text(
-                          'هشدارها',
-                          style: theme.textTheme.headline1.copyWith(
-                              fontSize: 18,
-                              shadows: [
-                                Shadow(color: Colors.black, blurRadius: 7)
-                              ]),
-                        ),
-                        onTap: () {
-                          _scaffoldKey.currentState.openEndDrawer();
-                          pageController.animateToPage(1,duration: Duration(milliseconds: 250),curve: Curves.easeIn);
-                        },
-                      ),
-                      ListTile(
-                        title: Text(
-                          'ورودی و خروجی ها',
-                          style: theme.textTheme.headline1.copyWith(
-                              fontSize: 18,
-                              shadows: [
-                                Shadow(color: Colors.black, blurRadius: 7)
-                              ]),
-                        ),
-                        onTap: () {
-                          _scaffoldKey.currentState.openEndDrawer();
-                          pageController.animateToPage(1,duration: Duration(milliseconds: 250),curve: Curves.easeIn);
-                        },
-                      ),
-                    ],
-                  ),
+                      onTap: () {},
+                    ),
+                    ListTile(
+                      title: Text('انبار', style: theme.textTheme.headline2),
+                      onTap: () {
+                        _scaffoldKey.currentState.openEndDrawer();
+                        pageController.animateToPage(1,
+                            duration: Duration(milliseconds: 250),
+                            curve: Curves.easeIn);
+                      },
+                    ),
+                    ListTile(
+                      title: Text('هشدارها', style: theme.textTheme.headline2),
+                      onTap: () {
+                        _scaffoldKey.currentState.openEndDrawer();
+                        pageController.animateToPage(1,
+                            duration: Duration(milliseconds: 250),
+                            curve: Curves.easeIn);
+                      },
+                    ),
+                    ListTile(
+                      title: Text('ورودی و خروجی ها',
+                          style: theme.textTheme.headline2),
+                      onTap: () {
+                        _scaffoldKey.currentState.openEndDrawer();
+                        pageController.animateToPage(1,
+                            duration: Duration(milliseconds: 250),
+                            curve: Curves.easeIn);
+                      },
+                    ),
+                  ],
                 ),
-        ),
+              ),
         body: Column(
           children: [
             StockAppbar(
               rightWidget: [
-                IconButton(
-                  icon: Icon(
-                    Icons.menu,
-                  ),
+                MyIconButton(
+                  icon: 'a',
                   onPressed: () {
                     _scaffoldKey.currentState.openDrawer();
                   },
                 ),
-                IconButton(
-                    icon: Icon(
-                      Icons.refresh,
-                    ),
+                MyIconButton(
+                    icon: 'g',
                     onPressed: () {
                       refreshProvider.refresh();
                     }),
               ],
               title: 'داشبورد',
               leftWidget: [
-                IconButton(
-                  icon: Icon(Icons.download_sharp),
+                MyIconButton(
+                    icon: 'c',
                   onPressed: () {
                     showDialog(
                       context: context,
@@ -202,8 +173,8 @@ class StockLandingPage extends StatelessWidget {
                     );
                   },
                 ),
-                IconButton(
-                  icon: Icon(Icons.upload_sharp),
+                MyIconButton(
+                  icon:'b',
                   onPressed: () {
                     Navigator.push(
                       context,

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:workshop/module/stockpile/fabric.dart';
 import 'package:workshop/module/stockpile/fabric_log.dart';
 import 'package:workshop/stock/landing/dialog_fabric.dart';
-import 'package:workshop/style/component/blur_background.dart';
 
 class FabricCardMobile extends StatelessWidget {
   final Fabric fabric;
@@ -29,30 +28,20 @@ class FabricCardMobile extends StatelessWidget {
           barrierColor: Colors.transparent,
         );
       },
-      child: BlurBackground(
-        radius: 5,
+      child: Container(
+        margin: const EdgeInsets.all(8.0),
+        decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.05),
+            borderRadius: BorderRadius.circular(5)),
         child: Stack(
           children: [
             Container(
+              decoration: BoxDecoration(
+                color: Color(0xff9c9972).withOpacity(0.1),
+                borderRadius: BorderRadius.circular(5),
+              ),
               width: double.maxFinite,
               height: 122,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage('asset/images/img_3.jpg'),
-                    fit: BoxFit.cover),
-              ),
-            ),
-            Container(
-              width: double.maxFinite,
-              height: 122,
-              decoration: BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                      color: Colors.black.withOpacity(0.7),
-                      spreadRadius: 20,
-                      blurRadius: 10),
-                ],
-              ),
             ),
             Align(
               alignment: Alignment.center,
@@ -69,9 +58,7 @@ class FabricCardMobile extends StatelessWidget {
                         space(5),
                         Text(
                           'پارچه',
-                          style: theme.textTheme.bodyText1.copyWith(shadows: [
-                            Shadow(blurRadius: 7, color: Colors.black)
-                          ]),
+                          style: theme.textTheme.bodyText1
                         ),
                         space(5),
                         Text(

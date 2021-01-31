@@ -16,36 +16,31 @@ class DefaultButton extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
           boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.3),
-              spreadRadius: 0,
-              blurRadius: 14,
-              offset: Offset(0, 0),
-            ),
+            // BoxShadow(
+            //   color: Colors.black.withOpacity(0.3),
+            //   spreadRadius: 0,
+            //   blurRadius: 14,
+            //   offset: Offset(0, 0),
+            // ),
           ]
       ),
-      child: ClipRect(
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 10,sigmaY: 10),
-          child: Container(
-            margin: EdgeInsets.symmetric(horizontal: 5),
-            child: OutlinedButton(
-              onPressed: onPressed,
-              style: OutlinedButton.styleFrom(
-                shadowColor: Colors.black.withOpacity(0.5),
-                backgroundColor: backgroundColor??Colors.white.withOpacity(0.15),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5)),
-                side: BorderSide(
-                  width: 1.0,
-                  color: Colors.white.withOpacity(0.2),
-                ),
-              ),
-              child: Text(
-                title,
-                style: TextStyle(color: Colors.white, fontFamily: 'light'),
-              ),
+      child: Container(
+        margin: EdgeInsets.symmetric(horizontal: 5),
+        child: OutlinedButton(
+          onPressed: onPressed,
+          style: OutlinedButton.styleFrom(
+            shadowColor: Colors.black.withOpacity(0.5),
+            backgroundColor: backgroundColor??Colors.white.withOpacity(0.15),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(5)),
+            side: BorderSide(
+              width: 1.0,
+              color: Colors.white.withOpacity(0.2),
             ),
+          ),
+          child: Text(
+            title,
+            style: Theme.of(context).textTheme.headline6,
           ),
         ),
       ),

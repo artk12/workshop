@@ -4,7 +4,6 @@ import 'package:flutter/rendering.dart';
 import 'package:workshop/module/stockpile/item.dart';
 import 'package:workshop/module/stockpile/item_log.dart';
 import 'package:workshop/stock/landing/dialog_item.dart';
-import 'package:workshop/style/component/blur_background.dart';
 
 class ItemCardMobile extends StatelessWidget {
   final Item item;
@@ -20,31 +19,31 @@ class ItemCardMobile extends StatelessWidget {
       onTap: (){
         showDialog(context: context,builder: (context)=>ItemLogDialog(itemLogs: itemLogs,item: item,));
       },
-      child: BlurBackground(
+      child: Container(
+        margin: const EdgeInsets.all(8.0),
+        decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.05),
+            borderRadius: BorderRadius.circular(5)),
         child: Stack(
           children: [
+            // Container(
+            //   width: double.maxFinite,
+            //   height: 122,
+            //   decoration: BoxDecoration(
+            //     image: DecorationImage(
+            //         image: item.category == "خرج کار"
+            //             ? AssetImage('asset/images/img_2.jpg')
+            //             : AssetImage('asset/images/img_1.jpg'),
+            //         fit: BoxFit.cover),
+            //   ),
+            // ),
             Container(
+              decoration: BoxDecoration(
+                color:item.category == "خرج کار"?Color(0xff79a4a6).withOpacity(0.1):Color(0xffab6954).withOpacity(0.1),
+                borderRadius: BorderRadius.circular(5)
+              ),
               width: double.maxFinite,
               height: 122,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: item.category == "خرج کار"
-                        ? AssetImage('asset/images/img_2.jpg')
-                        : AssetImage('asset/images/img_1.jpg'),
-                    fit: BoxFit.cover),
-              ),
-            ),
-            Container(
-              width: double.maxFinite,
-              height: 122,
-              decoration: BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                      color: Colors.black.withOpacity(0.65),
-                      spreadRadius: 20,
-                      blurRadius: 10),
-                ],
-              ),
             ),
             Align(
               alignment: Alignment.topCenter,

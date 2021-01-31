@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:workshop/style/theme/textstyle.dart';
 
 
 const Duration _kDropdownMenuDuration = Duration(milliseconds: 300);
@@ -691,7 +692,7 @@ class CustomDropdownButton<T> extends StatefulWidget {
   final int elevation;
   final TextStyle style;
   final Widget underline;
-  final Widget icon;
+  final String icon;
   final Color iconDisabledColor;
   final Color iconEnabledColor;
   final double iconSize;
@@ -883,31 +884,31 @@ class _CustomDropdownButtonState<T> extends State<CustomDropdownButton<T>> with 
     return math.max(fontSize, math.max(widget.iconSize, _kDenseButtonHeight));
   }
 
-  Color get _iconColor {
-
-    if (_enabled) {
-      if (widget.iconEnabledColor != null)
-        return widget.iconEnabledColor;
-
-      switch (Theme.of(context).brightness) {
-        case Brightness.light:
-          return Colors.grey.shade700;
-        case Brightness.dark:
-          return Colors.white70;
-      }
-    } else {
-      if (widget.iconDisabledColor != null)
-        return widget.iconDisabledColor;
-
-      switch (Theme.of(context).brightness) {
-        case Brightness.light:
-          return Colors.grey.shade400;
-        case Brightness.dark:
-          return Colors.white10;
-      }
-    }
-    return Colors.white10;
-  }
+  // Color get _iconColor {
+  //
+  //   if (_enabled) {
+  //     if (widget.iconEnabledColor != null)
+  //       return widget.iconEnabledColor;
+  //
+  //     switch (Theme.of(context).brightness) {
+  //       case Brightness.light:
+  //         return Colors.grey.shade700;
+  //       case Brightness.dark:
+  //         return Colors.white70;
+  //     }
+  //   } else {
+  //     if (widget.iconDisabledColor != null)
+  //       return widget.iconDisabledColor;
+  //
+  //     switch (Theme.of(context).brightness) {
+  //       case Brightness.light:
+  //         return Colors.grey.shade400;
+  //       case Brightness.dark:
+  //         return Colors.white10;
+  //     }
+  //   }
+  //   return Colors.white10;
+  // }
 
   bool get _enabled => widget.items != null && widget.items.isNotEmpty && widget.onChanged != null;
 
@@ -980,7 +981,7 @@ class _CustomDropdownButtonState<T> extends State<CustomDropdownButton<T>> with 
       );
     }
 
-    const Icon defaultIcon = Icon(Icons.arrow_drop_down);
+    // const Icon defaultIcon = Icon(Icons.arrow_drop_down);
 
     Widget result = DefaultTextStyle(
       style: _enabled ? _textStyle : _textStyle.copyWith(color: Theme.of(context).disabledColor),
@@ -998,13 +999,14 @@ class _CustomDropdownButtonState<T> extends State<CustomDropdownButton<T>> with 
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             // if (widget.isExpanded)
-              widget.isExpanded ?Expanded(child: innerItemsWidget): IconTheme(
-                data: IconThemeData(
-                  color: _iconColor,
-                  size: widget.iconSize,
-                ),
-                child: widget.icon ?? defaultIcon,
-              ),
+            //   widget.isExpanded ?Expanded(child: innerItemsWidget): IconTheme(
+            //     data: IconThemeData(
+            //       color: _iconColor,
+            //       size: widget.iconSize,
+            //     ),
+            //     child: widget.icon ?? defaultIcon,
+            //   ),
+            widget.isExpanded ?Expanded(child: innerItemsWidget):Text('d',style: MyTextStyle.iconStyle,),
             Expanded(
               child: Row(
                 crossAxisAlignment: widget.crossAxisAlignment,
@@ -1076,7 +1078,7 @@ class CustomDropdownButtonFormField<T> extends FormField<T> {
     VoidCallback onTap,
     int elevation = 8,
     TextStyle style,
-    Widget icon,
+    String icon,
     Color iconDisabledColor,
     Color iconEnabledColor,
     double iconSize = 24.0,

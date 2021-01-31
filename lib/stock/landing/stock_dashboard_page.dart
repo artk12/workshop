@@ -11,6 +11,7 @@ import 'package:workshop/style/component/stockpile/message_stock_Card.dart';
 import 'package:workshop/style/component/stockpile/stock_log_dialog_Card.dart';
 import 'package:workshop/style/component/stockpile/stock_stock_Card.dart';
 import 'package:workshop/style/component/stockpile/warning_stock_Card.dart';
+import 'package:workshop/style/theme/textstyle.dart';
 
 class StockDashboardPage extends StatelessWidget {
   final List<Item> items;
@@ -28,17 +29,17 @@ class StockDashboardPage extends StatelessWidget {
     List<AllItem> allItems = CalculateStock.mergeFabricAndItem(items, fabrics);
     CalculateStock.sortAllItem(allItems);
 
-    Widget title(String title, IconData icon, Function() onPress) {
+    Widget title(String title, String icon,Function() onPress) {
       return GestureDetector(
         onTap: onPress,
         child: Row(
           children: [
             SizedBox(
-              width: 6,
+              width: 15,
             ),
-            Icon(
+            Text(
               icon,
-              size: 22,
+              style: MyTextStyle.iconStyle,
             ),
             Container(
               padding: EdgeInsets.only(bottom: 8),
@@ -50,9 +51,7 @@ class StockDashboardPage extends StatelessWidget {
               margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
               child: Text(
                 title,
-                style: theme.textTheme.headline2.copyWith(
-                  shadows: [Shadow(color: Colors.black, blurRadius: 8)],
-                ),
+                style: theme.textTheme.headline2
               ),
             ),
           ],
@@ -75,7 +74,7 @@ class StockDashboardPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    title('پیام', Icons.message, () {}),
+                    title('پیام', 'l',() {}),
                     SizedBox(
                       height: 2,
                     ),
@@ -101,8 +100,7 @@ class StockDashboardPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     title(
-                      'انبار',
-                      Icons.home_filled,
+                      'انبار','h',
                       () {
                         pageController.animateToPage(1,
                             curve: Curves.easeIn,
@@ -112,10 +110,11 @@ class StockDashboardPage extends StatelessWidget {
                     SizedBox(
                       height: 2,
                     ),
+                    // Expanded(child: Row(children: [MessageCard(message:messages[0])],))
                     Expanded(
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
-                        itemCount: allItems.length,
+                        itemCount: 1,
                         itemBuilder: (context, index) =>
                             allItems[index].category == 'fabric'
                                 ? StockCard(
@@ -146,7 +145,7 @@ class StockDashboardPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    title('هشدارها', Icons.warning, () {}),
+                    title('هشدارها','f', () {}),
                     SizedBox(
                       height: 2,
                     ),
@@ -182,14 +181,14 @@ class StockDashboardPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    title('ورودی و خروجی ها', Icons.transform, () {}),
+                    title('ورودی و خروجی ها', 'k',() {}),
                     SizedBox(
                       height: 2,
                     ),
                     Expanded(
                       child: ListView.builder(
                           scrollDirection: Axis.horizontal,
-                          itemCount: 10,
+                          itemCount: itemLogs.length,
                           itemBuilder: (context, index) => LogStockCard(
                                 item: items.firstWhere((element) =>
                                     element.id == itemLogs[index].itemId),

@@ -51,12 +51,12 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  assets:
-    - asset/images/background_image.jpg
-    - asset/images/profile.jpg
-    - asset/images/img_1.jpg
-    - asset/images/img_2.jpg
-    - asset/images/img_3.jpg
+#  assets:
+#    - asset/images/background_image.jpg
+#    - asset/images/profile.jpg
+#    - asset/images/img_1.jpg
+#    - asset/images/img_2.jpg
+#    - asset/images/img_3.jpg
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
@@ -70,16 +70,17 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
+
   fonts:
     - family: bold
       fonts:
         - asset: fonts/almarai-bold.ttf
-    - family: light
-      fonts:
-        - asset: fonts/almarai-light.ttf
     - family: regular
       fonts:
         - asset: fonts/almarai-regular.ttf
+    - family: icon
+      fonts:
+        - asset: fonts/icon.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro
