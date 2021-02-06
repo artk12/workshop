@@ -2,11 +2,11 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
-class FabricDialogBg extends StatelessWidget {
+class BlurDialogBg extends StatelessWidget {
   final Widget child;
   final double maxWidth;
   final MainAxisSize mainAxisSize;
-  FabricDialogBg({this.child,this.maxWidth = 200,this.mainAxisSize = MainAxisSize.min});
+  BlurDialogBg({this.child,this.maxWidth = 300,this.mainAxisSize = MainAxisSize.min});
 
   @override
   Widget build(BuildContext context) {

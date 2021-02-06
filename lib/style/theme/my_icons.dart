@@ -12,5 +12,6 @@ class MyIcons{
   static const String REFRESH = 'g';
   static const String LOG = 'k';
   static const String PLUS = 'i';
+  static const String CUT = 'm';
 
 }

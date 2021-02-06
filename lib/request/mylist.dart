@@ -1,5 +1,6 @@
 
 import 'dart:convert';
+import 'package:workshop/module/cutter/cut.dart';
 import 'package:workshop/module/stockpile/fabric.dart';
 import 'package:workshop/module/stockpile/fabric_log.dart';
 import 'package:workshop/module/stockpile/item.dart';
@@ -42,6 +43,20 @@ class MyList {
     String body = await MyRequest.simpleQueryRequest('stockpile/getResult.php',GetData.getStockPileMessage);
     final  json = jsonDecode(body).cast<Map<String, dynamic>>();
     List<Message> items = json.map<Message>((json) => Message.fromJson(json)).toList();
+    return items;
+  }
+
+  Future<List<Message>> getCutterMessages() async{
+    String body = await MyRequest.simpleQueryRequest('stockpile/getResult.php',GetData.getCutterMessage);
+    final  json = jsonDecode(body).cast<Map<String, dynamic>>();
+    List<Message> items = json.map<Message>((json) => Message.fromJson(json)).toList();
+    return items;
+  }
+
+  Future<List<Cut>> getCutList() async{
+    String body = await MyRequest.simpleQueryRequest('cutter/getCutList.php','');
+    final  json = jsonDecode(body).cast<Map<String, dynamic>>();
+    List<Cut> items = json.map<Cut>((json) => Cut.fromJson(json)).toList();
     return items;
   }
 

@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:workshop/cutter/cutter_detail_page.dart';
+
 import '../cutter/cutter_page.dart';
 
 class CalculateCutter{
@@ -26,5 +28,11 @@ class CalculateCutter{
       maps.add(map);
     }
     return jsonEncode(maps);
+  }
+
+  static List<Pieces> getPiecesFromJson(String body){
+    final  json = jsonDecode(body).cast<Map<String, dynamic>>();
+    List<Pieces> items = json.map<Pieces>((json) => Pieces.fromJson(json)).toList();
+    return items;
   }
 }

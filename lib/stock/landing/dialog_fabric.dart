@@ -19,7 +19,7 @@ class FabricLogDialog extends StatelessWidget {
     CalculateStock.sortFabric(fabrics);
     List<FabricLogHolder> fabricLogHolder = FabricToFabricLogHolder(fabricLogs: fabricLogs,fabric: fabric,fabrics: fabrics).convert();
 
-    return FabricDialogBg(
+    return BlurDialogBg(
       maxWidth: 400,
       child: Column(
         children: [

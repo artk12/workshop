@@ -15,7 +15,7 @@ class ItemLogDialog extends StatelessWidget {
     List<ItemLog> currentItemLog =
         itemLogs.where((element) => element.itemId == item.id).toList();
 
-    return FabricDialogBg(
+    return BlurDialogBg(
       maxWidth: 400,
       child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0),

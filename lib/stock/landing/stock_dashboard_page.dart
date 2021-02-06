@@ -7,7 +7,7 @@ import 'package:workshop/module/stockpile/message.dart';
 import 'package:workshop/module/stockpile/warning.dart';
 import 'package:workshop/stock/calculate_stock.dart';
 import 'package:workshop/style/component/dashboard_card_background_blur.dart';
-import 'package:workshop/style/component/stockpile/message_stock_Card.dart';
+import 'package:workshop/style/component/message_stock_Card.dart';
 import 'package:workshop/style/component/stockpile/stock_log_dialog_Card.dart';
 import 'package:workshop/style/component/stockpile/stock_stock_Card.dart';
 import 'package:workshop/style/component/stockpile/warning_stock_Card.dart';
