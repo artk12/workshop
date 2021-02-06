@@ -4,12 +4,10 @@ class DropDownBackground extends StatelessWidget {
   final Widget child;
   final EdgeInsets padding;
   final double radius;
-  final double blur;
   DropDownBackground(
       {@required this.child,
       this.padding = const EdgeInsets.all(8.0),
-      this.radius = 15,
-      this.blur = 35});
+      this.radius = 15,});
   @override
   Widget build(BuildContext context) {
     return Container(

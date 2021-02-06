@@ -11,9 +11,9 @@ import 'package:workshop/request/request.dart';
 import 'package:workshop/stock/export_from_stock/export_from_stock.dart';
 import 'package:workshop/stock/landing/stock_dashboard_page.dart';
 import 'package:workshop/stock/landing/stock_page.dart';
-import 'package:workshop/style/app_bar/stock_appbar.dart';
-import 'package:workshop/style/background/stock_background.dart';
+import 'package:workshop/style/app_bar/my_appbar.dart';
 import 'package:workshop/style/component/my_icon_button.dart';
+import 'package:workshop/style/theme/my_icons.dart';
 import '../import_to_stock/dialog_import_item.dart';
 
 class StockLandingPage extends StatelessWidget {
@@ -47,10 +47,8 @@ class StockLandingPage extends StatelessWidget {
     PageController pageController = new PageController(initialPage: 0);
     ThemeData theme = Theme.of(context);
 
-    return StockBackground(
-      child: Scaffold(
+    return Scaffold(
         key: _scaffoldKey,
-        backgroundColor: Colors.transparent,
         drawer: items == null ||
                 fabrics == null ||
                 itemLogs == null ||
@@ -106,13 +104,13 @@ class StockLandingPage extends StatelessWidget {
                         ),
                       ),
                     ),
-                    ListTile(
-                      title: Text(
-                        'پیام ها',
-                        style: theme.textTheme.headline2,
-                      ),
-                      onTap: () {},
-                    ),
+                    // ListTile(
+                    //   title: Text(
+                    //     'پیام ها',
+                    //     style: theme.textTheme.headline2,
+                    //   ),
+                    //   onTap: () {},
+                    // ),
                     ListTile(
                       title: Text('انبار', style: theme.textTheme.headline2),
                       onTap: () {
@@ -122,98 +120,99 @@ class StockLandingPage extends StatelessWidget {
                             curve: Curves.easeIn);
                       },
                     ),
-                    ListTile(
-                      title: Text('هشدارها', style: theme.textTheme.headline2),
-                      onTap: () {
-                        _scaffoldKey.currentState.openEndDrawer();
-                        pageController.animateToPage(1,
-                            duration: Duration(milliseconds: 250),
-                            curve: Curves.easeIn);
-                      },
-                    ),
-                    ListTile(
-                      title: Text('ورودی و خروجی ها',
-                          style: theme.textTheme.headline2),
-                      onTap: () {
-                        _scaffoldKey.currentState.openEndDrawer();
-                        pageController.animateToPage(1,
-                            duration: Duration(milliseconds: 250),
-                            curve: Curves.easeIn);
-                      },
+                    // ListTile(
+                    //   title: Text('هشدارها', style: theme.textTheme.headline2),
+                    //   onTap: () {
+                    //     _scaffoldKey.currentState.openEndDrawer();
+                    //     pageController.animateToPage(1,
+                    //         duration: Duration(milliseconds: 250),
+                    //         curve: Curves.easeIn);
+                    //   },
+                    // ),
+                    // ListTile(
+                    //   title: Text('ورودی و خروجی ها',
+                    //       style: theme.textTheme.headline2),
+                    //   onTap: () {
+                    //     _scaffoldKey.currentState.openEndDrawer();
+                    //     pageController.animateToPage(1,
+                    //         duration: Duration(milliseconds: 250),
+                    //         curve: Curves.easeIn);
+                    //   },
+                    // ),
+                  ],
+                ),
+              ),
+        body: SafeArea(
+          child: Column(
+            children: [
+              MyAppbar(
+                rightWidget: [
+                  MyIconButton(
+                    icon: MyIcons.DRAWER_ICON,
+                    onPressed: () {
+                      _scaffoldKey.currentState.openDrawer();
+                    },
+                  ),
+                  MyIconButton(
+                      icon: MyIcons.REFRESH,
+                      onPressed: () {
+                        refreshProvider.refresh();
+                      }),
+                ],
+                title: 'داشبورد',
+                leftWidget: [
+                  MyIconButton(
+                      icon: MyIcons.ARROW_DOWN,
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) => ImportItemDialog(
+                          item: items,
+                        ),
+                      );
+                    },
+                  ),
+                  MyIconButton(
+                    icon:MyIcons.ARROW_UP,
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ExportFromStock(
+                            items: items,
+                            fabrics: fabrics,
+                          ),
+                          settings: RouteSettings(name: '/ExportFromStock'),
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
+              Expanded(
+                child: PageView(
+                  controller: pageController,
+                  physics: NeverScrollableScrollPhysics(),
+                  children: [
+                    StockDashboardPage(
+                        itemLogs: itemLogs.take(10).toList(),
+                        items: items.take(10).toList(),
+                        pageController: pageController,
+                        fabrics: fabrics.take(10).toList(),
+                        messages: messages),
+                    StockPage(
+                      pageController: pageController,
+                      fabricLogs: fabricLogs,
+                      fabrics: fabrics,
+                      itemLogs: itemLogs,
+                      items: items,
                     ),
                   ],
                 ),
               ),
-        body: Column(
-          children: [
-            StockAppbar(
-              rightWidget: [
-                MyIconButton(
-                  icon: 'a',
-                  onPressed: () {
-                    _scaffoldKey.currentState.openDrawer();
-                  },
-                ),
-                MyIconButton(
-                    icon: 'g',
-                    onPressed: () {
-                      refreshProvider.refresh();
-                    }),
-              ],
-              title: 'داشبورد',
-              leftWidget: [
-                MyIconButton(
-                    icon: 'c',
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (context) => ImportItemDialog(
-                        item: items,
-                      ),
-                    );
-                  },
-                ),
-                MyIconButton(
-                  icon:'b',
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ExportFromStock(
-                          items: items,
-                          fabrics: fabrics,
-                        ),
-                        settings: RouteSettings(name: '/ExportFromStock'),
-                      ),
-                    );
-                  },
-                ),
-              ],
-            ),
-            Expanded(
-              child: PageView(
-                controller: pageController,
-                physics: NeverScrollableScrollPhysics(),
-                children: [
-                  StockDashboardPage(
-                      itemLogs: itemLogs.take(10).toList(),
-                      items: items.take(10).toList(),
-                      pageController: pageController,
-                      fabrics: fabrics.take(10).toList(),
-                      messages: messages),
-                  StockPage(
-                    pageController: pageController,
-                    fabricLogs: fabricLogs,
-                    fabrics: fabrics,
-                    itemLogs: itemLogs,
-                    items: items,
-                  ),
-                ],
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
     );
   }
 }

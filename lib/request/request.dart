@@ -1,11 +1,23 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:workshop/module/cutter/cut_detail.dart';
 import 'package:workshop/module/stockpile/user.dart';
 import 'package:workshop/request/query/get_data.dart';
 
 class MyRequest {
-  static String baseUrl = "http://www.rhen.ir/backend/";
+
+  static String baseUrl = "https://www.rhen.ir/backend/";
+
+  static Future<CutDetail> getCutDetail(String calite,String projectCode)async{
+    http.Response response = await http.post(baseUrl+"cutter/getCutDetail.php",body:{'id':projectCode,'calite':calite});
+    if(response.body.trim() != "null"){
+      CutDetail cutDetail = CutDetail.formJson(jsonDecode(response.body));
+      return cutDetail;
+    }
+    return null;
+  }
+
   Future<String> sayHello() async {
     http.Response response = await http
         .post(baseUrl + 'stockpile/check.php', body: {'hello': 'hello its me'});
@@ -13,8 +25,7 @@ class MyRequest {
   }
 
   static Future<String> simpleQueryRequest(String url, String query) async {
-    http.Response response =
-        await http.post(baseUrl + url, body: {'query': query});
+    http.Response response = await http.post(baseUrl + url, body: {'query': query});
     return response.body;
   }
 

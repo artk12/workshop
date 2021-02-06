@@ -13,7 +13,7 @@ class WarningStockCard extends StatelessWidget {
       padding: EdgeInsets.all(8),
       decoration: BoxDecoration(
         color:Colors.black.withOpacity(0.3),
-        border: Border.all(color: Color(0xff7a1818).withOpacity(0.5),width: 1.5),
+        border: Border.all(color: Color(0xffff4242).withOpacity(0.6),width: 1.5),
         borderRadius:BorderRadius.circular(15),
       ),
       margin: EdgeInsets.symmetric(horizontal: 10,vertical: 5),

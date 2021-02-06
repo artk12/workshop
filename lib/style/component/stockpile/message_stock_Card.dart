@@ -53,7 +53,7 @@ class MessageCard extends StatelessWidget {
             ),
             Text(
               m,
-              style: theme.textTheme.headline6,
+              style: theme.textTheme.headline6.copyWith(height: 2),
             ),
           ],
         ),

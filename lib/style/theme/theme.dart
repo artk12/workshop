@@ -9,8 +9,8 @@ ThemeData light = ThemeData(
     headline4: MyTextStyle.headLine4,
     headline5: MyTextStyle.headLine5,
     headline6: MyTextStyle.headLine6,
-    bodyText1: MyTextStyle.headLine5,
-    bodyText2: MyTextStyle.headLine6
+    bodyText1: MyTextStyle.body1,
+    bodyText2: MyTextStyle.body2
   ),
   fontFamily: 'light',
   // inputDecorationTheme: InputDecorationTheme(
@@ -29,6 +29,7 @@ ThemeData light = ThemeData(
   // ),
   dividerColor: Colors.white70,
   canvasColor: Color(0xff4d5566),
+  scaffoldBackgroundColor: Color(0xff37303d),
   iconTheme: IconThemeData(color: Colors.white.withOpacity(0.85), size: 14),
   primaryColor: Colors.white,
   elevatedButtonTheme: ElevatedButtonThemeData(

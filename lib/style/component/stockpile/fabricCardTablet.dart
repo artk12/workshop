@@ -79,7 +79,7 @@ class FabricCardTablet extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            fabric.pieces+' تیکه ',
+                            fabric.pieces+' تکه ',
                             style: theme.textTheme.headline1,
                           ),
                           Text(

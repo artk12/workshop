@@ -7,9 +7,11 @@ class FabricDialogBg extends StatelessWidget {
   final double maxWidth;
   final MainAxisSize mainAxisSize;
   FabricDialogBg({this.child,this.maxWidth = 200,this.mainAxisSize = MainAxisSize.min});
+
   @override
   Widget build(BuildContext context) {
     return Dialog(
+      elevation: 0,
       backgroundColor: Colors.transparent,
       child: ConstrainedBox(
         constraints: BoxConstraints(maxWidth: maxWidth),
@@ -20,7 +22,7 @@ class FabricDialogBg extends StatelessWidget {
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(15),
-                color: Colors.white.withOpacity(0.05),
+                color: Colors.black.withOpacity(0.05),
               ),
               child: child,
             ),

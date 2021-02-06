@@ -1,11 +1,11 @@
 
 import 'package:flutter/material.dart';
 
-class StockAppbar extends StatelessWidget {
+class MyAppbar extends StatelessWidget {
   final List<Widget> rightWidget;
   final List<Widget> leftWidget;
   final String title;
-  StockAppbar({this.rightWidget,this.leftWidget,this.title});
+  MyAppbar({this.rightWidget,this.leftWidget,this.title});
 
   @override
   Widget build(BuildContext context) {

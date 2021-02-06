@@ -8,11 +8,11 @@ import 'package:workshop/module/stockpile/item.dart';
 import 'package:workshop/request/query/insert.dart';
 import 'package:workshop/request/query/update.dart';
 import 'package:workshop/request/request.dart';
-import 'package:workshop/style/app_bar/stock_appbar.dart';
-import 'package:workshop/style/background/stock_background.dart';
+import 'package:workshop/style/app_bar/my_appbar.dart';
 import 'package:workshop/style/component/drop_down_background.dart';
 import 'package:workshop/style/component/default_textfield.dart';
 import 'package:workshop/style/component/dropdownWithOutNullSafety.dart';
+import 'package:workshop/style/theme/my_icons.dart';
 import 'package:workshop/style/theme/show_snackbar.dart';
 import 'package:workshop/style/theme/textstyle.dart';
 
@@ -52,213 +52,213 @@ class UpdateItem extends StatelessWidget {
     );
 
     return Scaffold(
-      body: StockBackground(
+      body: SafeArea(
         child: SingleChildScrollView(
-          child: Column(
-            children: [
-              StockAppbar(
-                title: 'اضافه به انبار',
-              ),
-              space,
-              itemNameWidget,
-              space,
-              Row(
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: DefaultTextField(
-                        textInputType: TextInputType.number,
-                        textEditingController: firstQuantifier,
-                        label: 'تعداد ورود',
+            child: Column(
+              children: [
+                MyAppbar(
+                  title: 'اضافه به انبار',
+                ),
+                space,
+                itemNameWidget,
+                space,
+                Row(
+                  children: [
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: DefaultTextField(
+                          textInputType: TextInputType.number,
+                          textEditingController: firstQuantifier,
+                          label: 'تعداد ورود',
+                        ),
                       ),
                     ),
-                  ),
-                  Expanded(
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      height: 84,
-                      child: DropDownBackground(
-                        child: BlocBuilder(
-                          cubit: categoryCubit,
-                          builder: (context, SingleDropDownItemState state) =>
-                              CustomDropdownButtonHideUnderline(
-                            child: CustomDropdownButton<String>(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              items: category.map((String value) {
-                                return new CustomDropdownMenuItem<String>(
-                                  value: value,
-                                  child: new Text(
-                                    value,
-                                    style: TextStyle(
-                                        fontFamily: 'light',
-                                        color: Colors.white),
-                                  ),
-                                );
-                              }).toList(),
-                              value: category
-                                  .where((element) => element == state.value)
-                                  .first,
-                              onChanged: (value) {
-                                categoryCubit.changeItem(value);
-                              },
+                    Expanded(
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        height: 84,
+                        child: DropDownBackground(
+                          child: BlocBuilder(
+                            cubit: categoryCubit,
+                            builder: (context, SingleDropDownItemState state) =>
+                                CustomDropdownButtonHideUnderline(
+                              child: CustomDropdownButton<String>(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                items: category.map((String value) {
+                                  return new CustomDropdownMenuItem<String>(
+                                    value: value,
+                                    child: new Text(
+                                      value,
+                                      style: TextStyle(
+                                          fontFamily: 'light',
+                                          color: Colors.white),
+                                    ),
+                                  );
+                                }).toList(),
+                                value: category
+                                    .where((element) => element == state.value)
+                                    .first,
+                                onChanged: (value) {
+                                  categoryCubit.changeItem(value);
+                                },
+                              ),
                             ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: DefaultTextField(
-                        label: 'تعداد هشدار',
-                        textEditingController: warning,
-                        textInputType: TextInputType.number,
+                  ],
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: DefaultTextField(
+                          label: 'تعداد هشدار',
+                          textEditingController: warning,
+                          textInputType: TextInputType.number,
+                        ),
                       ),
                     ),
-                  ),
-                  Expanded(
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      height: 84,
-                      child: DropDownBackground(
-                        child: BlocBuilder(
-                          cubit: quantifyCubit,
-                          builder: (context, SingleDropDownItemState state) =>
-                              CustomDropdownButtonHideUnderline(
-                            child: CustomDropdownButton<String>(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              items: quantify.map((String value) {
-                                return new CustomDropdownMenuItem<String>(
-                                  value: value,
-                                  child: new Text(
-                                    value,
-                                    style: TextStyle(
-                                        fontFamily: 'light',
-                                        color: Colors.white),
-                                  ),
-                                );
-                              }).toList(),
-                              value: quantify
-                                  .where((element) => element == state.value)
-                                  .first,
-                              onChanged: (value) {
-                                quantifyCubit.changeItem(value);
-                              },
+                    Expanded(
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        height: 84,
+                        child: DropDownBackground(
+                          child: BlocBuilder(
+                            cubit: quantifyCubit,
+                            builder: (context, SingleDropDownItemState state) =>
+                                CustomDropdownButtonHideUnderline(
+                              child: CustomDropdownButton<String>(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                items: quantify.map((String value) {
+                                  return new CustomDropdownMenuItem<String>(
+                                    value: value,
+                                    child: new Text(
+                                      value,
+                                      style: TextStyle(
+                                          fontFamily: 'light',
+                                          color: Colors.white),
+                                    ),
+                                  );
+                                }).toList(),
+                                value: quantify
+                                    .where((element) => element == state.value)
+                                    .first,
+                                onChanged: (value) {
+                                  quantifyCubit.changeItem(value);
+                                },
+                              ),
                             ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 70,
-              ),
-              BlocBuilder(
-                cubit: ignoreButtonCubit,
-                builder: (BuildContext context, IgnoreButtonState state) =>
-                    IgnorePointer(
-                  ignoring: state.ignore,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Expanded(child: Container(),flex: 1,),
-                      Expanded(
-                        flex: 2,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal:8.0),
-                          child: TextButton(
-                            style: ButtonStyle(
-                              foregroundColor: MaterialStateProperty.resolveWith((states) => Colors.green.withOpacity(0.4),),
-                              backgroundColor: MaterialStateProperty.resolveWith((states) => Colors.green.withOpacity(0.4),),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text('j',style: MyTextStyle.iconStyle.copyWith(fontSize: 30),),
-                            ),
-                            onPressed: () async {
-                              if (firstQuantifier.text.isEmpty ||
-                                  warning.text.isEmpty) {
-                                MyShowSnackBar.showSnackBar(
-                                    context, "لطفا تمامی فیلدها را پر کنید.");
-                              } else if (int.parse(warning.text) >
-                                  int.parse(firstQuantifier.text)) {
-                                MyShowSnackBar.showSnackBar(context,
-                                    "تعداد هشدار شما بیشتر از تعداد ورودی است.");
-                              } else if (int.parse(item.quantifierOne) >
-                                  int.parse(firstQuantifier.text)) {
-                                MyShowSnackBar.showSnackBar(context,
-                                    "تعداد ورودی کمتر از قبل است لطفابرای خروج کالا از انبار از صفحه اصلی آیکون خروجی وارد شوید.");
-                              } else {
-                                MyShowSnackBar.showSnackBar(
-                                    context, "کمی صبرکنید...");
-                                String body;
-                                int currentQuantifier =
-                                    int.parse(firstQuantifier.text);
-                                int itemQuantifier = int.parse(item.quantifierOne);
-                                String update = Update.queryUpdateItemInStockpile(
-                                    item.id,
-                                    firstQuantifier.text,
-                                    quantifyCubit.state.value,
-                                    categoryCubit.state.value,
-                                    warning.text);
-                                String insert = Insert.queryInsertInputToLog(
-                                    item.id,
-                                    int.parse(firstQuantifier.text) -
-                                        int.parse(item.quantifierOne));
-                                ignoreButtonCubit.update(true);
-                                if (currentQuantifier - itemQuantifier == 0) {
-                                  //update
-                                  body = await MyRequest.simpleQueryRequest(
-                                      'stockpile/runQuery.php', update);
+                  ],
+                ),
+                SizedBox(
+                  height: 70,
+                ),
+                BlocBuilder(
+                  cubit: ignoreButtonCubit,
+                  builder: (BuildContext context, IgnoreButtonState state) =>
+                      IgnorePointer(
+                    ignoring: state.ignore,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Expanded(child: Container(),flex: 1,),
+                        Expanded(
+                          flex: 2,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal:8.0),
+                            child: TextButton(
+                              style: ButtonStyle(
+                                foregroundColor: MaterialStateProperty.resolveWith((states) => Colors.green.withOpacity(0.4),),
+                                backgroundColor: MaterialStateProperty.resolveWith((states) => Colors.green.withOpacity(0.4),),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(MyIcons.CHECK,style: MyTextStyle.iconStyle.copyWith(fontSize: 30),),
+                              ),
+                              onPressed: () async {
+                                if (firstQuantifier.text.isEmpty ||
+                                    warning.text.isEmpty) {
+                                  MyShowSnackBar.showSnackBar(
+                                      context, "لطفا تمامی فیلدها را پر کنید.");
+                                } else if (int.parse(warning.text) >
+                                    int.parse(firstQuantifier.text)) {
+                                  MyShowSnackBar.showSnackBar(context,
+                                      "تعداد هشدار شما بیشتر از تعداد ورودی است.");
+                                } else if (int.parse(item.quantifierOne) >
+                                    int.parse(firstQuantifier.text)) {
+                                  MyShowSnackBar.showSnackBar(context,
+                                      "تعداد ورودی کمتر از قبل است لطفابرای خروج کالا از انبار از صفحه اصلی آیکون خروجی وارد شوید.");
                                 } else {
-                                  //insert update
-                                  body = await MyRequest.simple2QueryRequest(
-                                      'stockpile/run2Query.php', update, insert);
+                                  MyShowSnackBar.showSnackBar(
+                                      context, "کمی صبرکنید...");
+                                  String body;
+                                  int currentQuantifier =
+                                      int.parse(firstQuantifier.text);
+                                  int itemQuantifier = int.parse(item.quantifierOne);
+                                  String update = Update.queryUpdateItemInStockpile(
+                                      item.id,
+                                      firstQuantifier.text,
+                                      quantifyCubit.state.value,
+                                      categoryCubit.state.value,
+                                      warning.text);
+                                  String insert = Insert.queryInsertInputToLog(
+                                      item.id,
+                                      int.parse(firstQuantifier.text) -
+                                          int.parse(item.quantifierOne));
+                                  ignoreButtonCubit.update(true);
+                                  if (currentQuantifier - itemQuantifier == 0) {
+                                    //update
+                                    body = await MyRequest.simpleQueryRequest(
+                                        'stockpile/runQuery.php', update);
+                                  } else {
+                                    //insert update
+                                    body = await MyRequest.simple2QueryRequest(
+                                        'stockpile/run2Query.php', update, insert);
+                                  }
+                                  if (body == "OK") {
+                                    MyShowSnackBar.hideSnackBar(context);
+                                    ignoreButtonCubit.update(false);
+                                    Navigator.pop(context);
+                                  }
                                 }
-                                if (body == "OK") {
-                                  MyShowSnackBar.hideSnackBar(context);
-                                  ignoreButtonCubit.update(false);
-                                  Navigator.pop(context);
-                                }
-                              }
-                            },
+                              },
+                            ),
                           ),
                         ),
-                      ),
-                      Expanded(
-                        flex: 2,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal:8.0),
-                          child: TextButton(
-                            style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.resolveWith((states) => Colors.red.withOpacity(0.4),),
+                        Expanded(
+                          flex: 2,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal:8.0),
+                            child: TextButton(
+                              style: ButtonStyle(
+                                backgroundColor: MaterialStateProperty.resolveWith((states) => Colors.red.withOpacity(0.4),),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(MyIcons.CANCEL,style: MyTextStyle.iconStyle.copyWith(fontSize: 30),),
+                              ),
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
                             ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text('e',style: MyTextStyle.iconStyle.copyWith(fontSize: 30),),
-                            ),
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
                           ),
                         ),
-                      ),
-                      Expanded(child: Container(),flex: 1,),
-                    ],
+                        Expanded(child: Container(),flex: 1,),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
       ),
     );
   }

@@ -41,58 +41,81 @@ class FabricCardMobile extends StatelessWidget {
                 borderRadius: BorderRadius.circular(5),
               ),
               width: double.maxFinite,
-              height: 122,
+              height: 130,
             ),
             Align(
-              alignment: Alignment.center,
+              alignment: Alignment.topCenter,
               child: Container(
                 width: double.maxFinite,
-                height: 100,
-                padding: EdgeInsets.symmetric(vertical: 5),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                height: 130,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    Column(
-                      mainAxisSize: MainAxisSize.min,
+                    space(10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        space(5),
                         Text(
                           'پارچه',
-                          style: theme.textTheme.bodyText1
+                          style: theme.textTheme.bodyText1.copyWith(fontSize: 16),
                         ),
-                        space(5),
-                        Text(
-                          fabric.pieces + ' تیکه ',
-                          style: theme.textTheme.bodyText1,
-                        ),
-                        space(5),
-                        Text(
-                          fabric.manufacture,
-                          style: theme.textTheme.bodyText1,
-                        ),
-                        space(5),
+                        SizedBox(width: 10,),
                       ],
                     ),
-                    Column(
-                      mainAxisSize: MainAxisSize.min,
+                    space(6),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        space(5),
-                        Text(
-                          fabric.calite,
-                          style: theme.textTheme.bodyText1,
+                        Container(
+                          padding: EdgeInsets.only(bottom:3),
+                          margin: EdgeInsets.symmetric(horizontal: 20),
+                          decoration: BoxDecoration(
+                              border:Border(bottom: BorderSide(color: Colors.white.withOpacity(0.4),width: 1.5))
+                          ),
+                          child: Text(
+                            fabric.calite,
+                            style: theme.textTheme.headline1,
+                          ),
                         ),
-                        space(5),
-                        Text(
-                          fabric.color,
-                          style: theme.textTheme.bodyText1,
-                        ),
-                        space(5),
-                        Text(
-                          fabric.metric + 'متر ',
-                          style: theme.textTheme.bodyText1,
-                        ),
-                        space(5),
                       ],
+                    ),
+                    space(14),
+                    Container(
+                      margin: EdgeInsets.symmetric(horizontal: 20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            fabric.pieces+' تکه ',
+                            style: theme.textTheme.headline1,
+                          ),
+                          Text(
+                            fabric.color,
+                            style: theme.textTheme.headline1,
+                          ),
+                        ],
+                      ),
+                    ),
+                    space(7),
+                    Container(
+                      margin: EdgeInsets.symmetric(horizontal: 20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            fabric.manufacture,
+                            style: theme.textTheme.headline1,
+                          ),
+                          Text(
+                            fabric.metric+' متر ',
+                            style: theme.textTheme.headline1,
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),

@@ -9,11 +9,11 @@ import 'package:workshop/module/stockpile/item.dart';
 import 'package:workshop/request/query/insert.dart';
 import 'package:workshop/request/query/update.dart';
 import 'package:workshop/request/request.dart';
-import 'package:workshop/style/app_bar/stock_appbar.dart';
-import 'package:workshop/style/background/stock_background.dart';
+import 'package:workshop/style/app_bar/my_appbar.dart';
 import 'package:workshop/style/component/drop_down_background.dart';
 import 'package:workshop/style/component/default_textfield.dart';
 import 'package:workshop/style/component/dropdownWithOutNullSafety.dart';
+import 'package:workshop/style/theme/my_icons.dart';
 import 'package:workshop/style/theme/show_snackbar.dart';
 import 'package:workshop/style/theme/textstyle.dart';
 
@@ -44,11 +44,10 @@ class ExportFromStock extends StatelessWidget {
     TextEditingController amount = new TextEditingController();
 
     return Scaffold(
-      body: StockBackground(
-        child: SingleChildScrollView(
+      body: SingleChildScrollView(
           child: Column(
             children: [
-              StockAppbar(
+              MyAppbar(
                 title: 'خروج از انبار',
               ),
               space(20),
@@ -296,7 +295,7 @@ class ExportFromStock extends StatelessWidget {
                             ),
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: Text('j',style: MyTextStyle.iconStyle.copyWith(fontSize: 30),),
+                              child: Text(MyIcons.CHECK,style: MyTextStyle.iconStyle.copyWith(fontSize: 30),),
                             ),
                             onPressed: () async {
                               if (exportFromStockPileCubit.state.itemSelected == 'item') {
@@ -359,7 +358,7 @@ class ExportFromStock extends StatelessWidget {
                             ),
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: Text('e',style: MyTextStyle.iconStyle.copyWith(fontSize: 30),),
+                              child: Text(MyIcons.CANCEL,style: MyTextStyle.iconStyle.copyWith(fontSize: 30),),
                             ),
                             onPressed: () {
                               Navigator.pop(context);
@@ -375,7 +374,6 @@ class ExportFromStock extends StatelessWidget {
             ],
           ),
         ),
-      ),
     );
   }
 }

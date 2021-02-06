@@ -8,13 +8,13 @@ import 'package:workshop/module/stockpile/fabric_log.dart';
 import 'package:workshop/module/stockpile/item.dart';
 import 'package:workshop/module/stockpile/item_log.dart';
 import 'package:workshop/stock/calculate_stock.dart';
-import 'package:workshop/style/background/stock_background.dart';
 import 'package:workshop/style/component/dropdownWithOutNullSafety.dart';
 import 'package:workshop/style/component/stockpile/fabricCardMobile.dart';
 import 'package:workshop/style/component/stockpile/fabricCardTablet.dart';
 import 'package:workshop/style/component/stockpile/itemCardMobile.dart';
 import 'package:workshop/style/component/stockpile/itemCardTablet.dart';
 import 'package:workshop/style/device_detector.dart';
+import 'package:workshop/style/theme/my_icons.dart';
 import 'package:workshop/style/theme/textstyle.dart';
 
 class StockPage extends StatelessWidget {
@@ -83,129 +83,131 @@ class StockPage extends StatelessWidget {
         pageController.animateToPage(0,curve: Curves.easeIn,duration: Duration(milliseconds: 200));
         return false;
       },
-      child: StockBackground(
-        child: Column(
-          children: [
-            Container(
-              color: Colors.black.withOpacity(0.3),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                child: Row(
-                  children: [
-                    Expanded(
-                      flex: 1,
-                      child: Container(
-                        padding: EdgeInsets.symmetric(vertical: 8),
-                        height: 70,
-                        child: TextField(
-                          style: theme.textTheme.bodyText1,
-                          onChanged: onChange,
-                          decoration: InputDecoration(
-                            hintText: 'جستجو...',
-                            hintStyle: theme.textTheme.bodyText1
-                                .copyWith(color: Colors.white.withOpacity(0.5)),
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Colors.black.withOpacity(0.2),
-                                  width: 2.5),
-                            ),
-                            focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Colors.white.withOpacity(0.2),
-                                  width: 2.5),
-                            ),
-                            border: UnderlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: Colors.white, width: 1),
+      child: Scaffold(
+        body: SafeArea(
+          child: Column(
+            children: [
+              Container(
+                color: Colors.black.withOpacity(0.3),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                          padding: EdgeInsets.symmetric(vertical: 8),
+                          height: 70,
+                          child: TextField(
+                            style: theme.textTheme.bodyText1,
+                            onChanged: onChange,
+                            decoration: InputDecoration(
+                              hintText: 'جستجو...',
+                              hintStyle: theme.textTheme.bodyText1
+                                  .copyWith(color: Colors.white.withOpacity(0.5)),
+                              enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Colors.black.withOpacity(0.2),
+                                    width: 2.5),
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Colors.white.withOpacity(0.2),
+                                    width: 2.5),
+                              ),
+                              border: UnderlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Colors.white, width: 1),
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                      height: 40,
-                      width: 150,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Color(0xff3b4354),
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: BlocBuilder(
-                          cubit: categoryCubit,
-                          builder: (context, SingleDropDownItemState state) =>
-                              CustomDropdownButtonHideUnderline(
-                                child: CustomDropdownButton<String>(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  items: category.map((String value) {
-                                    return new CustomDropdownMenuItem<String>(
-                                      value: value,
-                                      child: new Text(
-                                        value,
-                                        style: theme.textTheme.headline6,
-                                      ),
-                                    );
-                                  }).toList(),
-                                  value: category
-                                      .where((element) => element == state.value)
-                                      .first,
-                                  onChanged: (value) {
-                                    categoryCubit.changeItem(value);
-                                    if (value == "همه") {
-                                      stockCategoryCubit.noFilter(allItems, device);
-                                    } else {
-                                      if (value == "پارچه") {
-                                        stockCategoryCubit.categoryFilter(
-                                            allItems, 'fabric', device);
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                        height: 40,
+                        width: 150,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Color(0xff3b4354),
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: BlocBuilder(
+                            cubit: categoryCubit,
+                            builder: (context, SingleDropDownItemState state) =>
+                                CustomDropdownButtonHideUnderline(
+                                  child: CustomDropdownButton<String>(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    items: category.map((String value) {
+                                      return new CustomDropdownMenuItem<String>(
+                                        value: value,
+                                        child: new Text(
+                                          value,
+                                          style: theme.textTheme.headline6,
+                                        ),
+                                      );
+                                    }).toList(),
+                                    value: category
+                                        .where((element) => element == state.value)
+                                        .first,
+                                    onChanged: (value) {
+                                      categoryCubit.changeItem(value);
+                                      if (value == "همه") {
+                                        stockCategoryCubit.noFilter(allItems, device);
                                       } else {
-                                        stockCategoryCubit.categoryFilter(
-                                            allItems, value, device);
+                                        if (value == "پارچه") {
+                                          stockCategoryCubit.categoryFilter(
+                                              allItems, 'fabric', device);
+                                        } else {
+                                          stockCategoryCubit.categoryFilter(
+                                              allItems, value, device);
+                                        }
                                       }
-                                    }
-                                  },
+                                    },
+                                  ),
                                 ),
-                              ),
+                          ),
                         ),
                       ),
-                    ),
-                    Container(
-                      width: 70,
-                      height: 40,
-                      child: TextButton(
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.resolveWith((states) => Color(0xff5e3443))
+                      Container(
+                        width: 70,
+                        height: 40,
+                        child: TextButton(
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.resolveWith((states) => Color(0xff5e3443))
+                          ),
+                          child: Text(MyIcons.ALERT,style: MyTextStyle.iconStyle.copyWith(fontSize: 25),),
+                          onPressed: () {
+                            stockCategoryCubit.warningFilter(allItems, device);
+                          },
                         ),
-                        child: Text('f',style: MyTextStyle.iconStyle.copyWith(fontSize: 25),),
-                        onPressed: () {
-                          stockCategoryCubit.warningFilter(allItems, device);
-                        },
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
-            device == 'phone'
-                ? BlocBuilder(
-                    cubit: stockCategoryCubit,
-                    builder: (BuildContext context, StockCategoryState state) {
-                      return Expanded(
-                          child: ListView(
+              device == 'phone'
+                  ? BlocBuilder(
+                      cubit: stockCategoryCubit,
+                      builder: (BuildContext context, StockCategoryState state) {
+                        return Expanded(
+                            child: ListView(
+                          children: state.myList,
+                        ));
+                      })
+                  : BlocBuilder(
+                      cubit: stockCategoryCubit,
+                      builder: (BuildContext context, StockCategoryState state) =>
+                          Expanded(
+                              child: GridView.count(
+                        childAspectRatio: (itemWidth / itemHeight),
+                        controller: new ScrollController(keepScrollOffset: false),
+                        crossAxisCount: 4,
                         children: state.myList,
-                      ));
-                    })
-                : BlocBuilder(
-                    cubit: stockCategoryCubit,
-                    builder: (BuildContext context, StockCategoryState state) =>
-                        Expanded(
-                            child: GridView.count(
-                      childAspectRatio: (itemWidth / itemHeight),
-                      controller: new ScrollController(keepScrollOffset: false),
-                      crossAxisCount: 4,
-                      children: state.myList,
-                    )),
-                  ),
-          ],
+                      )),
+                    ),
+            ],
+          ),
         ),
       ),
     );

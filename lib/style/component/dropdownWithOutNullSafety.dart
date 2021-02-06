@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:workshop/style/theme/my_icons.dart';
 import 'package:workshop/style/theme/textstyle.dart';
 
 
@@ -1006,7 +1007,7 @@ class _CustomDropdownButtonState<T> extends State<CustomDropdownButton<T>> with 
             //     ),
             //     child: widget.icon ?? defaultIcon,
             //   ),
-            widget.isExpanded ?Expanded(child: innerItemsWidget):Text('d',style: MyTextStyle.iconStyle,),
+            widget.isExpanded ?Expanded(child: innerItemsWidget):Text(MyIcons.CARET_DOWN,style: MyTextStyle.iconStyle,),
             Expanded(
               child: Row(
                 crossAxisAlignment: widget.crossAxisAlignment,

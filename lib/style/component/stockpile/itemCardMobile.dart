@@ -17,7 +17,7 @@ class ItemCardMobile extends StatelessWidget {
     ThemeData theme = Theme.of(context);
     return GestureDetector(
       onTap: (){
-        showDialog(context: context,builder: (context)=>ItemLogDialog(itemLogs: itemLogs,item: item,));
+        showDialog(context: context,builder: (context)=>ItemLogDialog(itemLogs: itemLogs,item: item,),barrierColor: Colors.transparent);
       },
       child: Container(
         margin: const EdgeInsets.all(8.0),
@@ -26,17 +26,6 @@ class ItemCardMobile extends StatelessWidget {
             borderRadius: BorderRadius.circular(5)),
         child: Stack(
           children: [
-            // Container(
-            //   width: double.maxFinite,
-            //   height: 122,
-            //   decoration: BoxDecoration(
-            //     image: DecorationImage(
-            //         image: item.category == "خرج کار"
-            //             ? AssetImage('asset/images/img_2.jpg')
-            //             : AssetImage('asset/images/img_1.jpg'),
-            //         fit: BoxFit.cover),
-            //   ),
-            // ),
             Container(
               decoration: BoxDecoration(
                 color:item.category == "خرج کار"?Color(0xff79a4a6).withOpacity(0.1):Color(0xffab6954).withOpacity(0.1),

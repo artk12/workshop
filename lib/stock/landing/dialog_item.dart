@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:workshop/module/stockpile/item.dart';
 import 'package:workshop/module/stockpile/item_log.dart';
+import 'package:workshop/style/component/stockpile/log_dialog_fabric_bg.dart';
 import 'package:workshop/style/component/stockpile/log_dialog_item_bg.dart';
 import 'package:workshop/style/component/stockpile/stock_log_dialog_Card.dart';
 
@@ -14,7 +15,7 @@ class ItemLogDialog extends StatelessWidget {
     List<ItemLog> currentItemLog =
         itemLogs.where((element) => element.itemId == item.id).toList();
 
-    return DialogItemBg(
+    return FabricDialogBg(
       maxWidth: 400,
       child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
