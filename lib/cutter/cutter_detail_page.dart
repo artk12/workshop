@@ -218,7 +218,7 @@ class CutterDetailPage extends StatelessWidget {
               children: [
                 Expanded(
                   child: DefaultTextField(
-                    label: "مصرف مفید",
+                    label: "مصرف واقعی",
                     textEditingController: realUsage,
                     textInputType: TextInputType.number,
                     readOnly: true,
