@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:workshop/module/stockpile/fabric.dart';
 import 'package:workshop/module/stockpile/fabric_log.dart';
 import 'package:workshop/stock/calculate_stock.dart';
-import 'package:workshop/style/component/stockpile/log_dialog_fabric_bg.dart';
+import 'package:workshop/style/component/stockpile/dialog_background_blur.dart';
 import 'package:workshop/style/component/stockpile/fabric_log_card.dart';
 
 class FabricLogDialog extends StatelessWidget {

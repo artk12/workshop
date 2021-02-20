@@ -104,13 +104,6 @@ class StockLandingPage extends StatelessWidget {
                         ),
                       ),
                     ),
-                    // ListTile(
-                    //   title: Text(
-                    //     'پیام ها',
-                    //     style: theme.textTheme.headline2,
-                    //   ),
-                    //   onTap: () {},
-                    // ),
                     ListTile(
                       title: Text('انبار', style: theme.textTheme.headline2),
                       onTap: () {
@@ -120,25 +113,6 @@ class StockLandingPage extends StatelessWidget {
                             curve: Curves.easeIn);
                       },
                     ),
-                    // ListTile(
-                    //   title: Text('هشدارها', style: theme.textTheme.headline2),
-                    //   onTap: () {
-                    //     _scaffoldKey.currentState.openEndDrawer();
-                    //     pageController.animateToPage(1,
-                    //         duration: Duration(milliseconds: 250),
-                    //         curve: Curves.easeIn);
-                    //   },
-                    // ),
-                    // ListTile(
-                    //   title: Text('ورودی و خروجی ها',
-                    //       style: theme.textTheme.headline2),
-                    //   onTap: () {
-                    //     _scaffoldKey.currentState.openEndDrawer();
-                    //     pageController.animateToPage(1,
-                    //         duration: Duration(milliseconds: 250),
-                    //         curve: Curves.easeIn);
-                    //   },
-                    // ),
                   ],
                 ),
               ),

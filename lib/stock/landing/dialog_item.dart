@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:workshop/module/stockpile/item.dart';
 import 'package:workshop/module/stockpile/item_log.dart';
-import 'package:workshop/style/component/stockpile/log_dialog_fabric_bg.dart';
-import 'package:workshop/style/component/stockpile/log_dialog_item_bg.dart';
+import 'package:workshop/style/component/stockpile/dialog_background_blur.dart';
 import 'package:workshop/style/component/stockpile/stock_log_dialog_Card.dart';
 
 class ItemLogDialog extends StatelessWidget {
@@ -12,8 +11,7 @@ class ItemLogDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<ItemLog> currentItemLog =
-        itemLogs.where((element) => element.itemId == item.id).toList();
+    List<ItemLog> currentItemLog = itemLogs.where((element) => element.itemId == item.id).toList();
 
     return BlurDialogBg(
       maxWidth: 400,

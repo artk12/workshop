@@ -19,18 +19,19 @@ class MessageCard extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         showDialog(
-            context: context,
-            builder: (context) => DialogBg(
-                  child: Padding(
-                    padding: EdgeInsets.all(15),
-                    child: SingleChildScrollView(
-                      child: Text(
-                        message.message,
-                        style: theme.textTheme.headline6,
-                      ),
-                    ),
-                  ),
-                ));
+          context: context,
+          builder: (context) => DialogBg(
+            child: Padding(
+              padding: EdgeInsets.all(15),
+              child: SingleChildScrollView(
+                child: Text(
+                  message.message,
+                  style: theme.textTheme.headline6,
+                ),
+              ),
+            ),
+          ),
+        );
       },
       child: Container(
         constraints: BoxConstraints(maxWidth: 200, minWidth: 150),

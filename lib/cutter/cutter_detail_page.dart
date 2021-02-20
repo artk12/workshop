@@ -3,7 +3,7 @@ import 'package:workshop/cutter/calculate_cutter.dart';
 import 'package:workshop/module/cutter/cut.dart';
 import 'package:workshop/style/app_bar/my_appbar.dart';
 import 'package:workshop/style/component/default_textfield.dart';
-import 'package:workshop/style/component/stockpile/log_dialog_fabric_bg.dart';
+import 'package:workshop/style/component/stockpile/dialog_background_blur.dart';
 import 'cutter_page.dart';
 
 class Pieces {

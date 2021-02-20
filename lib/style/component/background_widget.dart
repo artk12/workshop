@@ -14,13 +14,13 @@ class BackgroundWidget extends StatelessWidget {
       width: width,
       height: height,
       decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 15,
-            spreadRadius: 1,
-          )
-        ],
+        // boxShadow: [
+        //   BoxShadow(
+        //     color: Colors.black.withOpacity(0.1),
+        //     blurRadius: 5,
+        //     spreadRadius: 1,
+        //   )
+        // ],
       ),
       child: Container(
         padding: EdgeInsets.all(7),

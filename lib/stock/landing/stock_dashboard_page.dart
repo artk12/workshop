@@ -6,7 +6,7 @@ import 'package:workshop/module/stockpile/item_log.dart';
 import 'package:workshop/module/stockpile/message.dart';
 import 'package:workshop/module/stockpile/warning.dart';
 import 'package:workshop/stock/calculate_stock.dart';
-import 'package:workshop/style/component/dashboard_card_background_blur.dart';
+import 'package:workshop/style/component/dashboard_card_background.dart';
 import 'package:workshop/style/component/message_stock_Card.dart';
 import 'package:workshop/style/component/stockpile/stock_log_dialog_Card.dart';
 import 'package:workshop/style/component/stockpile/stock_stock_Card.dart';
@@ -66,7 +66,7 @@ class StockDashboardPage extends StatelessWidget {
             SizedBox(
               height: 20,
             ),
-            DashboardCardBackgroundBlur(
+            DashboardCardBackground(
               child: Container(
                 height: 200,
                 width: double.maxFinite,
@@ -91,7 +91,7 @@ class StockDashboardPage extends StatelessWidget {
             SizedBox(
               height: 20,
             ),
-            DashboardCardBackgroundBlur(
+            DashboardCardBackground(
               child: Container(
                 height: 200,
                 width: double.maxFinite,
@@ -137,7 +137,7 @@ class StockDashboardPage extends StatelessWidget {
             SizedBox(
               height: 20,
             ),
-            DashboardCardBackgroundBlur(
+            DashboardCardBackground(
               child: Container(
                 height: 200,
                 width: double.maxFinite,
@@ -173,7 +173,7 @@ class StockDashboardPage extends StatelessWidget {
             SizedBox(
               height: 20,
             ),
-            DashboardCardBackgroundBlur(
+            DashboardCardBackground(
               child: Container(
                 height: 200,
                 width: double.maxFinite,

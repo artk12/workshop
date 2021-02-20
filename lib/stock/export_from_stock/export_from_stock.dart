@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-// ignore: import_of_legacy_library_into_null_safe
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workshop/bloc/ignoreButtonsBloc.dart';
 import 'package:workshop/bloc/stockpile/export_from_stock_bloc.dart';
@@ -18,7 +17,6 @@ import 'package:workshop/style/theme/show_snackbar.dart';
 import 'package:workshop/style/theme/textstyle.dart';
 
 class ExportFromStock extends StatelessWidget {
-  // final List<ItemName>? itemNamesAvailable;
   final List<Item> items;
   final List<Fabric> fabrics;
   ExportFromStock({this.items, this.fabrics});
