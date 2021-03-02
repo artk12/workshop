@@ -29,7 +29,8 @@ class CutDetail {
       this.manufacture,
       this.fabricDescription,
       this.projectDescription,
-      this.projectId,this.size});
+      this.projectId,
+      this.size});
 
   factory CutDetail.formJson(Map map) {
     return CutDetail(

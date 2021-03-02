@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:workshop/bloc/refresh_provider.dart';
 import 'package:workshop/publish_manager/publish_manager.dart';
+import 'package:workshop/request/mylist.dart';
 import 'package:workshop/stock/import_to_stock/update_item.dart';
 import 'package:workshop/stock/import_to_stock/add_fabric_item.dart';
 import 'package:workshop/stock/import_to_stock/add_new_item.dart';
@@ -30,12 +32,17 @@ class MyApp extends StatelessWidget {
         // '/': (context) => StockHomePage(),
       },
       theme: light,
-      home: FutureProvider(
-        // create: (_)=>MyRequest.getUserDetail('091764688333', '1243'),
-        create: (_)async{
-          return User(id: '1',user: '09176468332',pass: '1243',side: 'مدیرتولید',profile: 'sss',name: 'مسلم بایرامی');
-        },
-        child: PublishManager(),
+      home: ChangeNotifierProvider.value(
+        value: RefreshProvider(),
+        child: MultiProvider(
+          providers: [
+            FutureProvider(create: (_)async{return User(id: '1',user: '09176468332',pass: '1243',side: 'مدیرتولید',profile: 'sss',name: 'مسلم بایرامی');},),
+            FutureProvider(create: (_)=>MyList().getPersonnelList()),
+            FutureProvider(create: (_)=>MyList().getTaskList()),
+            FutureProvider(create: (_)=>MyList().getCutList(),),
+          ],
+          child: PublishManager(),
+        ),
       ),
       // home: Cutter(),
       // home: GeneralManager(),

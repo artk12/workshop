@@ -1,45 +1,59 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:workshop/module/publish_manager/personnel.dart';
+import 'package:workshop/module/publish_manager/task.dart';
+import 'package:workshop/time_format.dart';
 
 class PersonnelAssignmentCard extends StatelessWidget {
+  final Personnel personnel;
+  final List<AssignTaskPersonnel> assignPersonnelTasks;
+  final String cutCode;
+  PersonnelAssignmentCard({this.personnel,this.assignPersonnelTasks,this.cutCode});
+
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
-    Widget tasks() {
+    Widget taskItem(AssignTaskPersonnel a) {
       return Container(
         margin: EdgeInsets.only(bottom: 4),
         child: Row(
           children: [
-            // Text('#',style: theme.textTheme.headline6.copyWith(fontSize: 10),),
             Text(
-              "701" + "_" + "30" + "_" + "1",
+              a.cutCode,
               style: theme.textTheme.headline6.copyWith(fontSize: 10),
             ),
             SizedBox(
               width: 5,
             ),
             Text(
-              'زیپ',
+              a.name,
               style: theme.textTheme.headline4,
             ),
             Expanded(
               child: Container(),
             ),
             Text(
-              'x 50',
+              'x ${a.number}',
               style: theme.textTheme.headline5,
             ),
             SizedBox(
               width: 5,
             ),
             Text(
-              '00:40',
+              TimeFormat.timeFormatFromDuration(Duration(seconds: a.time)),
               style: theme.textTheme.headline6,
             ),
           ],
         ),
       );
     }
+
+    int allTaskDuration = 0;
+
+    assignPersonnelTasks.forEach((element) {
+      allTaskDuration +=element.time;
+    });
+
 
     return Container(
       margin: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
@@ -52,7 +66,7 @@ class PersonnelAssignmentCard extends StatelessWidget {
             padding: EdgeInsets.only(top: 6, left: 5, right: 5),
             width: double.maxFinite,
             child: Text(
-              "حرفه ای",
+              personnel.level,
               style: theme.textTheme.headline6,
               textAlign: TextAlign.end,
             ),
@@ -65,7 +79,7 @@ class PersonnelAssignmentCard extends StatelessWidget {
                 Container(
                   width: double.maxFinite,
                   child: Text(
-                    "پرسنل",
+                    personnel.name,
                     style: theme.textTheme.headline3,
                     textAlign: TextAlign.start,
                   ),
@@ -73,8 +87,9 @@ class PersonnelAssignmentCard extends StatelessWidget {
                 SizedBox(
                   height: 8,
                 ),
-                tasks(),
-                tasks(),
+                Column(
+                  children: List.generate(assignPersonnelTasks.length, (index) => taskItem(assignPersonnelTasks[index])),
+                )
               ],
             ),
           ),
@@ -87,7 +102,7 @@ class PersonnelAssignmentCard extends StatelessWidget {
               color: Colors.white12,
               borderRadius: BorderRadius.circular(10),
             ),
-            child: Center(child: Text("مدت زمان وظایف : "+"7:20",style: theme.textTheme.headline6,)),
+            child: Center(child: Text("مدت زمان فعالیت : "+TimeFormat.timeFormatFromDuration(Duration(seconds: allTaskDuration)),style: theme.textTheme.headline6,)),
           ),
         ],
       ),

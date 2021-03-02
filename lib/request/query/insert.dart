@@ -49,6 +49,15 @@ class Insert {
             " ('$projectId','$fabricId','$realUsage','$usage','$height','$pieces','$totalGoods','$cutCode','$description','$year','$month','$day')";
   }
 
+  static String queryInsertPersonnel(String name,String nationalCode,String fatherName,String birthDay,String hireDate,String position,String level ){
+    return "INSERT INTO `user`(`name`, `national_code`, `father_name`, `birth_date`, `hire_date`, `position`, `level`) "
+        "VALUES ('$name','$nationalCode','$fatherName','$birthDay','$hireDate','$position','$level')";
+  }
+
+  static String queryInsertTask(String name,String expertTime,String amateurTime,String internTime){
+    return "INSERT INTO `task`(`name`, `expert_time`, `amateur_time`, `intern_time`) VALUES ('$name','$expertTime','$amateurTime','$internTime')";
+  }
+
   // static String queryInputToFabricLog(String fabricId,int year,int month,int day){
   //   return "INSERT INTO `stock_pile_fabric_logs`(`fabric_id`,`person`, `log`, `description`, `year`, `month`, `day`) VALUES ('$fabricId','-','1','-','$year','$month','$day')";
   // }

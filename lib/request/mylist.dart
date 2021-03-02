@@ -1,11 +1,13 @@
 
 import 'dart:convert';
 import 'package:workshop/module/cutter/cut.dart';
+import 'package:workshop/module/publish_manager/task.dart';
 import 'package:workshop/module/stockpile/fabric.dart';
 import 'package:workshop/module/stockpile/fabric_log.dart';
 import 'package:workshop/module/stockpile/item.dart';
 import 'package:workshop/module/stockpile/item_log.dart';
 import 'package:workshop/module/stockpile/message.dart';
+import 'package:workshop/module/publish_manager/personnel.dart';
 import 'package:workshop/request/query/get_data.dart';
 import 'package:workshop/request/request.dart';
 
@@ -59,5 +61,20 @@ class MyList {
     List<Cut> items = json.map<Cut>((json) => Cut.fromJson(json)).toList();
     return items;
   }
+
+  Future<List<Personnel>> getPersonnelList()async{
+    String body = await MyRequest.simpleQueryRequest('stockpile/getResult.php',GetData.getAllUser);
+    final  json = jsonDecode(body).cast<Map<String, dynamic>>();
+    List<Personnel> items = json.map<Personnel>((json) => Personnel.fromJson(json)).toList();
+    return items;
+  }
+
+  Future<List<Task>> getTaskList()async{
+    String body = await MyRequest.simpleQueryRequest('stockpile/getResult.php',GetData.getAllTask);
+    final  json = jsonDecode(body).cast<Map<String, dynamic>>();
+    List<Task> items = json.map<Task>((json) => Task.fromJson(json)).toList();
+    return items;
+  }
+
 
 }

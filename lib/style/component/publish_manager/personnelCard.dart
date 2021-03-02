@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:workshop/module/publish_manager/personnel.dart';
 import 'package:workshop/request/request.dart';
 
-class PersonnelCard extends StatelessWidget {
-  @override
+class PersonnelCard extends StatelessWidget{
+  final Personnel personnel;
+  PersonnelCard({this.personnel});
+
+@override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     Color red = Color(0xffff5858);
@@ -27,7 +31,7 @@ class PersonnelCard extends StatelessWidget {
           ),
           SizedBox(height: 10,),
           Text(
-            "پرسنل",
+            personnel.name,
             style: theme.textTheme.headline3,
           ),
           SizedBox(
@@ -43,33 +47,34 @@ class PersonnelCard extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          "تاریخ تولد :‌ "+"1398/9/9",
+                          "تاریخ تولد :‌ "+personnel.birthDay,
                           style: theme.textTheme.headline6,
                           textAlign: TextAlign.start,
                         ),
                         space,
                         Text(
-                          "تاریخ استخدام :‌ "+"1398/9/9",
+                          "تاریخ استخدام :‌ "+personnel.hireDate,
                           style: theme.textTheme.headline6,
                         ),
                         space,
                         Text(
-                          "سطح :‌ "+"متوسظ",
+                          "سطح :‌ "+personnel.level,
                           style: theme.textTheme.headline6,
                         ),
                         space,
                         Text(
-                          "موقعیت :‌ "+"خیاط",
+                          "موقعیت :‌ "+personnel.position,
                           style: theme.textTheme.headline6,
                         ),
                         space,
+                        //TODO personnel offline date
                         Text(
                           "روزهای آفلاین این ماه : "+"3",
                           style: theme.textTheme.headline6,
                         ),
                         space,
                         Text(
-                          "سطح :‌‌ "+"خیاط",
+                          "سطح :‌‌ "+personnel.level,
                           style: theme.textTheme.headline6,
                         ),
                       ],
@@ -77,6 +82,7 @@ class PersonnelCard extends StatelessWidget {
                   ),
                 ),
               ),
+              //TODO : personnel score and warning
               Expanded(
                 child: Container(
                   child: Center(

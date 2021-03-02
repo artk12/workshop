@@ -11,5 +11,9 @@ class GetData{
   static String getUser(String user,String pass ){
     return "SELECT `ID`, `name`, `side`, `profile_address`, `user`, `pass` FROM `super_users` WHERE  `user`='$user' AND `pass`='$pass'";
   }
-  //--------------------------------------------
+  //--------------------------------------------publish manager
+  static final String getAllUser = "SELECT * FROM `user`";
+  static final String getAllTask = "SELECT * FROM `task`";
+
+
 }

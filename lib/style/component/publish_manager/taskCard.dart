@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:workshop/module/publish_manager/task.dart';
 
 class TaskCard extends StatelessWidget {
+  final Task task;
+  TaskCard({this.task});
+
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
@@ -17,8 +21,32 @@ class TaskCard extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text("زیپ",style: theme.textTheme.headline4,),
-          Text("00:44",style: theme.textTheme.headline4,),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Row(
+                children: [
+                  Text("حرفه ای : ",style: theme.textTheme.headline6,),
+                  Text(task.expertTime,style: theme.textTheme.headline4,),
+                ],
+              ),
+              SizedBox(height: 5,),
+              Row(
+                children: [
+                  Text("تازه کار : ",style: theme.textTheme.headline6,),
+                  Text(task.amateurTime,style: theme.textTheme.headline4,),
+                ],
+              ),
+              SizedBox(height: 5,),
+              Row(
+                children: [
+                  Text("کارآموز : ",style: theme.textTheme.headline6,),
+                  Text(task.internTime,style: theme.textTheme.headline4,),
+                ],
+              ),
+            ],
+          ),
+          Text(task.name,style: theme.textTheme.headline4,),
         ],
       ),
     );

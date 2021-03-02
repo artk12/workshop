@@ -32,6 +32,7 @@ dependencies:
   bloc:
   flutter_bloc:
   shamsi_date:
+  numberpicker:
 
 dev_dependencies:
   flutter_test:

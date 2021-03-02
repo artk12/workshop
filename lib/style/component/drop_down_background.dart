@@ -15,11 +15,11 @@ class DropDownBackground extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.3),
-              blurRadius: 15,
-              spreadRadius: 1,
-            )
+            // BoxShadow(
+            //   color: Colors.black.withOpacity(0.3),
+            //   blurRadius: 15,
+            //   spreadRadius: 1,
+            // )
           ],
         ),
         child: Container(

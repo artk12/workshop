@@ -25,7 +25,10 @@ class MyRequest {
   }
 
   static Future<String> simpleQueryRequest(String url, String query) async {
-    http.Response response = await http.post(baseUrl + url, body: {'query': query});
+    http.Response response = await http.post(baseUrl + url, body: {'query': query}).onError((error, stackTrace) => null);
+    if(response == null){
+      return "not ok";
+    }
     return response.body;
   }
 
