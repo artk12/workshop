@@ -10,6 +10,8 @@ import 'package:workshop/publish_manager/dashboard.dart';
 import 'package:workshop/publish_manager/monitoring.dart';
 import 'package:workshop/publish_manager/personnel.dart';
 import 'package:workshop/publish_manager/tasks.dart';
+import 'package:workshop/request/mylist.dart';
+import 'package:workshop/request/request.dart';
 import 'package:workshop/stock/loading_page.dart';
 import 'package:workshop/style/app_bar/my_appbar.dart';
 import 'package:workshop/style/component/my_icon_button.dart';
@@ -19,7 +21,7 @@ import 'drawer_menu.dart';
 class PublishManager extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    PageController pageController = new PageController(initialPage: 3);
+    PageController pageController = new PageController(initialPage: 1);
     GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
     User user = Provider.of<User>(context);
     List<Personnel> staff = Provider.of<List<Personnel>>(context);
@@ -68,10 +70,23 @@ class PublishManager extends StatelessWidget {
                       physics: NeverScrollableScrollPhysics(),
                       children: [
                         Dashboard(),
-                        MonitoringPage(),
-                        PersonnelPage(staff: staff,refreshProvider:refreshProvider),
-                        AssignmentPage(cuts:cuts,tasks: tasks,personnel: personnel,),
-                        TasksPage(tasks: tasks,refreshProvider: refreshProvider,),
+                        StreamProvider.value(
+                          value: MyList.getRealAssignmentTask(),
+                          child: MonitoringPage(
+                            personnel: personnel,
+                          ),
+                        ),
+                        PersonnelPage(
+                            staff: staff, refreshProvider: refreshProvider),
+                        AssignmentPage(
+                          cuts: cuts,
+                          tasks: tasks,
+                          personnel: personnel,
+                        ),
+                        TasksPage(
+                          tasks: tasks,
+                          refreshProvider: refreshProvider,
+                        ),
                       ],
                     ),
                   )

@@ -1,14 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:workshop/module/publish_manager/personnel.dart';
+import 'package:workshop/module/publish_manager/task.dart';
 import 'package:workshop/style/component/publish_manager/monitor_card.dart';
 import 'package:workshop/style/theme/my_icons.dart';
 import 'package:workshop/style/theme/textstyle.dart';
 
 class MonitoringPage extends StatelessWidget {
+  final List<Personnel> personnel;
+  MonitoringPage({this.personnel});
+
   @override
   Widget build(BuildContext context) {
+    List<AssignTaskPersonnel> tasks = Provider.of<List<AssignTaskPersonnel>>(context)??[];
+
     ThemeData theme = Theme.of(context);
     void onChange(String val) {}
-
     return SafeArea(
       child: Column(
         children: [

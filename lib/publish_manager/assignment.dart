@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workshop/bloc/publishManager/assign_personnel.dart';
@@ -6,10 +8,11 @@ import 'package:workshop/module/cutter/cut.dart';
 import 'package:workshop/module/publish_manager/personnel.dart';
 import 'package:workshop/module/publish_manager/task.dart';
 import 'package:workshop/publish_manager/dialog_new_task.dart';
+import 'package:workshop/request/request.dart';
 import 'package:workshop/style/component/default_button.dart';
 import 'package:workshop/style/component/publish_manager/personnel_assignment.dart';
 import 'package:workshop/style/component/publish_manager/task_assignment.dart';
-
+import 'package:workshop/style/theme/show_snackbar.dart';
 import 'dialog_assign_task.dart';
 
 class AssignmentPage extends StatelessWidget {
@@ -35,6 +38,40 @@ class AssignmentPage extends StatelessWidget {
           Row(
             children: [
               DefaultButton(
+                title: 'ثبت',
+                backgroundColor: Colors.green.withOpacity(0.4),
+                onPressed: () async {
+                  if(assignPersonnelCubit.state.assignments.length == 0){
+                    MyShowSnackBar.showSnackBar(context, "هیچ فعالیتی برای نیروی کار در نظر گرفته نشده است.");
+                  }else{
+                    List<Map> mapList = [];
+                    DateTime dateTime = DateTime.now();
+                    assignPersonnelCubit.state.assignments.forEach((element) {
+                      Map map = {};
+                      map['name'] = element.name;
+                      map['assignDateTime'] = dateTime.toString().substring(0,19);
+                      map['time'] = element.time;
+                      map['cutCode'] = element.cutCode;
+                      map['number'] = element.number;
+                      map['personnelId'] = element.personnel.id;
+                      mapList.add(map);
+                    });
+                    MyShowSnackBar.showSnackBar(context, "کمی صبر کنید...");
+                    await MyRequest.insertAssignRequest(jsonEncode(mapList));
+                    MyShowSnackBar.hideSnackBar(context);
+                    Navigator.of(context).pop();
+                  }
+                },
+              ),
+              DefaultButton(
+                title: 'لغو',
+                backgroundColor: Colors.red.withOpacity(0.4),
+                onPressed: () async {
+                  Navigator.pop(context);
+                },
+              ),
+
+              DefaultButton(
                 title: 'تنظیم مجدد',
                 onPressed: (){
                   assignTaskCubit.refresh();
@@ -56,6 +93,7 @@ class AssignmentPage extends StatelessWidget {
                   }
                 },
               ),
+
             ],
           ),
           SizedBox(
@@ -98,13 +136,11 @@ class AssignmentPage extends StatelessWidget {
                                 List<dynamic> rejectedData) =>
                             PersonnelAssignmentCard(
                           personnel: personnel[index],
-                          // cutCode: c,
                           assignPersonnelTasks: state.assignments.where(
                               (element) =>
                                   element.personnel == personnel[index]).toList(),
                         ),
                         onAccept: (AssignmentTask data) async {
-
                           AssignTaskPersonnel a = await showDialog(
                               context: context,
                               builder: (context) => AssignTaskDialog(

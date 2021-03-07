@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:workshop/bloc/publishManager/timer_personnel.dart';
 import 'package:workshop/request/request.dart';
+import 'package:workshop/time_format.dart';
 
 import 'CircleProgress.dart';
 
@@ -10,6 +13,7 @@ class MonitorCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
+
     return Container(
       constraints: BoxConstraints(maxWidth: maxWidth, minWidth: 150),
       margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
@@ -23,7 +27,7 @@ class MonitorCard extends StatelessWidget {
           Container(
             width: double.maxFinite,
             child: Text(
-              '#'+'36_1_107',
+              '#' + '107-3-28',
               style: theme.textTheme.headline6,
               textAlign: TextAlign.end,
             ),
@@ -94,8 +98,10 @@ class MyCircularProgress extends StatefulWidget {
   _MyCircularProgressState createState() => _MyCircularProgressState();
 }
 
-class _MyCircularProgressState extends State<MyCircularProgress> {
+class _MyCircularProgressState extends State<MyCircularProgress> with SingleTickerProviderStateMixin{
   ThemeData theme(context) => Theme.of(context);
+  TimerPersonnelCubit cubit = new TimerPersonnelCubit(TimerPersonnelState(currentPercent: 100));
+  Duration d = Duration(minutes: 40);
   @override
   void initState() {
     super.initState();
@@ -106,23 +112,51 @@ class _MyCircularProgressState extends State<MyCircularProgress> {
     return Container(
       height: 150,
       width: 150,
-      child: CustomPaint(
-        foregroundPainter: CircleProgress(50),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              "32:30",
-              style: theme(context).textTheme.headline2,
-            ),
-            SizedBox(
-              height: 5,
-            ),
-            Text(
-              "10:30",
-              style: theme(context).textTheme.headline5,
-            ),
-          ],
+      child: BlocBuilder(
+        cubit: cubit,
+        builder: (BuildContext context, TimerPersonnelState state) => CustomPaint(
+          foregroundPainter: CircleProgress(state.currentPercent),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TweenAnimationBuilder<Duration>(
+                duration: d,
+                tween: Tween(begin: Duration(minutes: 40), end: Duration.zero),
+                onEnd: () {
+                  print('Timer ended');
+                },
+                builder: (BuildContext context, Duration value, Widget child) {
+                  cubit.updatePercent(d.inSeconds, value.inSeconds);
+                  String t = TimeFormat.timeFormatFromDuration(value);
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 5),
+                    child: Text('$t',
+                        textAlign: TextAlign.center,
+                        style: theme(context).textTheme.headline1),
+                  );
+                },
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              TweenAnimationBuilder<Duration>(
+                duration: d,
+                tween: Tween(end: Duration(minutes: 40), begin: Duration.zero),
+                onEnd: () {
+                  print('Timer ended');
+                },
+                builder: (BuildContext context, Duration value, Widget child) {
+                  String t = TimeFormat.timeFormatFromDuration(value);
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 5),
+                    child: Text('$t',
+                        textAlign: TextAlign.center,
+                        style: theme(context).textTheme.headline6),
+                  );
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );

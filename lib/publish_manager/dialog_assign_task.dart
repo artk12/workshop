@@ -99,7 +99,7 @@ class AssignTaskDialog extends StatelessWidget {
                         child: BlocBuilder(
                           cubit: dialogTimeCubit,
                           builder:(BuildContext context,DialogMessageState state) => Text(
-                            "TPU\n\n${state.message}",
+                            "زمان کل"+"\n\n${state.message}",
                             textAlign: TextAlign.center,
                           ),
                         ),

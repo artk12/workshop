@@ -76,5 +76,15 @@ class MyList {
     return items;
   }
 
+  static Stream<List<AssignTaskPersonnel>> getRealAssignmentTask()async*{
+    List<AssignTaskPersonnel> items = [];
+    while(true){
+      String body = await MyRequest.simpleQueryRequest('stockpile/getResult.php',GetData.getAssignments);
+      final  json = jsonDecode(body).cast<Map<String, dynamic>>();
+      items = json.map<AssignTaskPersonnel>((json) => AssignTaskPersonnel.fromJson(json)).toList();
+      yield items;
+    }
+  }
+
 
 }

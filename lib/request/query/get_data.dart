@@ -14,6 +14,6 @@ class GetData{
   //--------------------------------------------publish manager
   static final String getAllUser = "SELECT * FROM `user`";
   static final String getAllTask = "SELECT * FROM `task`";
-
+  static final String getAssignments = "SELECT * FROM `assignment`";
 
 }

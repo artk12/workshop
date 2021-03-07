@@ -24,6 +24,14 @@ class MyRequest {
     return response.body;
   }
 
+  static Future<String> insertAssignRequest(String json) async {
+    http.Response response = await http.post(baseUrl + 'publish_manager/insertAssign.php', body: {'assignJson': json}).onError((error, stackTrace) => null);
+    if(response == null){
+      return "not ok";
+    }
+    return response.body;
+  }
+
   static Future<String> simpleQueryRequest(String url, String query) async {
     http.Response response = await http.post(baseUrl + url, body: {'query': query}).onError((error, stackTrace) => null);
     if(response == null){

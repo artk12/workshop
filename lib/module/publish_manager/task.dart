@@ -75,5 +75,14 @@ class AssignTaskPersonnel{
   String name;
   Personnel personnel;
   String cutCode;
-  AssignTaskPersonnel({this.time,this.name,this.number,this.personnel,this.cutCode});
+  String startDateTime;
+  String endDateTime;
+  String assignDateTime;
+  AssignTaskPersonnel({this.time,this.name,this.number,this.personnel,this.cutCode,this.endDateTime,this.startDateTime,this.assignDateTime});
+
+  factory AssignTaskPersonnel.fromJson(Map map){
+    return AssignTaskPersonnel(
+      
+    );
+  }
 }
