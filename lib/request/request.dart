@@ -32,6 +32,14 @@ class MyRequest {
     return response.body;
   }
 
+  static Future<String> pauseAllRequest(String json) async {
+    http.Response response = await http.post(baseUrl + 'publish_manager/pauseAll.php', body: {'pausePlay': json}).onError((error, stackTrace) => null);
+    if(response == null){
+      return "not ok";
+    }
+    return response.body;
+  }
+
   static Future<String> simpleQueryRequest(String url, String query) async {
     http.Response response = await http.post(baseUrl + url, body: {'query': query}).onError((error, stackTrace) => null);
     if(response == null){

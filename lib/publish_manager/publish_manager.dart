@@ -11,16 +11,19 @@ import 'package:workshop/publish_manager/monitoring.dart';
 import 'package:workshop/publish_manager/personnel.dart';
 import 'package:workshop/publish_manager/tasks.dart';
 import 'package:workshop/request/mylist.dart';
-import 'package:workshop/request/request.dart';
 import 'package:workshop/stock/loading_page.dart';
 import 'package:workshop/style/app_bar/my_appbar.dart';
 import 'package:workshop/style/component/my_icon_button.dart';
+import 'package:workshop/style/component/publish_manager/timeControllerProvider.dart';
 import 'package:workshop/style/theme/my_icons.dart';
 import 'drawer_menu.dart';
 
+// ignore: must_be_immutable
 class PublishManager extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
+
     PageController pageController = new PageController(initialPage: 1);
     GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
     User user = Provider.of<User>(context);
@@ -28,6 +31,8 @@ class PublishManager extends StatelessWidget {
     List<Task> tasks = Provider.of<List<Task>>(context);
     List<Cut> cuts = Provider.of<List<Cut>>(context);
     List<Personnel> personnel = Provider.of<List<Personnel>>(context);
+    List<TimerControllerProviderState>  n = [];
+    TimerControllerProvider timerControllerProvider = TimerControllerProvider(timerControllerProviderState: n);
 
     RefreshProvider refreshProvider = Provider.of<RefreshProvider>(context);
 
@@ -70,10 +75,16 @@ class PublishManager extends StatelessWidget {
                       physics: NeverScrollableScrollPhysics(),
                       children: [
                         Dashboard(),
-                        StreamProvider.value(
-                          value: MyList.getRealAssignmentTask(),
-                          child: MonitoringPage(
-                            personnel: personnel,
+                        // MonitoringPage(
+                        //   personnel: personnel,
+                        // ),
+                        ChangeNotifierProvider(
+                          create: (_)=>timerControllerProvider,
+                          child: StreamProvider(
+                            create:(_)=> MyList.getRealAssignmentTask(personnel),
+                            child: MonitoringPage(
+                              personnel: personnel,
+                            ),
                           ),
                         ),
                         PersonnelPage(

@@ -15,4 +15,15 @@ class Update {
       String warning) {
     return "UPDATE `item` SET `quantifier_one`='$firstQuantifier',`quantify`='$quantify',`category`='$category',`warning`='$warning' WHERE `ID`='$itemId'";
   }
+
+  static String pauseMonitorCard({String pauseDateTime,String play,String score,String id,String remainingTime}){
+    return "UPDATE `assignment` SET `pause_date_time`='$pauseDateTime',`play`='$play',`score`='$score',`remaining_time`='$remainingTime' WHERE `ID`='$id'";
+  }
+  static String playMonitorCard({String play,String id}){
+    return "UPDATE `assignment` SET `play`='$play' WHERE `ID`='$id'";
+  }
+
+  static String playAllMonitorCard(){
+    return "UPDATE `assignment` SET `play`='1' ";
+  }
 }

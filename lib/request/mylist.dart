@@ -1,6 +1,9 @@
 
 import 'dart:convert';
+import 'package:workshop/bloc/publishManager/timer_controller.dart';
 import 'package:workshop/module/cutter/cut.dart';
+import 'package:workshop/module/publish_manager/assign_personnel.dart';
+import 'package:workshop/module/publish_manager/personnel_assign.dart';
 import 'package:workshop/module/publish_manager/task.dart';
 import 'package:workshop/module/stockpile/fabric.dart';
 import 'package:workshop/module/stockpile/fabric_log.dart';
@@ -76,13 +79,60 @@ class MyList {
     return items;
   }
 
-  static Stream<List<AssignTaskPersonnel>> getRealAssignmentTask()async*{
-    List<AssignTaskPersonnel> items = [];
+  // static Future<List<AssignPersonnel>> getRealAssignmentTask()async{
+  //   List<AssignPersonnel> items = [];
+  //   // int x = 0;
+  //   // while(x < 1 ){
+  //     await Future.delayed(Duration(seconds: 1));
+  //     String body = await MyRequest.simpleQueryRequest('stockpile/getResult.php',GetData.getTodayAssignments);
+  //     final  json = jsonDecode(body).cast<Map<String, dynamic>>();
+  //     items = json.map<AssignPersonnel>((json) => AssignPersonnel.fromJson(json)).toList();
+  //     return items;
+  //     // x++;
+  //   // }
+  // }
+
+  static Stream<TimerStreamer> getRealAssignmentTask(List <Personnel> personnel)async*{
+
     while(true){
-      String body = await MyRequest.simpleQueryRequest('stockpile/getResult.php',GetData.getAssignments);
+      List<PersonnelAssignHolder> personnelAssignHolders = [];
+      List<StartAssign> startAssigns = [];
+      List<AssignPersonnel> tasks = [];
+      await Future.delayed(Duration(seconds: 1));
+      String body = await MyRequest.simpleQueryRequest('stockpile/getResult.php',GetData.getTodayAssignments);
       final  json = jsonDecode(body).cast<Map<String, dynamic>>();
-      items = json.map<AssignTaskPersonnel>((json) => AssignTaskPersonnel.fromJson(json)).toList();
-      yield items;
+      tasks = json.map<AssignPersonnel>((json) => AssignPersonnel.fromJson(json)).toList();
+      personnel.forEach((item) {
+        PersonnelAssignHolder h = new PersonnelAssignHolder();
+        h.personnelSetter = item;
+        List<AssignPersonnel> t =
+        tasks.where((element) => element.personnelId == item.id).toList();
+        h.assignSetter = t;
+        try {
+          if (t.length > 0) {
+            AssignPersonnel a =
+            t.firstWhere((element) => element.startDateTime != null);
+            startAssigns.add(StartAssign(p: item, assignPersonnel: a));
+          }
+        } catch (e) {}
+        personnelAssignHolders.add(h);
+      });
+
+      List<MonitorItemController> monitorItemList = [];
+
+      startAssigns.forEach((element) {
+        MonitorItemController item = new MonitorItemController(
+            pause: element.assignPersonnel.play == '0' ? true : false,
+            startAssign: element);
+        monitorItemList.add(item);
+      });
+
+      TimerStreamer timerControllerCubit = TimerStreamer(monitorItemController: monitorItemList);
+
+      yield timerControllerCubit;
+
+      // TimerControllerCubit t = new TimerControllerCubit(TimerControllerState(monitorItemController: monitorItemList));
+      // yield t;
     }
   }
 

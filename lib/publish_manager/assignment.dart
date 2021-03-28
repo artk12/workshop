@@ -54,6 +54,15 @@ class AssignmentPage extends StatelessWidget {
                       map['cutCode'] = element.cutCode;
                       map['number'] = element.number;
                       map['personnelId'] = element.personnel.id;
+                      double maxScore = 0;
+                      if(element.personnel.level == "حرفه ای"){
+                      maxScore = element.time * 1.5;
+                      }else if(element.personnel.level == "تازه کار"){
+                        maxScore = element.time * 1.0;
+                      }else{
+                        maxScore = element.time+0.5;
+                      }
+                      map['max_score'] = maxScore;
                       mapList.add(map);
                     });
                     MyShowSnackBar.showSnackBar(context, "کمی صبر کنید...");

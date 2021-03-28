@@ -14,6 +14,10 @@ class GetData{
   //--------------------------------------------publish manager
   static final String getAllUser = "SELECT * FROM `user`";
   static final String getAllTask = "SELECT * FROM `task`";
-  static final String getAssignments = "SELECT * FROM `assignment`";
-
+  static get getTodayAssignments{
+    String dateTime = DateTime.now().toString().substring(0,10);
+    // print(dateTime);
+    return "SELECT * FROM `assignment` WHERE `start_date_time` like '%$dateTime%' AND `submit_date_time` IS NULL";
+  }
+  // static final String getTodayAssignments = "SELECT * FROM `assignment` ";
 }
