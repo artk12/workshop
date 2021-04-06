@@ -8,27 +8,37 @@ class AssignPersonnel {
   String personnelId;
   String cutCode;
   String startDateTime;
+  String totalTask;
+  String currentTask;
   // String pauseDateTime;
   String play;
   String endDateTime;
   String assignDateTime;
   String score;
   String remainingTime;
-  AssignPersonnel({
-    this.id,
-    this.time,
-    this.name,
-    this.number,
-    this.personnelId,
-    this.cutCode,
-    this.assignDateTime,
-    this.endDateTime,
-    // this.pauseDateTime,
-    this.play,
-    this.startDateTime,
-    this.score,
-    this.remainingTime,
-  });
+  AssignPersonnel(
+      {this.id,
+      this.time,
+      this.name,
+      this.number,
+      this.personnelId,
+      this.cutCode,
+      this.assignDateTime,
+      this.endDateTime,
+      // this.pauseDateTime,
+      this.play,
+      this.startDateTime,
+      this.score,
+      this.remainingTime,
+      this.currentTask,
+      this.totalTask});
+
+    set totalTaskSetter(String total){
+      this.totalTask = total;
+    }
+  set currentTaskSetter(String current){
+    this.currentTask = current;
+  }
 
   factory AssignPersonnel.fromJson(Map map) {
     return AssignPersonnel(

@@ -15,9 +15,8 @@ import 'CircleProgress.dart';
 class MonitorCard extends StatefulWidget {
   final double maxWidth;
   final MonitorItemController monitorItemController;
-  final bool pause;
 
-  MonitorCard({this.maxWidth = 300, this.monitorItemController, this.pause});
+  MonitorCard({this.maxWidth = 300, this.monitorItemController});
 
   @override
   State<StatefulWidget> createState() =>
@@ -25,7 +24,6 @@ class MonitorCard extends StatefulWidget {
 }
 
 class _MonitorCardState extends State<MonitorCard> {
-  // bool pause = false;
   final MonitorItemController cubit;
   _MonitorCardState({this.cubit});
 
@@ -37,14 +35,6 @@ class _MonitorCardState extends State<MonitorCard> {
     if (pause == null) {
       pause = cubit.startAssign.assignPersonnel.play == '0' ? true : false;
     }
-    // bool currentPause = false;
-    // if(p != null){
-    //   p.timerControllerProviderState.forEach((element) {
-    //     if(element.id == cubit.startAssign.assignPersonnel.id){
-    //       currentPause = element.pause;
-    //     }
-    //   });
-    // }
 
     ThemeData theme = Theme.of(context);
     return GestureDetector(
@@ -119,7 +109,7 @@ class _MonitorCardState extends State<MonitorCard> {
             Container(
               width: double.maxFinite,
               child: Text(
-                '#' + '107-3-28',
+                '#' + cubit.startAssign.assignPersonnel.cutCode,
                 style: theme.textTheme.headline6,
                 textAlign: TextAlign.end,
               ),
@@ -147,21 +137,21 @@ class _MonitorCardState extends State<MonitorCard> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'مح صالح',
+                                cubit.startAssign.p.name,
                                 style: theme.textTheme.headline4,
                               ),
                               SizedBox(
                                 height: 6,
                               ),
                               Text(
-                                'فعالیت',
+                                cubit.startAssign.assignPersonnel.name,
                                 style: theme.textTheme.headline5,
                               ),
                               SizedBox(
                                 height: 6,
                               ),
                               Text(
-                                'فعالیت ها : ' + '2/4',
+                                'فعالیت ها : ' + cubit.startAssign.assignPersonnel.currentTask+'/'+cubit.startAssign.assignPersonnel.totalTask,
                                 style: theme.textTheme.headline5,
                               ),
                             ],
@@ -242,20 +232,28 @@ class _MyCircularProgressState extends State<MyCircularProgress> {
       if (endDateTime.difference(now).inSeconds >= 0) {
         mines = Duration(seconds: endDateTime.difference(now).inSeconds);
         plus = Duration(seconds: now.difference(startDateTime).inSeconds);
+        double p = (mines.inSeconds / total.inSeconds) * 100;
         widget.p.update(TimerControllerProviderState(
             x: plus.inSeconds,
             id: assignPersonnel.id,
             pause: widget.pause,
+            percent: p,
             s: widget.pause == true ? '0' : '1'));
-        cubit.updatePercent(total.inSeconds, mines, plus);
+        cubit.updatePercent(total.inSeconds, mines, plus,p);
       } else {
         plus = Duration(seconds: plus.inSeconds + 1);
-        cubit.updatePercent(total.inSeconds, mines, plus);
+        double p = (mines.inSeconds / total.inSeconds) * 100;
+        widget.p.update(TimerControllerProviderState(
+            x: plus.inSeconds,
+            id: assignPersonnel.id,
+            pause: widget.pause,
+            percent: p,
+            s: widget.pause == true ? '0' : '1'));
+        cubit.updatePercent(total.inSeconds, mines, plus,p);
       }
       if (widget.p.timerControllerProviderState
               .firstWhere((element) => element.id == assignPersonnel.id)
-              .s ==
-          '0') {
+              .s == '0') {
         break;
       }
     }
@@ -290,15 +288,24 @@ class _MyCircularProgressState extends State<MyCircularProgress> {
         if (endDateTime.difference(now).inSeconds >= 0) {
           mines = Duration(seconds: endDateTime.difference(now).inSeconds);
           plus = Duration(seconds: now.difference(startDateTime).inSeconds);
+          double p = (mines.inSeconds / total.inSeconds) * 100;
           widget.p.update(TimerControllerProviderState(
               x: plus.inSeconds,
               id: assignPersonnel.id,
               pause: widget.pause,
+              percent: p,
               s: widget.pause == true ? '0' : '1'));
-          cubit.updatePercent(total.inSeconds, mines, plus);
+          cubit.updatePercent(total.inSeconds, mines, plus,p);
         } else {
           plus = Duration(seconds: plus.inSeconds + 1);
-          cubit.updatePercent(total.inSeconds, mines, plus);
+          double p = (mines.inSeconds / total.inSeconds) * 100;
+          widget.p.update(TimerControllerProviderState(
+              x: plus.inSeconds,
+              id: assignPersonnel.id,
+              pause: widget.pause,
+              percent: p,
+              s: widget.pause == true ? '0' : '1'));
+          cubit.updatePercent(total.inSeconds, mines, plus,p);
         }
       });
     }
@@ -318,7 +325,6 @@ class _MyCircularProgressState extends State<MyCircularProgress> {
   @override
   Widget build(BuildContext context) {
     ThemeData theme(context) => Theme.of(context);
-
     return Container(
       height: 180,
       width: 180,

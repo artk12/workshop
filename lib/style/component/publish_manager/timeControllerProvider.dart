@@ -6,24 +6,28 @@ class TimerControllerProviderState {
   String id;
   bool pause;
   String s;
-  TimerControllerProviderState({this.x, this.id,this.pause,this.s =''});
+  double percent;
+  TimerControllerProviderState({this.x, this.id,this.pause,this.s ='',this.percent = 50});
 }
 
 class TimerControllerProvider extends ChangeNotifier {
   List<TimerControllerProviderState> timerControllerProviderState ;
-  bool firstTime = true;
+  String search = '';
+  bool warning = false;
   TimerControllerProvider({this.timerControllerProviderState});
 
-  void updatePlay(){
-    if(firstTime){
-      print("OK");
-      firstTime = false;
-    }
 
+  void updateWarning(bool check){
+    this.warning = check;
+    notifyListeners();
+  }
+
+  void updateSearch(String val){
+    this.search = val;
+    notifyListeners();
   }
 
   void update(TimerControllerProviderState x) {
-
     int index =this
         .timerControllerProviderState
         .indexWhere((element) => element.id == x.id);
@@ -79,6 +83,7 @@ class TimerControllerProvider extends ChangeNotifier {
     });
     return pause;
   }
+
   String getString(String id){
     String pause = '';
     timerControllerProviderState.forEach((element) {
@@ -88,20 +93,4 @@ class TimerControllerProvider extends ChangeNotifier {
     });
     return pause;
   }
-  // TimerControllerProvider() {
-  //   timerControllerCubit = new TimerControllerCubit(TimerControllerState(monitorItemController: []));
-  // }
-
-  // set setTimerControllerCubit(TimerControllerCubit t){
-  //   this.timerControllerCubit = timerControllerCubit;
-  // }
-
-  // TimerControllerCubit get timerControllerCubitGetter{
-  //   return this.timerControllerCubit;
-  // }
-
-  // TimerControllerCubit getTimerControllerCubit(){
-  //   return this.timerControllerCubit;
-  // }
-
 }

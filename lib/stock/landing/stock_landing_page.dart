@@ -23,7 +23,7 @@ class StockLandingPage extends StatelessWidget {
   final List<Fabric> fabrics;
   final List<FabricLog> fabricLogs;
   final List<Message> messages;
-  final User user;
+  final SuperUser user;
 
   StockLandingPage(
       {this.refreshProvider,

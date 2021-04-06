@@ -15,7 +15,7 @@ class StockPile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     RefreshProvider refreshProvider = Provider.of<RefreshProvider>(context);
-    User user = Provider.of(context);
+    SuperUser user = Provider.of(context);
 
 
     return user == null? LoadingPage():FutureBuilder(

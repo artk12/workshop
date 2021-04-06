@@ -3,7 +3,7 @@ import 'package:workshop/module/stockpile/user.dart';
 import 'package:workshop/request/request.dart';
 
 class CutterDrawerMenu extends StatelessWidget {
-  final User user;
+  final SuperUser user;
   final GlobalKey<ScaffoldState> scaffoldKey;
   final PageController pageController;
   CutterDrawerMenu({this.scaffoldKey,this.user,this.pageController});

@@ -21,7 +21,7 @@ class CutterLanding extends StatelessWidget {
         new GlobalKey<ScaffoldState>();
     PageController pageController = new PageController();
     RefreshProvider refreshProvider = Provider.of(context);
-    User user = Provider.of<User>(context);
+    SuperUser user = Provider.of<SuperUser>(context);
     List<Message> messages = Provider.of<List<Message>>(context);
     List<Cut> cutList = Provider.of<List<Cut>>(context);
 

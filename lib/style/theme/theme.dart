@@ -29,6 +29,7 @@ ThemeData light = ThemeData(
   // ),
   dividerColor: Colors.white70,
   canvasColor: Color(0xff4d5566),
+  // scaffoldBackgroundColor: Color(0xfff3f3f3),
   scaffoldBackgroundColor: Color(0xff37303d),
   iconTheme: IconThemeData(color: Colors.white.withOpacity(0.85), size: 14),
   primaryColor: Colors.white,

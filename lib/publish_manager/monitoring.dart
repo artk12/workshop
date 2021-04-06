@@ -19,7 +19,29 @@ class MonitoringPage extends StatelessWidget {
     TimerStreamer tasks = Provider.of<TimerStreamer>(context);
 
     ThemeData theme = Theme.of(context);
-    void onChange(String val) {}
+
+    int checkWarning() {
+      if (p.warning) {
+        return 26;
+      } else {
+        return 101;
+      }
+    }
+
+    bool getPercentageItems(String id) {
+      try {
+        if (p.timerControllerProviderState
+                .firstWhere((element) => element.id == id)
+                .percent <
+            checkWarning()) {
+          return true;
+        }
+      } catch (e) {
+        return true;
+      }
+      return false;
+    }
+
     return SafeArea(
       child: Column(
         children: [
@@ -32,18 +54,18 @@ class MonitoringPage extends StatelessWidget {
                   height: 70,
                   child: TextField(
                     style: theme.textTheme.bodyText1,
-                    onChanged: onChange,
+                    onChanged: p.updateSearch,
                     decoration: InputDecoration(
                       hintText: 'جستجو...',
                       hintStyle: theme.textTheme.bodyText1
                           .copyWith(color: Colors.white.withOpacity(0.5)),
                       enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(
-                            color: Colors.black.withOpacity(0.2), width: 2.5),
+                            color: Colors.white.withOpacity(0.2), width: 2.5),
                       ),
                       focusedBorder: UnderlineInputBorder(
                         borderSide: BorderSide(
-                            color: Colors.white.withOpacity(0.2), width: 2.5),
+                            color: Colors.white.withOpacity(0.4), width: 2.5),
                       ),
                       border: UnderlineInputBorder(
                         borderSide: BorderSide(color: Colors.white, width: 1),
@@ -64,7 +86,7 @@ class MonitoringPage extends StatelessWidget {
                         .copyWith(fontSize: 25, color: Colors.green),
                   ),
                   onPressed: () {
-                    tasks.playAll(p,context);
+                    tasks.playAll(p, context);
                   },
                 ),
               ),
@@ -81,19 +103,6 @@ class MonitoringPage extends StatelessWidget {
                   ),
                   onPressed: () {
                     tasks.pauseAll(context, p);
-                    // p.pause();
-                    // tasks.state.monitorItemController.forEach((element) {
-                    //   print(element.timerPersonnelCubit.state.plus);
-                    // });
-                    // startAssigns.forEach((element) {
-                    //   print(element.assignPersonnel.score);
-                    // });
-                    // timerControllerProvider
-                    //     .getTimerControllerCubit()
-                    //     .pauseAll(context);
-                    // timerControllerCubit.state.monitorItemController.forEach((element) {
-                    //   print(element.timerPersonnelCubit.state.t1);
-                    // });
                   },
                 ),
               ),
@@ -109,56 +118,62 @@ class MonitoringPage extends StatelessWidget {
                     MyIcons.ALERT,
                     style: MyTextStyle.iconStyle.copyWith(fontSize: 28),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    p.updateWarning(!p.warning);
+                  },
                 ),
               ),
             ],
           ),
-          // Expanded(
-          //
-          //   child:ListView.builder(itemCount: 60,itemBuilder: (BuildContext context, int index) {
-          //     return SizedBox(
-          //       height: 250,
-          //       child: MonitorCard(
-          //         maxWidth: double.maxFinite,
-          //       ),
-          //     );
-          //   },
-          //
-          //   )
-          // )
-          if (tasks == null) Container() else Expanded(
-                  child: RawScrollbar(
-                    thumbColor: Colors.white12,
-                    isAlwaysShown: true,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 3.0),
-                      child: ListView.builder(
-                        itemCount: tasks.monitorItemController.length??0,
-                        // itemCount: tasks.state.monitorItemController.length,
-                        itemBuilder: (BuildContext context, int index) =>
-                            SizedBox(
-                          height: 250,
-                          child: BlocBuilder(
-                            cubit: tasks.monitorItemController[index]
-                                .timerPersonnelCubit,
-                            builder: (BuildContext context,
-                                    TimerPersonnelState state) =>
-                                ChangeNotifierProvider.value(
-                                  value: p,
-                                  child: MonitorCard(
-                                    // pause: p.timerControllerProviderState.firstWhere((element) => element.id == timerControllerCubit
-                                    //     .state.monitorItemController[index].startAssign.assignPersonnel.id).check,
-                                    maxWidth: double.maxFinite,
-                                    monitorItemController: tasks.monitorItemController[index],
-                                  ),
-                                ),
-                          ),
-                        ),
-                      ),
-                    ),
+          if (tasks == null)
+            Container()
+          else
+            Expanded(
+              child: RawScrollbar(
+                thumbColor: Colors.white12,
+                isAlwaysShown: true,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 3.0),
+                  child: ListView.builder(
+                    itemCount: tasks.monitorItemController.length ?? 0,
+                    itemBuilder: (BuildContext context, int index) =>
+                    getPercentageItems(tasks.monitorItemController[index].startAssign.assignPersonnel.id) && (tasks
+                                .monitorItemController[index]
+                                .startAssign
+                                .assignPersonnel
+                                .name
+                                .contains(p.search) ||
+                            tasks.monitorItemController[index].startAssign
+                                .assignPersonnel.cutCode
+                                .contains(p.search) ||
+                            tasks
+                                .monitorItemController[index].startAssign.p.name
+                                .contains(p.search))
+                        ? SizedBox(
+                            height: 250,
+                            child: BlocBuilder(
+                                cubit: tasks.monitorItemController[index]
+                                    .timerPersonnelCubit,
+                                builder: (BuildContext context,
+                                    TimerPersonnelState state) {
+                                  // if(){
+                                  //   return Container();
+                                  // }
+                                  return ChangeNotifierProvider.value(
+                                    value: p,
+                                    child: MonitorCard(
+                                      maxWidth: double.maxFinite,
+                                      monitorItemController:
+                                          tasks.monitorItemController[index],
+                                    ),
+                                  );
+                                }),
+                          )
+                        : Container(),
                   ),
                 ),
+              ),
+            ),
         ],
       ),
     );

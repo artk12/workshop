@@ -26,7 +26,7 @@ class PublishManager extends StatelessWidget {
 
     PageController pageController = new PageController(initialPage: 1);
     GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
-    User user = Provider.of<User>(context);
+    SuperUser user = Provider.of<SuperUser>(context);
     List<Personnel> staff = Provider.of<List<Personnel>>(context);
     List<Task> tasks = Provider.of<List<Task>>(context);
     List<Cut> cuts = Provider.of<List<Cut>>(context);

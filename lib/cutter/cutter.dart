@@ -10,7 +10,7 @@ class Cutter extends StatelessWidget {
   Widget build(BuildContext context) {
     // return CutterPage();
     return MultiProvider(providers:[
-      FutureProvider(create: (_)=>MyRequest.getUserDetail('09176468835', '2778')),
+      FutureProvider(create: (_)=>MyRequest.getSuperUserDetail('09176468835', '2778')),
       FutureProvider(create: (_)=>MyList().getCutterMessages()),
       FutureProvider(create: (_)=>MyList().getCutList()),
     ],

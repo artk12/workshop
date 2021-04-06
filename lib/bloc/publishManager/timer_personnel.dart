@@ -6,9 +6,8 @@ import '../../time_format.dart';
 class TimerPersonnelCubit extends Cubit<TimerPersonnelState> {
   TimerPersonnelCubit(TimerPersonnelState state) : super(state);
 
-  void updatePercent(int total, Duration mines, Duration plus) {
+  void updatePercent(int total, Duration mines, Duration plus,double p) {
     // this.plus = plus;
-    double p = (mines.inSeconds / total) * 100;
     Color color;
     if (p > 50) {
       color = Colors.green;
@@ -17,6 +16,7 @@ class TimerPersonnelCubit extends Cubit<TimerPersonnelState> {
     } else if (p <= 25) {
       color = Colors.red;
     }
+
     emit(TimerPersonnelState(
       currentPercent: p,
       lastPercent: state.lastPercent,
