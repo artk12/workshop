@@ -8,6 +8,18 @@ import 'package:workshop/request/query/get_data.dart';
 class MyRequest {
   static String baseUrl = "https://www.rhen.ir/backend/";
 
+  static Future<String> getPersonnelLog()async{
+    try{
+      http.Response response = await http.post(baseUrl + "stockpile/getResult.php", body: {'query':GetData.getPersonnelLog}).timeout(Duration(seconds: 5));
+      if(response.statusCode != 200){
+        return 'not ok';
+      }
+      return response.body;
+    }catch(e){
+      return 'not ok';
+    }
+  }
+
   static Future<String> submitTask(String id, String score, String year,
       String month, String day, String warning) async {
     http.Response response =
@@ -66,11 +78,15 @@ class MyRequest {
     return response.body;
   }
 
-  //TODO : INSERT ASSIGN PHP ABSENT
+
   static Future<String> insertAssignRequest(String json) async {
+    DateTime now = DateTime.now();
+    if(now.hour > 19 ){
+      now.add(Duration(days: 1));
+    }
     http.Response response = await http.post(
         baseUrl + 'publish_manager/insertAssign.php',
-        body: {'assignJson': json}).onError((error, stackTrace) => null);
+        body: {'assignJson': json,'year':now.year,'month':now.month,'day':now.day}).onError((error, stackTrace) => null);
     if (response == null) {
       return "not ok";
     }
@@ -94,6 +110,20 @@ class MyRequest {
       return "not ok";
     }
     return response.body;
+  }
+
+  static Future<String> simpleQueryRequestOneSecondDelay(String url, String query) async {
+    try{
+      http.Response response = await http.post(baseUrl + url,
+          body: {'query': query}).onError((error, stackTrace) => null).timeout(Duration(seconds: 5));
+      if (response == null) {
+        return "not ok";
+      }
+      return response.body;
+    }catch(e){
+      return 'not ok';
+    }
+
   }
 
   static Future<String> getUserTasks(String id) async {

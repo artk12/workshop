@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:workshop/bloc/refresh_provider.dart';
-import 'package:workshop/personnel/personnel_page.dart';
 import 'package:workshop/publish_manager/publish_manager.dart';
 import 'package:workshop/request/mylist.dart';
-import 'package:workshop/request/request.dart';
 import 'package:workshop/stock/import_to_stock/update_item.dart';
 import 'package:workshop/stock/import_to_stock/add_fabric_item.dart';
 import 'package:workshop/stock/import_to_stock/add_new_item.dart';
@@ -34,25 +32,25 @@ class MyApp extends StatelessWidget {
         // '/': (context) => StockHomePage(),
       },
       theme: light,
-      home: MultiProvider(
-        providers: [
-          FutureProvider(create:(_)=>MyRequest.getNormalUserDetail('3450101010','123456'),),
-          FutureProvider(create:(_)=>MyList().getPersonnelMessages(),),
-        ],
-        child: PersonnelPage(),
-      ),
-      // home: ChangeNotifierProvider.value(
-      //   value: RefreshProvider(),
-      //   child: MultiProvider(
-      //     providers: [
-      //       FutureProvider(create: (_)async{return User(id: '1',user: '09176468332',pass: '1243',side: 'مدیرتولید',profile: 'sss',name: 'مسلم بایرامی');},),
-      //       FutureProvider(create: (_)=>MyList().getPersonnelList()),
-      //       FutureProvider(create: (_)=>MyList().getTaskList()),
-      //       FutureProvider(create: (_)=>MyList().getCutList(),),
-      //     ],
-      //     child: PublishManager(),
-      //   ),
+      // home: MultiProvider(
+      //   providers: [
+      //     FutureProvider(create:(_)=>MyRequest.getNormalUserDetail('3450101010','123456'),),
+      //     FutureProvider(create:(_)=>MyList().getPersonnelMessages(),),
+      //   ],
+      //   child: PersonnelPage(),
       // ),
+      home: ChangeNotifierProvider.value(
+        value: RefreshProvider(),
+        child: MultiProvider(
+          providers: [
+            FutureProvider(create: (_)async{return SuperUser(id: '1',user: '09176468332',pass: '1243',side: 'مدیرتولید',profile: 'sss',name: 'مسلم بایرامی');},),
+            FutureProvider(create: (_)=>MyList().getPersonnelList()),
+            FutureProvider(create: (_)=>MyList().getTaskList()),
+            FutureProvider(create: (_)=>MyList().getCutList(),),
+          ],
+          child: PublishManager(),
+        ),
+      ),
       // home: Cutter(),
       // home: GeneralManager(),
       // home: FutureProvider(

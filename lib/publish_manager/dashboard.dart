@@ -66,29 +66,29 @@ class Dashboard extends StatelessWidget {
                 ),
               ),
           ),
-          space(20),
-          DashboardCardBackground(
-            child: Container(
-              height: 280,
-              width: double.maxFinite,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  title('مانیتورینگ',() {}),
-                  SizedBox(
-                    height: 2,
-                  ),
-                  Expanded(
-                    child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: 10,
-                        itemBuilder: (context, index) => MonitorCard()),
-                  ),
-                ],
-              ),
-            ),
-          ),
+          // space(20),
+          // DashboardCardBackground(
+          //   child: Container(
+          //     height: 280,
+          //     width: double.maxFinite,
+          //     child: Column(
+          //       mainAxisAlignment: MainAxisAlignment.start,
+          //       crossAxisAlignment: CrossAxisAlignment.start,
+          //       children: [
+          //         title('مانیتورینگ',() {}),
+          //         SizedBox(
+          //           height: 2,
+          //         ),
+          //         Expanded(
+          //           child: ListView.builder(
+          //               scrollDirection: Axis.horizontal,
+          //               itemCount: 10,
+          //               itemBuilder: (context, index) => MonitorCard()),
+          //         ),
+          //       ],
+          //     ),
+          //   ),
+          // ),
           space(20),
           DashboardCardBackground(
             child: Container(

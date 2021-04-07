@@ -31,6 +31,8 @@ class GetData {
         " `submit_date_time`, `score`, `personnel_id` FROM `assignment` WHERE `personnel_id` = '$id'";
   }
 
+  static final String getPersonnelLog = "SELECT `ID`, `personnel_id`, `personnel_name`, `task_name`, `cut_code`, `log` FROM `assignment_log`";
+
   //------------------------------------------personnel
   static final String getPersonnelMessage =
       "SELECT * FROM `messages` WHERE `personnel`='1'";
