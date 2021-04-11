@@ -6,7 +6,8 @@ import 'package:workshop/request/request.dart';
 class PersonnelDrawer extends StatelessWidget {
   final User user;
   final GlobalKey<ScaffoldState> scaffoldKey;
-  PersonnelDrawer({this.user,this.scaffoldKey});
+  final double totalScore;
+  PersonnelDrawer({this.user,this.scaffoldKey,this.totalScore});
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
@@ -49,6 +50,16 @@ class PersonnelDrawer extends StatelessWidget {
                     ),
                     Text(
                       user.name,
+                      style: theme.textTheme.headline1.copyWith(
+                        color: Colors.white.withOpacity(0.7),
+                        fontSize: 14,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      "امتیاز کل : " + totalScore.toString(),
                       style: theme.textTheme.headline1.copyWith(
                         color: Colors.white.withOpacity(0.7),
                         fontSize: 14,

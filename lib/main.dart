@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:workshop/bloc/refresh_provider.dart';
+import 'package:workshop/personnel/personnel_page.dart';
+import 'package:workshop/provider/publish_manager_pages_controller.dart';
 import 'package:workshop/publish_manager/publish_manager.dart';
 import 'package:workshop/request/mylist.dart';
+import 'package:workshop/request/request.dart';
 import 'package:workshop/stock/import_to_stock/update_item.dart';
 import 'package:workshop/stock/import_to_stock/add_fabric_item.dart';
 import 'package:workshop/stock/import_to_stock/add_new_item.dart';
@@ -47,6 +50,11 @@ class MyApp extends StatelessWidget {
             FutureProvider(create: (_)=>MyList().getPersonnelList()),
             FutureProvider(create: (_)=>MyList().getTaskList()),
             FutureProvider(create: (_)=>MyList().getCutList(),),
+            FutureProvider(create: (_)=>MyList().getPersonnelMessages()),
+            FutureProvider(create: (_)=>MyList().getScoreList()),
+            FutureProvider(create: (_)=>MyList().getWarningList()),
+            FutureProvider(create: (_)=>MyList().getAbsentList()),
+            ChangeNotifierProvider.value(value: PublishManagerPageController()),
           ],
           child: PublishManager(),
         ),

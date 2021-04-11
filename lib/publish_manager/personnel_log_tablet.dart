@@ -6,20 +6,21 @@ import 'package:workshop/style/theme/show_snackbar.dart';
 
 class PersonnelLogTablet extends StatelessWidget {
   final TextStyle style;
-  PersonnelLogTablet({this.style});
+  final PersonnelLogProvider personnelLogProvider;
+  PersonnelLogTablet({this.style,this.personnelLogProvider});
   @override
   Widget build(BuildContext context) {
-    List<AssignmentLog> assignmentLogs =
-        Provider.of<List<AssignmentLog>>(context) ?? [];
-    PersonnelLogProvider personnelLogProvider =
-        Provider.of<PersonnelLogProvider>(context);
-    if (assignmentLogs.length >= personnelLogProvider.a.length) {
-      personnelLogProvider.assignmentLogSetter = assignmentLogs;
-    } else {
-      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-        MyShowSnackBar.showSnackBar(context, "وضعیت اینترنت خود را چک کنید..");
-      });
-    }
+    // List<AssignmentLog> assignmentLogs =
+    //     Provider.of<List<AssignmentLog>>(context) ?? [];
+    // PersonnelLogProvider personnelLogProvider =
+    //     Provider.of<PersonnelLogProvider>(context);
+    // if (assignmentLogs.length >= personnelLogProvider.a.length) {
+    //   personnelLogProvider.assignmentLogSetter = assignmentLogs;
+    // } else {
+    //   WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    //     MyShowSnackBar.showSnackBar(context, "وضعیت اینترنت خود را چک کنید..");
+    //   });
+    // }
 
     return Container(
       child: ListView.builder(

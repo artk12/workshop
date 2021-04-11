@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:workshop/bloc/refresh_provider.dart';
 import 'package:workshop/module/publish_manager/task.dart';
+import 'package:workshop/provider/publish_manager_pages_controller.dart';
 import 'package:workshop/publish_manager/dialog_add_new_task.dart';
 import 'package:workshop/style/component/default_button.dart';
 import 'package:workshop/style/component/publish_manager/taskCard.dart';
@@ -8,6 +9,7 @@ import 'package:workshop/style/component/publish_manager/taskCard.dart';
 class TasksPage extends StatelessWidget {
   final RefreshProvider refreshProvider;
   final List<Task> tasks;
+
   TasksPage({this.tasks,this.refreshProvider});
 
   @override
@@ -47,7 +49,7 @@ class TasksPage extends StatelessWidget {
               controller: new ScrollController(keepScrollOffset: false),
               shrinkWrap: true,
               scrollDirection: Axis.vertical,
-              children: List.generate(tasks.length, (index) => TaskCard(task:tasks[index])),
+              children: List.generate(tasks.length, (index) => TaskCard(task:tasks[index],refreshProvider: refreshProvider,tasks: tasks,)),
             ),
           )
         ],

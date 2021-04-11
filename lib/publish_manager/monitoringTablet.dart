@@ -1,6 +1,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:workshop/bloc/publishManager/timer_controller.dart';
+import 'package:workshop/module/publish_manager/assignment_log.dart';
 import 'package:workshop/module/publish_manager/personnel.dart';
 import 'package:workshop/provider/personnel_log_provider.dart';
 import 'package:workshop/publish_manager/monitoring.dart';
@@ -13,8 +15,10 @@ class MonitoringTablet extends StatelessWidget {
   final List<Personnel> personnel;
   final double itemWidth;
   final double itemHeight;
+  final TimerStreamer tasks;
+  final PersonnelLogProvider personnelLogProvider;
 
-  MonitoringTablet({this.timerControllerProvider,this.itemWidth,this.itemHeight,this.personnel});
+  MonitoringTablet({this.timerControllerProvider,this.itemWidth,this.itemHeight,this.personnel,this.tasks,this.personnelLogProvider});
 
   @override
   Widget build(BuildContext context) {
@@ -25,23 +29,18 @@ class MonitoringTablet extends StatelessWidget {
             flex: 1,
             child:ChangeNotifierProvider(
               create: (_)=>PersonnelLogProvider(),
-              child: StreamProvider(
-                create: (_)=>MyList().getAssignmentLogs(),
-                child: PersonnelLogTablet(style: style,),
-              ),
+              child: PersonnelLogTablet(style: style,personnelLogProvider: personnelLogProvider,),
             ),
         ),
         Expanded(
          flex: 3,
          child:ChangeNotifierProvider(
            create: (_)=>timerControllerProvider,
-           child: StreamProvider(
-             create:(_)=> MyList.getRealAssignmentTask(personnel),
-             child: MonitoringPage(
-               personnel: personnel,
-               itemWidth:itemWidth,
-               itemHeight:itemHeight,
-             ),
+           child: MonitoringMobilePage(
+             personnel: personnel,
+             itemWidth:itemWidth,
+             itemHeight:itemHeight,
+             timerStreamer: tasks,
            ),
          ),
         ),

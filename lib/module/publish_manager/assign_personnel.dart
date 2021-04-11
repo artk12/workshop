@@ -10,7 +10,7 @@ class AssignPersonnel {
   String startDateTime;
   String totalTask;
   String currentTask;
-  // String pauseDateTime;
+  String playDateTime;
   String play;
   String endDateTime;
   String assignDateTime;
@@ -25,7 +25,7 @@ class AssignPersonnel {
       this.cutCode,
       this.assignDateTime,
       this.endDateTime,
-      // this.pauseDateTime,
+      this.playDateTime,
       this.play,
       this.startDateTime,
       this.score,
@@ -51,7 +51,7 @@ class AssignPersonnel {
       assignDateTime: map['assignment_date_time'],
       endDateTime: map['submit_date_time'],
       startDateTime: map['start_date_time'],
-      // pauseDateTime: map['pause_date_time'],
+      playDateTime: map['play_date_time'],
       play: map['play'],
       score: map['score'],
       remainingTime: map['remaining_time'],

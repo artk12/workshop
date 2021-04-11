@@ -2,11 +2,24 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:workshop/module/cutter/cut_detail.dart';
+import 'package:workshop/module/publish_manager/score.dart';
 import 'package:workshop/module/stockpile/user.dart';
 import 'package:workshop/request/query/get_data.dart';
 
 class MyRequest {
   static String baseUrl = "https://www.rhen.ir/backend/";
+
+
+  static Future<UserScore> getUserScore(String id)async{
+    http.Response response = await http.post(baseUrl + "stockpile/getResult.php", body: {'query':GetData.getScorePersonnel(id)}).timeout(Duration(seconds: 5));
+    if(response.body == null || response.body == ''){
+      return UserScore(userId: id,scores: [],id: '0');
+    }
+    List<dynamic> map = jsonDecode(response.body);
+    UserScore userScore = UserScore.fromJson(map[0]);
+    return userScore;
+  }
+
 
   static Future<String> getPersonnelLog()async{
     try{
@@ -78,7 +91,6 @@ class MyRequest {
     return response.body;
   }
 
-
   static Future<String> insertAssignRequest(String json) async {
     DateTime now = DateTime.now();
     if(now.hour > 19 ){
@@ -115,7 +127,7 @@ class MyRequest {
   static Future<String> simpleQueryRequestOneSecondDelay(String url, String query) async {
     try{
       http.Response response = await http.post(baseUrl + url,
-          body: {'query': query}).onError((error, stackTrace) => null).timeout(Duration(seconds: 5));
+          body: {'query': query}).onError((error, stackTrace) => null);
       if (response == null) {
         return "not ok";
       }

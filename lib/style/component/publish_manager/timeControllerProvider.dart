@@ -16,7 +16,6 @@ class TimerControllerProvider extends ChangeNotifier {
   bool warning = false;
   TimerControllerProvider({this.timerControllerProviderState});
 
-
   void updateWarning(bool check){
     this.warning = check;
     notifyListeners();
@@ -26,18 +25,24 @@ class TimerControllerProvider extends ChangeNotifier {
     this.search = val;
     notifyListeners();
   }
+  @override
+  // ignore: must_call_super
+  void dispose() {
+    // super.dispose();
+  }
 
   void update(TimerControllerProviderState x) {
-    int index =this
-        .timerControllerProviderState
-        .indexWhere((element) => element.id == x.id);
-    if (index != -1) {
-      this.timerControllerProviderState.removeAt(index);
-      this.timerControllerProviderState.insert(index,x);
-    } else {
-      this.timerControllerProviderState.add(x);
-    }
-    notifyListeners();
+      int index = this
+          .timerControllerProviderState
+          .indexWhere((element) => element.id == x.id);
+      if (index != -1) {
+        this.timerControllerProviderState.removeAt(index);
+        this.timerControllerProviderState.insert(index, x);
+      } else {
+        this.timerControllerProviderState.add(x);
+      }
+      notifyListeners();
+
   }
 
   void pauseAll(){

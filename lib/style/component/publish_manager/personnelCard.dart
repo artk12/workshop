@@ -3,16 +3,45 @@ import 'package:workshop/module/publish_manager/personnel.dart';
 import 'package:workshop/request/request.dart';
 
 class PersonnelCard extends StatelessWidget{
-  final Personnel personnel;
-  PersonnelCard({this.personnel});
+  // final Personnel personnel;
+  // final UserWarning userWarning;
+  // final UserScore userScore;
+  // final int monthAbsent;
+  final PersonnelCompeteDetail personnelCompeteDetail;
+  PersonnelCard({this.personnelCompeteDetail});
 
 @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     Color red = Color(0xffff5858);
     Color green = Color(0xff51d04a);
+    // DateTime now = DateTime.now();
+    // double totalScore = 0;
+    // double monthScore = 0;
+    // int totalWarning = 0;
+    // int monthWarning = 0;
+    //
+    // if(userScore.id != '0'){
+    //   userScore.scores.forEach((element) {
+    //     totalScore +=element.score;
+    //     if(element.dateTime.year == now.year && element.dateTime.month == now.month ){
+    //       monthScore += element.score;
+    //     }
+    //   });
+    // }
+    //
+    // if(userWarning.id != '0'){
+    //   userWarning.warnings.forEach((element) {
+    //     totalWarning +=element.warning;
+    //     if(element.dateTime.year == now.year && element.dateTime.month == now.month ){
+    //       monthWarning += element.warning;
+    //     }
+    //   });
+    // }
+
 
     final Widget space = SizedBox(height: 20,);
+
     return Container(
       margin: EdgeInsets.all(8),
       width: double.maxFinite,
@@ -31,7 +60,7 @@ class PersonnelCard extends StatelessWidget{
           ),
           SizedBox(height: 10,),
           Text(
-            personnel.name,
+            personnelCompeteDetail.p.name,
             style: theme.textTheme.headline3,
           ),
           SizedBox(
@@ -47,34 +76,33 @@ class PersonnelCard extends StatelessWidget{
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          "تاریخ تولد :‌ "+personnel.birthDay,
+                          "تاریخ تولد :‌ "+personnelCompeteDetail.p.birthDay,
                           style: theme.textTheme.headline6,
                           textAlign: TextAlign.start,
                         ),
                         space,
                         Text(
-                          "تاریخ استخدام :‌ "+personnel.hireDate,
+                          "تاریخ استخدام :‌ "+personnelCompeteDetail.p.hireDate,
                           style: theme.textTheme.headline6,
                         ),
                         space,
                         Text(
-                          "سطح :‌ "+personnel.level,
+                          "سطح :‌ "+personnelCompeteDetail.p.level,
                           style: theme.textTheme.headline6,
                         ),
                         space,
                         Text(
-                          "موقعیت :‌ "+personnel.position,
-                          style: theme.textTheme.headline6,
-                        ),
-                        space,
-                        //TODO personnel offline date
-                        Text(
-                          "روزهای آفلاین این ماه : "+"3",
+                          "موقعیت :‌ "+personnelCompeteDetail.p.position,
                           style: theme.textTheme.headline6,
                         ),
                         space,
                         Text(
-                          "سطح :‌‌ "+personnel.level,
+                          "روزهای آفلاین این ماه : "+"${personnelCompeteDetail.absent}",
+                          style: theme.textTheme.headline6,
+                        ),
+                        space,
+                        Text(
+                          "سطح :‌‌ "+personnelCompeteDetail.p.level,
                           style: theme.textTheme.headline6,
                         ),
                       ],
@@ -82,43 +110,45 @@ class PersonnelCard extends StatelessWidget{
                   ),
                 ),
               ),
-              //TODO : personnel score and warning
               Expanded(
                 child: Container(
                   child: Center(
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Text(
-                          "امتیاز کل :‌ "+"10",
+                          "امتیاز کل :‌ "+"${personnelCompeteDetail.totalScore}",
+                          style: theme.textTheme.headline6.copyWith(color: green),
+                        ),
+                        // space,
+
+                        space,
+                        Text(
+                          "امتیاز این ماه‌ : "+"${personnelCompeteDetail.monthScore}",
                           style: theme.textTheme.headline6.copyWith(color: green),
                         ),
                         space,
                         Text(
-                          "میانگین امتیاز :‌ "+"101",
-                          style: theme.textTheme.headline6.copyWith(color: green),
+                          "کل هشدارها :‌ "+"${personnelCompeteDetail.totalWarning}",
+                          style: theme.textTheme.headline6.copyWith(color: red),
                         ),
+
+                        // space,
+                        // Text(
+                        //   "میانگین هشدارها : "+"3",
+                        //   style: theme.textTheme.headline6.copyWith(color: red),
+                        // ),
                         space,
                         Text(
-                          "امتیاز این ماه‌ : "+"5",
-                          style: theme.textTheme.headline6.copyWith(color: green),
-                        ),
-                        space,
-                        Text(
-                          "کل هشدارها :‌ "+"12",
+                          "هشدار این ماه :‌‌ "+"${personnelCompeteDetail.monthWarning}",
                           style: theme.textTheme.headline6.copyWith(color: red),
                         ),
                         space,
-                        Text(
-                          "میانگین هشدارها : "+"3",
-                          style: theme.textTheme.headline6.copyWith(color: red),
-                        ),
+                        Text(""),
                         space,
-                        Text(
-                          "هشدار این ماه :‌‌ "+"3",
-                          style: theme.textTheme.headline6.copyWith(color: red),
-                        ),
+                        Text(""),
                       ],
                     ),
                   ),

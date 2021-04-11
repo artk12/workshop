@@ -4,6 +4,7 @@ import 'package:workshop/module/stockpile/message.dart';
 import 'package:workshop/module/stockpile/user.dart';
 import 'package:workshop/personnel/personnel_landing.dart';
 import 'package:workshop/request/mylist.dart';
+import 'package:workshop/request/request.dart';
 import 'package:workshop/stock/loading_page.dart';
 
 class PersonnelPage extends StatelessWidget {
@@ -14,6 +15,9 @@ class PersonnelPage extends StatelessWidget {
 
     return user == null || messages == null
         ? LoadingPage()
-        :FutureProvider(create: (_)=>MyList().getUserTasks(user.id),child: PersonnelLandingPage(user: user,messages:messages));
+        : MultiProvider(providers: [
+            FutureProvider(create: (_) => MyList().getUserTasks(user.id)),
+            FutureProvider(create: (_) => MyRequest.getUserScore(user.id)),
+          ], child: PersonnelLandingPage(user: user, messages: messages));
   }
 }

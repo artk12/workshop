@@ -31,3 +31,13 @@ class Personnel {
     );
   }
 }
+
+class PersonnelCompeteDetail{
+  final Personnel p;
+  final double monthScore;
+  final int monthWarning;
+  final double totalScore;
+  final int totalWarning;
+  final int absent;
+  PersonnelCompeteDetail({this.monthScore,this.totalWarning,this.totalScore,this.monthWarning,this.p,this.absent});
+}

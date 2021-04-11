@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:workshop/module/publish_manager/assign_personnel.dart';
+import 'package:workshop/module/publish_manager/score.dart';
 import 'package:workshop/module/stockpile/message.dart';
 import 'package:workshop/module/stockpile/user.dart';
 import 'package:workshop/personnel/dialog_message.dart';
@@ -21,6 +22,15 @@ class PersonnelLandingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey();
     List<AssignPersonnel> tasks = Provider.of<List<AssignPersonnel>>(context) ?? [];
+    UserScore userScore = Provider.of(context);
+    double totalScore = 0;
+    if(userScore != null){
+      if(userScore.id != '0'){
+        userScore.scores.forEach((element) {
+          totalScore += element.score;
+        });
+      }
+    }
     TaskItemProvider provider = new TaskItemProvider(tasks);
 
     return Scaffold(
@@ -28,6 +38,7 @@ class PersonnelLandingPage extends StatelessWidget {
       drawer: PersonnelDrawer(
         scaffoldKey: scaffoldKey,
         user: user,
+        totalScore:totalScore,
       ),
       body: SafeArea(
         child: Column(

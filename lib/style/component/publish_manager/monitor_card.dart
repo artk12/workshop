@@ -11,7 +11,6 @@ import 'package:workshop/style/component/publish_manager/timeControllerProvider.
 import 'package:workshop/style/theme/show_snackbar.dart';
 import 'CircleProgress.dart';
 
-// ignore: must_be_immutable
 class MonitorCard extends StatefulWidget {
   final double maxWidth;
   final MonitorItemController monitorItemController;
@@ -229,6 +228,7 @@ class _MyCircularProgressState extends State<MyCircularProgress> {
         break;
       }
       DateTime now = DateTime.now();
+
       if (endDateTime.difference(now).inSeconds >= 0) {
         mines = Duration(seconds: endDateTime.difference(now).inSeconds);
         plus = Duration(seconds: now.difference(startDateTime).inSeconds);
@@ -239,17 +239,22 @@ class _MyCircularProgressState extends State<MyCircularProgress> {
             pause: widget.pause,
             percent: p,
             s: widget.pause == true ? '0' : '1'));
+        widget.assignPersonnel.remainingTime = plus.inSeconds.toString();
         cubit.updatePercent(total.inSeconds, mines, plus,p);
       } else {
-        plus = Duration(seconds: plus.inSeconds + 1);
-        double p = (mines.inSeconds / total.inSeconds) * 100;
+
+        // plus = Duration(seconds: plus.inSeconds + 1);
+        plus = Duration(seconds: now.difference(endDateTime).inSeconds);
+        // double p = (mines.inSeconds / total.inSeconds) * 100;
+        double p = 0;
         widget.p.update(TimerControllerProviderState(
             x: plus.inSeconds,
             id: assignPersonnel.id,
             pause: widget.pause,
             percent: p,
             s: widget.pause == true ? '0' : '1'));
-        cubit.updatePercent(total.inSeconds, mines, plus,p);
+        widget.assignPersonnel.remainingTime = plus.inSeconds.toString();
+        cubit.updatePercent(total.inSeconds, Duration(seconds: 0), plus,p);
       }
       if (widget.p.timerControllerProviderState
               .firstWhere((element) => element.id == assignPersonnel.id)
@@ -263,13 +268,16 @@ class _MyCircularProgressState extends State<MyCircularProgress> {
   void initState() {
     super.initState();
     total = Duration(seconds: int.parse(assignPersonnel.time));
-
-    if (assignPersonnel.remainingTime == '0') {
+    if (assignPersonnel.remainingTime == '0' && assignPersonnel.playDateTime == null) {
       try {
         startDateTime = DateTime.parse(assignPersonnel.startDateTime);
       } catch (e) {
         startDateTime = DateTime.now();
       }
+    }else if(assignPersonnel.playDateTime != null){
+      // print("here");
+      // print(widget.assignPersonnel.remainingTime);
+      startDateTime = DateTime.parse(assignPersonnel.playDateTime).add(Duration(seconds: int.parse(widget.assignPersonnel.remainingTime) * (-1)));
     } else {
       startDateTime = DateTime.now().add(Duration(
           seconds: int.parse(widget.assignPersonnel.remainingTime) * (-1)));
@@ -297,7 +305,7 @@ class _MyCircularProgressState extends State<MyCircularProgress> {
               s: widget.pause == true ? '0' : '1'));
           cubit.updatePercent(total.inSeconds, mines, plus,p);
         } else {
-          plus = Duration(seconds: plus.inSeconds + 1);
+          plus = Duration(seconds: plus.inSeconds);
           double p = (mines.inSeconds / total.inSeconds) * 100;
           widget.p.update(TimerControllerProviderState(
               x: plus.inSeconds,
@@ -316,8 +324,11 @@ class _MyCircularProgressState extends State<MyCircularProgress> {
     super.didUpdateWidget(oldWidget);
 
     if (oldWidget.pause != widget.pause && widget.pause == false) {
-      startDateTime = DateTime.now()
-          .add(Duration(seconds: cubit.state.plus.inSeconds * (-1)));
+      if(assignPersonnel.playDateTime == null){
+        startDateTime = DateTime.now().add(Duration(seconds: cubit.state.plus.inSeconds * (-1)));
+      }else{
+        startDateTime = DateTime.parse(assignPersonnel.playDateTime).add(Duration(seconds: cubit.state.plus.inSeconds * (-1)));
+      }
       updater(startDateTime, total, cubit, assignPersonnel.play);
     } else {}
   }

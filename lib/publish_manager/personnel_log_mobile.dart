@@ -2,29 +2,33 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:workshop/module/publish_manager/assignment_log.dart';
 import 'package:workshop/provider/personnel_log_provider.dart';
+import 'package:workshop/style/component/publish_manager/timeControllerProvider.dart';
 import 'package:workshop/style/theme/show_snackbar.dart';
 
 class PersonnelLogMobile extends StatelessWidget {
   final TextStyle style;
-  PersonnelLogMobile({this.style});
+  final PersonnelLogProvider personnelLogProvider;
+  // final PageController streamPageController;
+  final Axis axis;
+  PersonnelLogMobile({this.style,this.personnelLogProvider,this.axis = Axis.vertical,});
   @override
   Widget build(BuildContext context) {
-    print("here");
-    List<AssignmentLog> assignmentLogs =
-        Provider.of<List<AssignmentLog>>(context) ?? [];
-    PersonnelLogProvider personnelLogProvider =
-        Provider.of<PersonnelLogProvider>(context);
-    if (assignmentLogs.length >= personnelLogProvider.a.length) {
-      personnelLogProvider.assignmentLogSetter = assignmentLogs;
-    } else {
-      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-        MyShowSnackBar.showSnackBar(context, "وضعیت اینترنت خود را چک کنید..");
-      });
-    }
+    // List<AssignmentLog> assignmentLogs =
+    //     Provider.of<List<AssignmentLog>>(context) ?? [];
+    // PersonnelLogProvider personnelLogProvider =
+    //     Provider.of<PersonnelLogProvider>(context);
+    // if (assignmentLogs.length >= personnelLogProvider.a.length) {
+    //   personnelLogProvider.assignmentLogSetter = assignmentLogs;
+    // } else {
+    //   WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    //     MyShowSnackBar.showSnackBar(context, "وضعیت اینترنت خود را چک کنید..");
+    //   });
+    // }
 
     return Scaffold(
       body: Container(
         child: ListView.builder(
+          scrollDirection: axis,
           controller: new ScrollController(),
           itemCount: personnelLogProvider.a.length,
           itemBuilder: (BuildContext context, int index) {

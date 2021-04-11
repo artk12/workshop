@@ -1,10 +1,13 @@
 import 'dart:convert';
 import 'package:workshop/bloc/publishManager/timer_controller.dart';
 import 'package:workshop/module/cutter/cut.dart';
+import 'package:workshop/module/publish_manager/absent.dart';
 import 'package:workshop/module/publish_manager/assign_personnel.dart';
 import 'package:workshop/module/publish_manager/assignment_log.dart';
 import 'package:workshop/module/publish_manager/personnel_assign.dart';
+import 'package:workshop/module/publish_manager/score.dart';
 import 'package:workshop/module/publish_manager/task.dart';
+import 'package:workshop/module/publish_manager/warning.dart';
 import 'package:workshop/module/stockpile/fabric.dart';
 import 'package:workshop/module/stockpile/fabric_log.dart';
 import 'package:workshop/module/stockpile/item.dart';
@@ -16,8 +19,32 @@ import 'package:workshop/request/request.dart';
 
 class MyList {
 
+  Future<List<UserScore>> getScoreList() async {
+    String body = await MyRequest.simpleQueryRequest(
+        'stockpile/getResult.php', GetData.getAllScore);
+    final json = jsonDecode(body).cast<Map<String, dynamic>>();
+    List<UserScore> items = json.map<UserScore>((json) => UserScore.fromJson(json)).toList();
 
-  Stream<List<AssignmentLog>> getAssignmentLogs()async*{
+    return items;
+  }
+  Future<List<UserWarning>> getWarningList() async {
+    String body = await MyRequest.simpleQueryRequest(
+        'stockpile/getResult.php', GetData.getAllWarning);
+    final json = jsonDecode(body).cast<Map<String, dynamic>>();
+    List<UserWarning> items =
+    json.map<UserWarning>((json) => UserWarning.fromJson(json)).toList();
+    return items;
+  }
+  Future<List<Absent>> getAbsentList() async {
+    String body = await MyRequest.simpleQueryRequest(
+        'stockpile/getResult.php', GetData.getAbsentMonth());
+    final json = jsonDecode(body).cast<Map<String, dynamic>>();
+    List<Absent> items = json.map<Absent>((json) => Absent.fromJson(json)).toList();
+    return items;
+  }
+
+
+  static Stream<List<AssignmentLog>> getAssignmentLogs()async*{
     while(true){
       await Future.delayed(Duration(seconds: 5));
       String body = await MyRequest.getPersonnelLog();
@@ -84,6 +111,14 @@ class MyList {
         json.map<Message>((json) => Message.fromJson(json)).toList();
     return items;
   }
+  Future<List<Message>> getPublishMangerMessages() async {
+    String body = await MyRequest.simpleQueryRequest(
+        'stockpile/getResult.php', GetData.getPublishManagerMessage);
+    final json = jsonDecode(body).cast<Map<String, dynamic>>();
+    List<Message> items =
+    json.map<Message>((json) => Message.fromJson(json)).toList();
+    return items;
+  }
 
   Future<List<Message>> getPersonnelMessages() async {
     String body = await MyRequest.simpleQueryRequest(
@@ -147,11 +182,12 @@ class MyList {
       List<PersonnelAssignHolder> personnelAssignHolders = [];
       List<StartAssign> startAssigns = [];
       List<AssignPersonnel> tasks = [];
-      await Future.delayed(Duration(seconds: 3));
+      await Future.delayed(Duration(seconds: 1));
       String body = await MyRequest.simpleQueryRequestOneSecondDelay(
           'stockpile/getResult.php', GetData.getTodayAssignments);
       if(body == 'not ok'){
         TimerStreamer timerControllerCubit = TimerStreamer(monitorItemController: []);
+
       }else {
         final json = jsonDecode(body).cast<Map<String, dynamic>>();
         tasks = json
@@ -162,7 +198,6 @@ class MyList {
           h.personnelSetter = item;
           List<AssignPersonnel> t =
           tasks.where((element) => element.personnelId == item.id).toList();
-          // print(t.length);
           h.assignSetter = t;
           try {
             if (t.length > 0) {
@@ -189,9 +224,7 @@ class MyList {
           monitorItemList.add(item);
         });
 
-        TimerStreamer timerControllerCubit =
-        TimerStreamer(monitorItemController: monitorItemList);
-
+        TimerStreamer timerControllerCubit = TimerStreamer(monitorItemController: monitorItemList);
         yield timerControllerCubit;
       }
 
