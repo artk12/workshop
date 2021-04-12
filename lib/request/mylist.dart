@@ -66,14 +66,23 @@ class MyList {
     return items;
   }
 
-  Future<List<AssignPersonnel>> getUserTasks(String id) async {
-    String body = await MyRequest.simpleQueryRequest(
-        'stockpile/getResult.php', GetData.getPersonnelTask(id));
-    final json = jsonDecode(body).cast<Map<String, dynamic>>();
-    List<AssignPersonnel> items = json
-        .map<AssignPersonnel>((json) => AssignPersonnel.fromJson(json))
-        .toList();
-    return items;
+  Stream<List<AssignPersonnel>> getUserTasks(String id) async* {
+    while(true){
+      try{
+        await Future.delayed(Duration(seconds: 3));
+        String body = await MyRequest.simpleQueryRequestWithTimeOut(
+            'stockpile/getResult.php', GetData.getPersonnelTask(id));
+        final json = jsonDecode(body).cast<Map<String, dynamic>>();
+        List<AssignPersonnel> items = json
+            .map<AssignPersonnel>((json) => AssignPersonnel.fromJson(json))
+            .toList();
+        yield items;
+      }catch(e){
+
+      }
+
+    }
+
   }
 
   Future<List<Fabric>> getFabrics() async {

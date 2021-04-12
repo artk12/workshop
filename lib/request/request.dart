@@ -114,6 +114,20 @@ class MyRequest {
     }
     return response.body;
   }
+  static Future<String> simpleQueryRequestWithTimeOut(String url, String query) async {
+    try{
+      http.Response response = await http
+          .post(baseUrl + url, body: {'query': query})
+          .onError((error, stackTrace) => null)
+          .timeout(Duration(seconds: 3));
+      if (response == null) {
+        return "not ok";
+      }
+      return response.body;
+    }catch(e){
+      return '';
+    }
+  }
 
   static Future<String> simpleQueryRequest(String url, String query) async {
     http.Response response = await http.post(baseUrl + url,

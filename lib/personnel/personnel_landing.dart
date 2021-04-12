@@ -6,22 +6,27 @@ import 'package:workshop/module/stockpile/message.dart';
 import 'package:workshop/module/stockpile/user.dart';
 import 'package:workshop/personnel/dialog_message.dart';
 import 'package:workshop/personnel/personnel_drawer.dart';
+import 'package:workshop/personnel/personnel_task_list.dart';
 import 'package:workshop/provider/taskItemProvider.dart';
 import 'package:workshop/style/app_bar/my_appbar.dart';
 import 'package:workshop/style/component/my_icon_button.dart';
 import 'package:workshop/style/component/personnel/task_item.dart';
 import 'package:workshop/style/theme/my_icons.dart';
+import 'package:flutter/foundation.dart';
+
 
 class PersonnelLandingPage extends StatelessWidget {
   final User user;
   final List<Message> messages;
+  final TaskItemProvider provider;
 
-  PersonnelLandingPage({this.user,this.messages});
+  PersonnelLandingPage({this.user,this.messages,this.provider});
 
   @override
   Widget build(BuildContext context) {
     GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey();
     List<AssignPersonnel> tasks = Provider.of<List<AssignPersonnel>>(context) ?? [];
+
     UserScore userScore = Provider.of(context);
     double totalScore = 0;
     if(userScore != null){
@@ -31,7 +36,7 @@ class PersonnelLandingPage extends StatelessWidget {
         });
       }
     }
-    TaskItemProvider provider = new TaskItemProvider(tasks);
+    provider.taskSetter = tasks;
 
     return Scaffold(
       key: scaffoldKey,
@@ -161,29 +166,6 @@ class PersonnelLandingPage extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-}
-
-class MyTaskList extends StatelessWidget {
-  final User user;
-  MyTaskList({this.user});
-  @override
-  Widget build(BuildContext context) {
-    TaskItemProvider provider = Provider.of(context);
-
-    return ListView.builder(
-      itemCount: provider.tasks.length,
-      itemBuilder: (BuildContext context, int index) {
-        return provider.checks[index].isDone?Container():TaskItem(
-          provider: provider,
-          user: user,
-          assignPersonnel: provider.tasks[index],
-          maxWidth: double.maxFinite,
-          index: index + 1,
-          total: provider.tasks.length,
-        );
-      },
     );
   }
 }

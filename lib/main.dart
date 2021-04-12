@@ -35,30 +35,30 @@ class MyApp extends StatelessWidget {
         // '/': (context) => StockHomePage(),
       },
       theme: light,
-      // home: MultiProvider(
-      //   providers: [
-      //     FutureProvider(create:(_)=>MyRequest.getNormalUserDetail('3450101010','123456'),),
-      //     FutureProvider(create:(_)=>MyList().getPersonnelMessages(),),
-      //   ],
-      //   child: PersonnelPage(),
-      // ),
-      home: ChangeNotifierProvider.value(
-        value: RefreshProvider(),
-        child: MultiProvider(
-          providers: [
-            FutureProvider(create: (_)async{return SuperUser(id: '1',user: '09176468332',pass: '1243',side: 'مدیرتولید',profile: 'sss',name: 'مسلم بایرامی');},),
-            FutureProvider(create: (_)=>MyList().getPersonnelList()),
-            FutureProvider(create: (_)=>MyList().getTaskList()),
-            FutureProvider(create: (_)=>MyList().getCutList(),),
-            FutureProvider(create: (_)=>MyList().getPersonnelMessages()),
-            FutureProvider(create: (_)=>MyList().getScoreList()),
-            FutureProvider(create: (_)=>MyList().getWarningList()),
-            FutureProvider(create: (_)=>MyList().getAbsentList()),
-            ChangeNotifierProvider.value(value: PublishManagerPageController()),
-          ],
-          child: PublishManager(),
-        ),
+      home: MultiProvider(
+        providers: [
+          FutureProvider(create:(_)=>MyRequest.getNormalUserDetail('3450101010','123456'),),
+          FutureProvider(create:(_)=>MyList().getPersonnelMessages(),),
+        ],
+        child: PersonnelPage(),
       ),
+      // home: ChangeNotifierProvider.value(
+      //   value: RefreshProvider(),
+      //   child: MultiProvider(
+      //     providers: [
+      //       FutureProvider(create: (_)async{return SuperUser(id: '1',user: '09176468332',pass: '1243',side: 'مدیرتولید',profile: 'sss',name: 'مسلم بایرامی');},),
+      //       FutureProvider(create: (_)=>MyList().getPersonnelList()),
+      //       FutureProvider(create: (_)=>MyList().getTaskList()),
+      //       FutureProvider(create: (_)=>MyList().getCutList(),),
+      //       FutureProvider(create: (_)=>MyList().getPersonnelMessages()),
+      //       FutureProvider(create: (_)=>MyList().getScoreList()),
+      //       FutureProvider(create: (_)=>MyList().getWarningList()),
+      //       FutureProvider(create: (_)=>MyList().getAbsentList()),
+      //       ChangeNotifierProvider.value(value: PublishManagerPageController()),
+      //     ],
+      //     child: PublishManager(),
+      //   ),
+      // ),
       // home: Cutter(),
       // home: GeneralManager(),
       // home: FutureProvider(

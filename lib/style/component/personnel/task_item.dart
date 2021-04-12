@@ -35,7 +35,8 @@ class _TaskItemState extends State<TaskItem> {
   String connection = "مشکل در اتصال به اینترنت ! ";
   @override
   Widget build(BuildContext context) {
-    // TaskItemProvider provider = Provider.of<TaskItemProvider>(context);
+    stop = widget.assignPersonnel.play == "0"?true:false;
+
     ThemeData theme = Theme.of(context);
     int indexProvider =
         widget.provider.checks.indexWhere((element) => element.check == true);
@@ -49,8 +50,7 @@ class _TaskItemState extends State<TaskItem> {
           String taskName = widget.assignPersonnel.name;
           String startDateTime = DateTime.now().toString().substring(0, 19);
           MyShowSnackBar.longShowSnackBar(context, 'لطفا کمی صبر کنید...');
-          String res = await MyRequest.startTask(id, taskName, widget.user.name,
-              cutCode, personnelId, startDateTime);
+          String res = await MyRequest.startTask(id, taskName, widget.user.name, cutCode, personnelId, startDateTime);
           print(res);
           if (res.trim() == "OK") {
             ScaffoldMessenger.of(context).hideCurrentSnackBar();
@@ -112,6 +112,7 @@ class _TaskItemState extends State<TaskItem> {
                     timerPersonnel:
                         widget.provider.checks[widget.index - 1].cubit));
             if (res == "OK") {
+              await Future.delayed(Duration(milliseconds: 250));
               setState(() {
                 stop = true;
               });
@@ -318,7 +319,8 @@ class _MyCircularProgressState extends State<MyCircularProgress> {
   final int index;
   Duration total;
   DateTime startDateTime;
-  bool stop = false;
+  bool test = false;
+  // bool stop = false;
 
   _MyCircularProgressState({this.assignPersonnel, this.index});
 
@@ -339,7 +341,7 @@ class _MyCircularProgressState extends State<MyCircularProgress> {
         startDateTime.add(Duration(seconds: total.inSeconds + 1));
     Duration mines = total;
     while (true) {
-      if (widget.stop) {
+      if (widget.stop || !widget.check) {
         break;
       }
       await Future.delayed(Duration(seconds: 1));
@@ -362,8 +364,10 @@ class _MyCircularProgressState extends State<MyCircularProgress> {
         }
         cubit.updatePercent(total.inSeconds, mines, plus, p);
       } else {
-        plus = Duration(seconds: plus.inSeconds + 1);
-        double p = (mines.inSeconds / total.inSeconds) * 100;
+        // plus = Duration(seconds: plus.inSeconds + 1);
+        plus = Duration(seconds: now.difference(endDateTime).inSeconds);
+        // double p = (mines.inSeconds / total.inSeconds) * 100;
+        double p = 0;
         if (p <= 100 &&
             p > 50 &&
             widget.provider.color != Colors.green.withOpacity(0.1)) {
@@ -376,56 +380,88 @@ class _MyCircularProgressState extends State<MyCircularProgress> {
             widget.provider.color != Colors.red.withOpacity(0.1)) {
           widget.provider.updateColor(Colors.red.withOpacity(0.1));
         }
-        cubit.updatePercent(total.inSeconds, mines, plus, p);
+        cubit.updatePercent(total.inSeconds, Duration(seconds: 0), plus, p);
       }
     }
   }
 
   @override
   void initState() {
-    super.initState();
+
     total = Duration(seconds: int.parse(assignPersonnel.time));
-    startDateTime = DateTime.now().add(Duration(
+    DateTime now = DateTime.now();
+    if (assignPersonnel.remainingTime == '0' && assignPersonnel.playDateTime == null) {
+      try {
+        startDateTime = DateTime.parse(assignPersonnel.startDateTime);
+      } catch (e) {
+        startDateTime = DateTime.now();
+      }
+    }else if(assignPersonnel.playDateTime != null){
+      startDateTime = DateTime.parse(assignPersonnel.playDateTime).add(Duration(seconds: int.parse(widget.assignPersonnel.remainingTime) * (-1)));
+    } else {
+      startDateTime = DateTime.now().add(Duration(
+          seconds: int.parse(widget.assignPersonnel.remainingTime) * (-1)));
+    }
+
+    // if(assignPersonnel.id == "9"){
+    //   print(" remaining time is" + widget.assignPersonnel.remainingTime+"  now is "+now.toString());
+    //   print(now);
+    // }
+    startDateTime = now.add(Duration(
         seconds: int.parse(widget.assignPersonnel.remainingTime) * (-1)));
+
+    // if(assignPersonnel.id == "9"){
+    //   print(startDateTime);
+    // }
+
     Duration plus = Duration(seconds: 0);
-    DateTime endDateTime =
-        startDateTime.add(Duration(seconds: total.inSeconds + 1));
+    DateTime endDateTime = startDateTime.add(Duration(seconds: total.inSeconds + 1));
     Duration mines = total;
     WidgetsBinding.instance.addPostFrameCallback(
       (timeStamp) {
-        DateTime now = DateTime.now();
-        if (endDateTime.difference(now).inSeconds >= 0) {
-          mines = Duration(seconds: endDateTime.difference(now).inSeconds);
-          plus = Duration(seconds: now.difference(startDateTime).inSeconds);
-          double p = (mines.inSeconds / total.inSeconds) * 100;
-          widget.provider.checks[index - 1].cubit
-              .updatePercent(total.inSeconds, mines, plus, p);
-        } else {
-          plus = Duration(seconds: plus.inSeconds);
-          double p = (mines.inSeconds / total.inSeconds) * 100;
-          widget.provider.checks[index - 1].cubit
-              .updatePercent(total.inSeconds, mines, plus, p);
+        if(widget.provider.firstTime){
+          if (endDateTime.difference(now).inSeconds >= 0) {
+            mines = Duration(seconds: endDateTime.difference(now).inSeconds);
+            plus = Duration(seconds: now.difference(startDateTime).inSeconds);
+            double p = (mines.inSeconds / total.inSeconds) * 100;
+            widget.provider.checks[index - 1].cubit
+                .updatePercent(total.inSeconds, mines, plus, p);
+          } else {
+            plus = Duration(seconds: now.difference(endDateTime).inSeconds);
+            // plus = Duration(seconds: plus.inSeconds);
+            // double p = (mines.inSeconds / total.inSeconds) * 100;
+            double p = 0;
+            widget.provider.checks[index - 1].cubit
+                .updatePercent(total.inSeconds, Duration(seconds: 0), plus, p);
+          }
         }
       },
     );
+    super.initState();
   }
+
 
   @override
   void didUpdateWidget(covariant MyCircularProgress oldWidget) {
     super.didUpdateWidget(oldWidget);
-
     if (widget.check && widget.provider.firstTime) {
-      startDateTime = DateTime.now().add(Duration(
-          seconds: int.parse(widget.assignPersonnel.remainingTime) * (-1)));
-      widget.provider.updateFirstTime(false);
-      WidgetsBinding.instance.addPostFrameCallback(
-        (_) => updater(
-          startDateTime,
-          total,
-          widget.provider.checks[index - 1].cubit,
-          assignPersonnel.play,
-        ),
-      );
+      // if()
+      if(assignPersonnel.playDateTime != null){
+        startDateTime = DateTime.parse(assignPersonnel.playDateTime).add(Duration(seconds: widget.provider.checks[index - 1].cubit.state.plus.inSeconds * (-1)));
+      }else{
+        startDateTime = DateTime.now().add(Duration(
+            seconds: int.parse(widget.assignPersonnel.remainingTime) * (-1)));
+      }
+        widget.provider.updateFirstTime(false);
+        WidgetsBinding.instance.addPostFrameCallback(
+              (_) => updater(
+            startDateTime,
+            total,
+            widget.provider.checks[index - 1].cubit,
+            assignPersonnel.play,
+          ),
+        );
+      // }
     }
   }
 
