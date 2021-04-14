@@ -7,6 +7,7 @@ import 'package:workshop/bloc/publishManager/assign_task.dart';
 import 'package:workshop/module/cutter/cut.dart';
 import 'package:workshop/module/publish_manager/personnel.dart';
 import 'package:workshop/module/publish_manager/task.dart';
+import 'package:workshop/provider/publish_manager_pages_controller.dart';
 import 'package:workshop/publish_manager/dialog_new_task.dart';
 import 'package:workshop/request/request.dart';
 import 'package:workshop/style/component/default_button.dart';
@@ -19,14 +20,15 @@ class AssignmentPage extends StatelessWidget {
   final List<Cut> cuts;
   final List<Task> tasks;
   final List<Personnel> personnel;
-  AssignmentPage({this.cuts, this.tasks, this.personnel});
+  final AssignTaskCubit assignTaskCubit;
+  final AssignPersonnelCubit assignPersonnelCubit;
+  final PageController pageController;
+  final PublishManagerPageController streamPageController;
+  AssignmentPage({this.cuts, this.tasks, this.personnel,this.assignPersonnelCubit,this.assignTaskCubit,this.pageController,this.streamPageController});
 
   @override
   Widget build(BuildContext context) {
-    AssignTaskCubit assignTaskCubit =
-        AssignTaskCubit(AssignTaskState(assignTaskUpdate: []));
-    AssignPersonnelCubit assignPersonnelCubit =
-        new AssignPersonnelCubit(AssignPersonnelState(assignments: []));
+
     // WidgetsBinding.instance
     //     .addPostFrameCallback((_) => showDialog(context: context, builder: (context)=>AssignTaskDialog(),barrierColor: Colors.transparent));
 
@@ -68,7 +70,8 @@ class AssignmentPage extends StatelessWidget {
                     MyShowSnackBar.showSnackBar(context, "کمی صبر کنید...");
                     await MyRequest.insertAssignRequest(jsonEncode(mapList));
                     MyShowSnackBar.hideSnackBar(context);
-                    Navigator.of(context).pop();
+                    streamPageController.pageView = 0;
+                    pageController.animateToPage(0, duration: Duration(milliseconds: 500), curve: Curves.easeIn);
                   }
                 },
               ),
@@ -76,10 +79,10 @@ class AssignmentPage extends StatelessWidget {
                 title: 'لغو',
                 backgroundColor: Colors.red.withOpacity(0.4),
                 onPressed: () async {
-                  Navigator.pop(context);
+                  streamPageController.pageView = 0;
+                  pageController.animateToPage(0, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                 },
               ),
-
               DefaultButton(
                 title: 'تنظیم مجدد',
                 onPressed: (){
@@ -114,6 +117,7 @@ class AssignmentPage extends StatelessWidget {
                 BlocBuilder(
                   cubit: assignTaskCubit,
                   builder: (BuildContext context, AssignTaskState state) {
+                    print(state.assignTaskUpdate.length);
                     return Expanded(
                       child: ListView.builder(
                         itemBuilder: (context, index) => Draggable(

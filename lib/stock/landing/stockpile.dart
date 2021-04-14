@@ -11,12 +11,11 @@ import 'package:workshop/stock/landing/stock_landing_page.dart';
 import 'package:workshop/stock/loading_page.dart';
 
 class StockPile extends StatelessWidget {
-
+  final SuperUser user;
+  StockPile({this.user});
   @override
   Widget build(BuildContext context) {
     RefreshProvider refreshProvider = Provider.of<RefreshProvider>(context);
-    SuperUser user = Provider.of(context);
-
 
     return user == null? LoadingPage():FutureBuilder(
       future: refreshProvider.items,

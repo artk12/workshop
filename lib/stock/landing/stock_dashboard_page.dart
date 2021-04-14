@@ -114,7 +114,7 @@ class StockDashboardPage extends StatelessWidget {
                     Expanded(
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
-                        itemCount: 1,
+                        itemCount: allItems.length,
                         itemBuilder: (context, index) =>
                             allItems[index].category == 'fabric'
                                 ? StockCard(

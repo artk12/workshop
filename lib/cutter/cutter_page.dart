@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workshop/bloc/ignoreButtonsBloc.dart';
 import 'package:workshop/cutter/calculate_cutter.dart';
+import 'package:workshop/module/cutter/cut.dart';
 import 'package:workshop/module/cutter/cut_detail.dart';
+import 'package:workshop/module/general_manager/project.dart';
+import 'package:workshop/module/stockpile/fabric.dart';
 import 'package:workshop/request/query/insert.dart';
 import 'package:workshop/request/request.dart';
 import 'package:workshop/style/app_bar/my_appbar.dart';
@@ -338,7 +341,45 @@ class CutterPage extends StatelessWidget {
                                 ignoreButtonCubit.update(false);
                                 if (result.trim() == "OK") {
                                   MyShowSnackBar.hideSnackBar(context);
-                                  Navigator.pop(context);
+                                  DateTime dateTime = DateTime.now();
+                                  int year = dateTime.year;
+                                  int month = dateTime.month;
+                                  int day = dateTime.day;
+                                  Navigator.pop(
+                                      context,
+                                      Cut(
+                                        description:
+                                            description.text.toString(),
+                                        height: height.text.toString(),
+                                        id: '0',
+                                        cutCode: cutCode.text.toString(),
+                                        pieces: pieces,
+                                        realUsage: realUsage.text.toString(),
+                                        usage: usage.text.toString(),
+                                        totalGoods: totalGoods.text.toString(),
+                                        day: day.toString(),
+                                        month: month.toString(),
+                                        year: year.toString(),
+                                        project: Project(
+                                          id: cutDetail.projectId,
+                                          styleCode: cutDetail.styleCode,
+                                          size: cutDetail.size,
+                                          type: cutDetail.type,
+                                          roll: cutDetail.roll,
+                                          description:
+                                              cutDetail.projectDescription,
+                                          brand: cutDetail.brand,
+                                        ),
+                                        fabric: Fabric(
+                                            id: cutDetail.fabricId,
+                                            description:
+                                                cutDetail.fabricDescription,
+                                            color: cutDetail.color,
+                                            pieces: cutDetail.pieces,
+                                            metric: cutDetail.metric,
+                                            calite: cutDetail.calite,
+                                            manufacture: cutDetail.manufacture),
+                                      ));
                                 }
                               }
                             },

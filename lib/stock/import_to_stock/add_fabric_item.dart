@@ -161,7 +161,7 @@ class AddFabricItem extends StatelessWidget {
                                   MyShowSnackBar.showSnackBar(context, "کمی صبرکنید...");
                                   String insert = Insert.queryInsertFabricToStockpile(manufacture,calite,metric,color,pieces,description);
                                   String res = await MyRequest.simpleQueryRequest('stockpile/runQuery.php', insert);
-                                  if(res == "OK"){
+                                  if(res.trim() == "OK"){
                                     ignoreButtonCubit.update(false);
                                     MyShowSnackBar.hideSnackBar(context);
                                     Navigator.pop(context);

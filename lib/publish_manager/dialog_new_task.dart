@@ -24,7 +24,7 @@ class NewTaskDialog extends StatelessWidget {
     SingleDropDownItemCubit tasksDropDownController = new SingleDropDownItemCubit(SingleDropDownItemState(value: tasks.first.id));
     IgnoreButtonCubit ignoreButtonCubit = IgnoreButtonCubit(IgnoreButtonState(ignore: false));
     TextEditingController cutCode = new TextEditingController();
-    TextEditingController quantity = new TextEditingController();
+    // TextEditingController quantity = new TextEditingController();
 
     ThemeData theme = Theme.of(context);
 
@@ -78,16 +78,16 @@ class NewTaskDialog extends StatelessWidget {
                     ),
                   ),
                 ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: DefaultTextField(
-                      label: 'مقدار',
-                      textInputType: TextInputType.number,
-                      textEditingController: quantity,
-                    ),
-                  ),
-                ),
+                // Expanded(
+                //   child: Padding(
+                //     padding: const EdgeInsets.all(8.0),
+                //     child: DefaultTextField(
+                //       label: 'مقدار',
+                //       textInputType: TextInputType.number,
+                //       textEditingController: quantity,
+                //     ),
+                //   ),
+                // ),
               ],
             ),
             SizedBox(height:10,),

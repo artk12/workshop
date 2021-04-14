@@ -6,6 +6,7 @@ import 'package:workshop/provider/publish_manager_pages_controller.dart';
 import 'package:workshop/publish_manager/publish_manager.dart';
 import 'package:workshop/request/mylist.dart';
 import 'package:workshop/request/request.dart';
+import 'package:workshop/sign/sign_in.dart';
 import 'package:workshop/stock/import_to_stock/update_item.dart';
 import 'package:workshop/stock/import_to_stock/add_fabric_item.dart';
 import 'package:workshop/stock/import_to_stock/add_new_item.dart';
@@ -35,13 +36,14 @@ class MyApp extends StatelessWidget {
         // '/': (context) => StockHomePage(),
       },
       theme: light,
-      home: MultiProvider(
-        providers: [
-          FutureProvider(create:(_)=>MyRequest.getNormalUserDetail('3450101010','123456'),),
-          FutureProvider(create:(_)=>MyList().getPersonnelMessages(),),
-        ],
-        child: PersonnelPage(),
-      ),
+      home:SignIn()
+      // home: MultiProvider(
+      //   providers: [
+      //     FutureProvider(create:(_)=>MyRequest.getNormalUserDetail('3450101010','123456'),),
+      //     FutureProvider(create:(_)=>MyList().getPersonnelMessages(),),
+      //   ],
+      //   child: PersonnelPage(),
+      // ),
       // home: ChangeNotifierProvider.value(
       //   value: RefreshProvider(),
       //   child: MultiProvider(

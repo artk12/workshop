@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:workshop/bloc/personnel/score_cubit.dart';
 import 'package:workshop/module/publish_manager/assign_personnel.dart';
 import 'package:workshop/module/publish_manager/score.dart';
 import 'package:workshop/module/stockpile/message.dart';
@@ -19,23 +20,14 @@ class PersonnelLandingPage extends StatelessWidget {
   final User user;
   final List<Message> messages;
   final TaskItemProvider provider;
+  final ScoreCubit scoreCubit;
+  final GlobalKey<ScaffoldState> scaffoldKey;
 
-  PersonnelLandingPage({this.user,this.messages,this.provider});
+  PersonnelLandingPage({this.user,this.messages,this.provider,this.scoreCubit,this.scaffoldKey});
 
   @override
   Widget build(BuildContext context) {
-    GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey();
     List<AssignPersonnel> tasks = Provider.of<List<AssignPersonnel>>(context) ?? [];
-
-    UserScore userScore = Provider.of(context);
-    double totalScore = 0;
-    if(userScore != null){
-      if(userScore.id != '0'){
-        userScore.scores.forEach((element) {
-          totalScore += element.score;
-        });
-      }
-    }
     provider.taskSetter = tasks;
 
     return Scaffold(
@@ -43,7 +35,7 @@ class PersonnelLandingPage extends StatelessWidget {
       drawer: PersonnelDrawer(
         scaffoldKey: scaffoldKey,
         user: user,
-        totalScore:totalScore,
+        scoreCubit:scoreCubit,
       ),
       body: SafeArea(
         child: Column(
@@ -160,7 +152,7 @@ class PersonnelLandingPage extends StatelessWidget {
             Expanded(
               child: ChangeNotifierProvider.value(
                 value: provider,
-                child: MyTaskList(user:user),
+                child: MyTaskList(user:user,scoreCubit: scoreCubit,),
               ),
             ),
           ],

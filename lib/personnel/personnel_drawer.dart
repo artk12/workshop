@@ -1,13 +1,14 @@
-
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:workshop/bloc/personnel/score_cubit.dart';
 import 'package:workshop/module/stockpile/user.dart';
 import 'package:workshop/request/request.dart';
 
 class PersonnelDrawer extends StatelessWidget {
   final User user;
   final GlobalKey<ScaffoldState> scaffoldKey;
-  final double totalScore;
-  PersonnelDrawer({this.user,this.scaffoldKey,this.totalScore});
+  final ScoreCubit scoreCubit;
+  PersonnelDrawer({this.user, this.scaffoldKey, this.scoreCubit});
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
@@ -25,8 +26,7 @@ class PersonnelDrawer extends StatelessWidget {
               decoration: BoxDecoration(
                 image: DecorationImage(
                   fit: BoxFit.fill,
-                  image: NetworkImage(
-                      MyRequest.baseUrl + '/' + user.profile),
+                  image: NetworkImage(MyRequest.baseUrl + '/' + user.profile),
                 ),
               ),
               child: Padding(
@@ -40,9 +40,7 @@ class PersonnelDrawer extends StatelessWidget {
                       style: theme.textTheme.headline2.copyWith(
                         color: Colors.white.withOpacity(0.7),
                         fontSize: 14,
-                        shadows: [
-                          Shadow(color: Colors.black, blurRadius: 3)
-                        ],
+                        shadows: [Shadow(color: Colors.black, blurRadius: 3)],
                       ),
                     ),
                     SizedBox(
@@ -58,11 +56,14 @@ class PersonnelDrawer extends StatelessWidget {
                     SizedBox(
                       height: 10,
                     ),
-                    Text(
-                      "امتیاز کل : " + totalScore.toString(),
-                      style: theme.textTheme.headline1.copyWith(
-                        color: Colors.white.withOpacity(0.7),
-                        fontSize: 14,
+                    BlocBuilder(
+                      cubit: scoreCubit,
+                      builder: (BuildContext context, ScoreState state) => Text(
+                        "امتیاز کل : " + state.score.toString(),
+                        style: theme.textTheme.headline1.copyWith(
+                          color: Colors.white.withOpacity(0.7),
+                          fontSize: 14,
+                        ),
                       ),
                     ),
                     SizedBox(

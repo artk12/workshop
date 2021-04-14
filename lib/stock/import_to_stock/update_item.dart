@@ -1,6 +1,5 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-// ignore: import_of_legacy_library_into_null_safe
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workshop/bloc/ignoreButtonsBloc.dart';
 import 'package:workshop/bloc/stockpile/single_drop_down_bloc.dart';
@@ -223,7 +222,7 @@ class UpdateItem extends StatelessWidget {
                                     body = await MyRequest.simple2QueryRequest(
                                         'stockpile/run2Query.php', update, insert);
                                   }
-                                  if (body == "OK") {
+                                  if (body.trim() == "OK") {
                                     MyShowSnackBar.hideSnackBar(context);
                                     ignoreButtonCubit.update(false);
                                     Navigator.pop(context);

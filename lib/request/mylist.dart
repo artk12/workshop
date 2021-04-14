@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:workshop/bloc/publishManager/timer_controller.dart';
 import 'package:workshop/module/cutter/cut.dart';
+import 'package:workshop/module/general_manager/project.dart';
 import 'package:workshop/module/publish_manager/absent.dart';
 import 'package:workshop/module/publish_manager/assign_personnel.dart';
 import 'package:workshop/module/publish_manager/assignment_log.dart';
@@ -18,6 +19,19 @@ import 'package:workshop/request/query/get_data.dart';
 import 'package:workshop/request/request.dart';
 
 class MyList {
+
+
+  static Future<List<Project>> getAllProjects()async{
+    try{
+      String body = await MyRequest.simpleQueryRequest(
+          'stockpile/getResult.php', GetData.getAllProject);
+      final json = jsonDecode(body).cast<Map<String, dynamic>>();
+      List<Project> items = json.map<Project>((json) => Project.fromJson(json)).toList();
+      return items;
+    }catch(e){
+      return null;
+    }
+  }
 
   Future<List<UserScore>> getScoreList() async {
     String body = await MyRequest.simpleQueryRequest(

@@ -41,7 +41,6 @@ class GetData {
     DateTime dateTime = DateTime.now();
     String year = dateTime.year.toString();
     String month = dateTime.month.toString();
-    String day = dateTime.day.toString();
 
     return "SELECT `ID`, `personnel_id`, `year`, `month`, `day` FROM `absent` WHERE `year`='$year' AND `month`='$month'";
   }
@@ -57,5 +56,7 @@ class GetData {
   static String getScorePersonnel(String id){
     return "SELECT `ID`, `user_id`, `scores` FROM `user_score` WHERE `user_id`='$id'";
   }
+  //------------------------------------------general manage
+  static String getAllProject = "SELECT `ID`, `type`, `brand`, `roll`, `style_code`, `size`, `description` FROM `project` ";
   // static final String getTodayAssignments = "SELECT * FROM `assignment` ";
 }

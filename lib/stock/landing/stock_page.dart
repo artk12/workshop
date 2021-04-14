@@ -78,6 +78,8 @@ class StockPage extends StatelessWidget {
       }
     });
 
+    print(myList.length);
+
     return WillPopScope(
       onWillPop: ()async{
         pageController.animateToPage(0,curve: Curves.easeIn,duration: Duration(milliseconds: 200));

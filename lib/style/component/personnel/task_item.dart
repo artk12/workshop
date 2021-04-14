@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:workshop/bloc/personnel/score_cubit.dart';
 import 'package:workshop/bloc/publishManager/timer_personnel.dart';
 import 'package:workshop/module/publish_manager/assign_personnel.dart';
 import 'package:workshop/module/stockpile/user.dart';
@@ -17,6 +18,7 @@ class TaskItem extends StatefulWidget {
   final int total;
   final TaskItemProvider provider;
   final User user;
+  final ScoreCubit scoreCubit;
 
   TaskItem(
       {this.maxWidth = 300,
@@ -24,6 +26,7 @@ class TaskItem extends StatefulWidget {
       this.index,
       this.total,
       this.user,
+      @required this.scoreCubit,
       this.provider});
 
   @override
@@ -35,7 +38,7 @@ class _TaskItemState extends State<TaskItem> {
   String connection = "مشکل در اتصال به اینترنت ! ";
   @override
   Widget build(BuildContext context) {
-    stop = widget.assignPersonnel.play == "0"?true:false;
+    stop = widget.assignPersonnel.play == "0" ? true : false;
 
     ThemeData theme = Theme.of(context);
     int indexProvider =
@@ -71,17 +74,10 @@ class _TaskItemState extends State<TaskItem> {
                       ),
                       TextButton(
                         onPressed: () async {
-                          String res = await MyRequest.startTask(
-                              id,
-                              taskName,
-                              widget.user.name,
-                              cutCode,
-                              personnelId,
-                              startDateTime);
+                          String res = await MyRequest.startTask(id, taskName, widget.user.name, cutCode, personnelId, startDateTime);
                           if (res == "OK") {
                             ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                            widget.provider
-                                .update(true, widget.assignPersonnel.id);
+                            widget.provider.update(true, widget.assignPersonnel.id);
                           }
                         },
                         child: Container(
@@ -136,8 +132,11 @@ class _TaskItemState extends State<TaskItem> {
               String res = await MyRequest.submitTask(
                   id, score.toString(), year, month, day, warning);
               if (res.trim() == "OK") {
-                ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                try{
+                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                }catch(e){}
                 await Future.delayed(Duration(milliseconds: 200));
+                widget.scoreCubit.updateScore(score);
                 widget.provider.submitTask(widget.assignPersonnel.id);
               } else {
                 ScaffoldMessenger.of(context).hideCurrentSnackBar();
@@ -169,6 +168,7 @@ class _TaskItemState extends State<TaskItem> {
                                     Duration(milliseconds: 200));
                                 widget.provider
                                     .submitTask(widget.assignPersonnel.id);
+                                widget.scoreCubit.updateScore(score);
                               } else {
                                 setState(() {
                                   connection = "مشکل در اتصال به اینترنت ! ";
@@ -387,17 +387,18 @@ class _MyCircularProgressState extends State<MyCircularProgress> {
 
   @override
   void initState() {
-
     total = Duration(seconds: int.parse(assignPersonnel.time));
     DateTime now = DateTime.now();
-    if (assignPersonnel.remainingTime == '0' && assignPersonnel.playDateTime == null) {
+    if (assignPersonnel.remainingTime == '0' &&
+        assignPersonnel.playDateTime == null) {
       try {
         startDateTime = DateTime.parse(assignPersonnel.startDateTime);
       } catch (e) {
         startDateTime = DateTime.now();
       }
-    }else if(assignPersonnel.playDateTime != null){
-      startDateTime = DateTime.parse(assignPersonnel.playDateTime).add(Duration(seconds: int.parse(widget.assignPersonnel.remainingTime) * (-1)));
+    } else if (assignPersonnel.playDateTime != null) {
+      startDateTime = DateTime.parse(assignPersonnel.playDateTime).add(Duration(
+          seconds: int.parse(widget.assignPersonnel.remainingTime) * (-1)));
     } else {
       startDateTime = DateTime.now().add(Duration(
           seconds: int.parse(widget.assignPersonnel.remainingTime) * (-1)));
@@ -415,11 +416,12 @@ class _MyCircularProgressState extends State<MyCircularProgress> {
     // }
 
     Duration plus = Duration(seconds: 0);
-    DateTime endDateTime = startDateTime.add(Duration(seconds: total.inSeconds + 1));
+    DateTime endDateTime =
+        startDateTime.add(Duration(seconds: total.inSeconds + 1));
     Duration mines = total;
     WidgetsBinding.instance.addPostFrameCallback(
       (timeStamp) {
-        if(widget.provider.firstTime){
+        if (widget.provider.firstTime) {
           if (endDateTime.difference(now).inSeconds >= 0) {
             mines = Duration(seconds: endDateTime.difference(now).inSeconds);
             plus = Duration(seconds: now.difference(startDateTime).inSeconds);
@@ -440,27 +442,30 @@ class _MyCircularProgressState extends State<MyCircularProgress> {
     super.initState();
   }
 
-
   @override
   void didUpdateWidget(covariant MyCircularProgress oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.check && widget.provider.firstTime) {
       // if()
-      if(assignPersonnel.playDateTime != null){
-        startDateTime = DateTime.parse(assignPersonnel.playDateTime).add(Duration(seconds: widget.provider.checks[index - 1].cubit.state.plus.inSeconds * (-1)));
-      }else{
+      if (assignPersonnel.playDateTime != null) {
+        startDateTime = DateTime.parse(assignPersonnel.playDateTime).add(
+            Duration(
+                seconds: widget
+                        .provider.checks[index - 1].cubit.state.plus.inSeconds *
+                    (-1)));
+      } else {
         startDateTime = DateTime.now().add(Duration(
             seconds: int.parse(widget.assignPersonnel.remainingTime) * (-1)));
       }
-        widget.provider.updateFirstTime(false);
-        WidgetsBinding.instance.addPostFrameCallback(
-              (_) => updater(
-            startDateTime,
-            total,
-            widget.provider.checks[index - 1].cubit,
-            assignPersonnel.play,
-          ),
-        );
+      widget.provider.updateFirstTime(false);
+      WidgetsBinding.instance.addPostFrameCallback(
+        (_) => updater(
+          startDateTime,
+          total,
+          widget.provider.checks[index - 1].cubit,
+          assignPersonnel.play,
+        ),
+      );
       // }
     }
   }

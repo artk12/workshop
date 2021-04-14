@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:workshop/bloc/refresh_provider.dart';
@@ -26,12 +25,11 @@ import 'package:workshop/style/theme/my_icons.dart';
 import 'drawer_menu.dart';
 
 class PublishManager extends StatelessWidget {
+  final SuperUser user;
+  PublishManager({this.user});
   @override
   Widget build(BuildContext context) {
-    // PageController normalPageController = new PageController(initialPage: 0);
-    // PageController steamPageController = new PageController(initialPage: 1);
     GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
-    SuperUser user = Provider.of<SuperUser>(context);
     List<Task> tasks = Provider.of<List<Task>>(context);
     List<Cut> cuts = Provider.of<List<Cut>>(context);
     List<Personnel> personnel = Provider.of<List<Personnel>>(context);
@@ -56,7 +54,13 @@ class PublishManager extends StatelessWidget {
     PageController pageController =
         new PageController(initialPage: streamPageController.pageView);
 
-    return user == null || tasks == null || cuts == null || personnel == null||absents == null || userScores == null || userWarning == null
+    return user == null ||
+            tasks == null ||
+            cuts == null ||
+            personnel == null ||
+            absents == null ||
+            userScores == null ||
+            userWarning == null
         ? LoadingPage()
         : Scaffold(
             key: scaffoldKey,
@@ -81,10 +85,10 @@ class PublishManager extends StatelessWidget {
                       ),
                     ],
                     leftWidget: [
-                      MyIconButton(
-                        icon: MyIcons.PLUS,
-                        onPressed: () {},
-                      )
+                      // MyIconButton(
+                      //   icon: MyIcons.PLUS,
+                      //   onPressed: () {},
+                      // )
                     ],
                   ),
                   Expanded(
@@ -117,15 +121,20 @@ class PublishManager extends StatelessWidget {
                         ),
                         PersonnelPage(
                           personnel: personnel,
-                          absents:absents,
-                          userScores:userScores,
-                          userWarnings:userWarning,
+                          absents: absents,
+                          userScores: userScores,
+                          userWarnings: userWarning,
                         ),
                         AssignmentPage(
-                          cuts: cuts,
-                          tasks: tasks,
-                          personnel: personnel,
-                        ),
+                            cuts: cuts,
+                            tasks: tasks,
+                            personnel: personnel,
+                            assignPersonnelCubit:
+                                streamPageController.assignPersonnelCubit,
+                            assignTaskCubit:
+                                streamPageController.assignTaskCubit,
+                            pageController: pageController,
+                            streamPageController: streamPageController),
                         TasksPage(
                           tasks: tasks,
                           refreshProvider: refreshProvider,

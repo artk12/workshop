@@ -62,15 +62,6 @@ class CutterDrawerMenu extends StatelessWidget {
             ),
           ),
           ListTile(
-            title: Text('ایجاد برش جدید', style: theme.textTheme.headline2),
-            onTap: () {
-              scaffoldKey.currentState.openEndDrawer();
-              pageController.animateToPage(1,
-                  duration: Duration(milliseconds: 250),
-                  curve: Curves.easeIn);
-            },
-          ),
-          ListTile(
             title: Text('برش های موجود', style: theme.textTheme.headline2),
             onTap: () {
               scaffoldKey.currentState.openEndDrawer();

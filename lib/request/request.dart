@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:workshop/module/cutter/cut_detail.dart';
+import 'package:workshop/module/general_manager/project.dart';
 import 'package:workshop/module/publish_manager/score.dart';
 import 'package:workshop/module/stockpile/user.dart';
 import 'package:workshop/request/query/get_data.dart';
@@ -10,25 +11,65 @@ class MyRequest {
   static String baseUrl = "https://www.rhen.ir/backend/";
 
 
-  static Future<UserScore> getUserScore(String id)async{
-    http.Response response = await http.post(baseUrl + "stockpile/getResult.php", body: {'query':GetData.getScorePersonnel(id)}).timeout(Duration(seconds: 5));
-    if(response.body == null || response.body == ''){
-      return UserScore(userId: id,scores: [],id: '0');
+
+
+  static Future getUser(String user, String pass) async {
+    try {
+      http.Response response = await http.post(baseUrl + "sign_in.php",
+          body: {'user': user, 'pass': pass}).timeout(Duration(seconds: 5));
+      print(response.body);
+      if (response.statusCode != 200) {
+        return 'not ok';
+      } else {
+        if (response.body.trim() == 'wrong') {
+          return 'wrong';
+        } else if (response.body.isNotEmpty) {
+          try {
+            Map map = jsonDecode(response.body);
+            if (map['access'] == 'normal') {
+              print("here1");
+              return User.fromJson(map);
+            } else {
+              print("here2");
+              return SuperUser.fromJson(map);
+            }
+          } catch (e) {}
+        }
+      }
+    } catch (e) {
+      return 'not ok';
     }
-    List<dynamic> map = jsonDecode(response.body);
-    UserScore userScore = UserScore.fromJson(map[0]);
-    return userScore;
   }
 
+  static Future<UserScore> getUserScore(String id) async {
+    http.Response response = await http
+        .post(baseUrl + "stockpile/getResult.php", body: {
+      'query': GetData.getScorePersonnel(id)
+    }).timeout(Duration(seconds: 5));
+    if (response.body == null || response.body == '') {
+      return UserScore(userId: id, scores: [], id: '0');
+    }
+    print(response.body);
+    if (response.body.trim() == '[]') {
+      return UserScore(id: '0');
+    } else {
+      List<dynamic> map = jsonDecode(response.body);
+      UserScore userScore = UserScore.fromJson(map[0]);
+      return userScore;
+    }
+  }
 
-  static Future<String> getPersonnelLog()async{
-    try{
-      http.Response response = await http.post(baseUrl + "stockpile/getResult.php", body: {'query':GetData.getPersonnelLog}).timeout(Duration(seconds: 5));
-      if(response.statusCode != 200){
+  static Future<String> getPersonnelLog() async {
+    try {
+      http.Response response = await http
+          .post(baseUrl + "stockpile/getResult.php", body: {
+        'query': GetData.getPersonnelLog
+      }).timeout(Duration(seconds: 5));
+      if (response.statusCode != 200) {
         return 'not ok';
       }
       return response.body;
-    }catch(e){
+    } catch (e) {
       return 'not ok';
     }
   }
@@ -53,7 +94,8 @@ class MyRequest {
 
   static Future<String> startTask(String id, String name, String personnelName,
       String cutCode, String personnelId, String dateTime) async {
-    try{
+    // String dateTime = DateTime.now().toString().substring(0, 19);
+    try {
       http.Response response =
           await http.post(baseUrl + "personnel/start.php", body: {
         'id': id,
@@ -61,14 +103,14 @@ class MyRequest {
         'personnelName': personnelName,
         'cutCode': cutCode,
         'startDateTime': dateTime,
-        'taskName': name
+        'taskName': name,
       }).timeout(Duration(seconds: 5));
       print(response.statusCode);
       if (response.statusCode != 200) {
         return "not ok";
       }
       return response.body;
-    }catch(e){
+    } catch (e) {
       return "not ok";
     }
   }
@@ -93,12 +135,17 @@ class MyRequest {
 
   static Future<String> insertAssignRequest(String json) async {
     DateTime now = DateTime.now();
-    if(now.hour > 19 ){
+    if (now.hour > 19) {
       now.add(Duration(days: 1));
     }
-    http.Response response = await http.post(
-        baseUrl + 'publish_manager/insertAssign.php',
-        body: {'assignJson': json,'year':now.year,'month':now.month,'day':now.day}).onError((error, stackTrace) => null);
+    print(json);
+    http.Response response = await http
+        .post(baseUrl + 'publish_manager/insertAssign.php', body: {
+      'assignJson': json,
+      'year': now.year.toString(),
+      'month': now.month.toString(),
+      'day': now.day.toString()
+    }).onError((error, stackTrace) => null);
     if (response == null) {
       return "not ok";
     }
@@ -114,8 +161,10 @@ class MyRequest {
     }
     return response.body;
   }
-  static Future<String> simpleQueryRequestWithTimeOut(String url, String query) async {
-    try{
+
+  static Future<String> simpleQueryRequestWithTimeOut(
+      String url, String query) async {
+    try {
       http.Response response = await http
           .post(baseUrl + url, body: {'query': query})
           .onError((error, stackTrace) => null)
@@ -124,7 +173,7 @@ class MyRequest {
         return "not ok";
       }
       return response.body;
-    }catch(e){
+    } catch (e) {
       return '';
     }
   }
@@ -138,18 +187,18 @@ class MyRequest {
     return response.body;
   }
 
-  static Future<String> simpleQueryRequestOneSecondDelay(String url, String query) async {
-    try{
+  static Future<String> simpleQueryRequestOneSecondDelay(
+      String url, String query) async {
+    try {
       http.Response response = await http.post(baseUrl + url,
           body: {'query': query}).onError((error, stackTrace) => null);
       if (response == null) {
         return "not ok";
       }
       return response.body;
-    }catch(e){
+    } catch (e) {
       return 'not ok';
     }
-
   }
 
   static Future<String> getUserTasks(String id) async {

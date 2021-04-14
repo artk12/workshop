@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workshop/bloc/cutter/new_cut_dialog_bloc.dart';
 import 'package:workshop/bloc/ignoreButtonsBloc.dart';
 import 'package:workshop/cutter/cutter_page.dart';
+import 'package:workshop/module/cutter/cut.dart';
 import 'package:workshop/module/cutter/cut_detail.dart';
 import 'package:workshop/request/request.dart';
 import 'package:workshop/style/component/default_textfield.dart';
@@ -105,7 +106,10 @@ class NewCutDialog extends StatelessWidget {
                                 newCutDialogCubit.changeMessage('کالیته یافت نشد.');
                                 ignoreButtonCubit.update(false);
                               }else{
-                                Navigator.of(context).push(MaterialPageRoute(builder: (context)=>CutterPage(cutDetail: result,)));
+                                // Navigator.of(context).pop();
+                                Cut cut = await Navigator.of(context).push(MaterialPageRoute(builder: (context)=>CutterPage(cutDetail: result,)));
+                                Navigator.of(context).pop(cut);
+
                               }
                             }
                           },

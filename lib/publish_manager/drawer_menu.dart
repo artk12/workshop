@@ -33,7 +33,7 @@ class DrawerMenu extends StatelessWidget {
               image: DecorationImage(
                 fit: BoxFit.contain,
                 image: NetworkImage(
-                    MyRequest.baseUrl + '/' + user.profile),
+                    MyRequest.baseUrl + user.profile),
               ),
             ),
             child: Padding(

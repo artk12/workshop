@@ -105,7 +105,7 @@ class AddNewItem extends StatelessWidget {
                         child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: DefaultTextField(
-                        label: 'شمارنده اول',
+                        label: 'تعداد',
                         textEditingController: firstQuantifier,
                         textInputType: TextInputType.number,
                       ),

@@ -57,11 +57,15 @@ class CutterLanding extends StatelessWidget {
                     leftWidget: [
                       MyIconButton(
                         icon: MyIcons.PLUS,
-                        onPressed: () {
-                          showDialog(
+                        onPressed: () async{
+                          Cut cut = await showDialog(
                             context: context,
                             builder: (context) => NewCutDialog(),
                           );
+                          if(cut != null){
+                            cutList.add(cut);
+                            refreshProvider.refresh();
+                          }
                         },
                       ),
                     ],

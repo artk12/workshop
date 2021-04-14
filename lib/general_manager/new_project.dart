@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workshop/bloc/general_manager/new_project_size_bloc.dart';
 import 'package:workshop/bloc/ignoreButtonsBloc.dart';
+import 'package:workshop/bloc/refresh_provider.dart';
+import 'package:workshop/module/general_manager/project.dart';
 import 'package:workshop/request/query/insert.dart';
 import 'package:workshop/request/request.dart';
 import 'package:workshop/style/app_bar/my_appbar.dart';
@@ -12,6 +14,9 @@ import 'package:workshop/style/theme/show_snackbar.dart';
 import 'package:workshop/style/theme/textstyle.dart';
 
 class NewProject extends StatelessWidget {
+  final List<Project> projects;
+  final RefreshProvider refreshProvider;
+  NewProject({this.projects, this.refreshProvider});
   @override
   Widget build(BuildContext context) {
     TextEditingController orderController = new TextEditingController();
@@ -192,17 +197,36 @@ class NewProject extends StatelessWidget {
                                     context, 'لطفا کمی منتظر بمانید.');
                                 String result =
                                     await MyRequest.simple2QueryRequest(
-                                        'stockpile/run2Query.php',
-                                        insertToMessage,
-                                        insertToProject);
-                                if (result == "OK") {
+                                  'general_manager/insertProject.php',
+                                  insertToProject,
+                                  insertToMessage,
+                                );
+                                print(result);
+                                try {
+                                  int id = int.tryParse(result.trim());
+                                  if (id != null) {
+                                    ignoreButtonCubit.update(false);
+                                    MyShowSnackBar.hideSnackBar(context);
+                                    projects.add(Project(
+                                        description: description,
+                                        brand: brand,
+                                        roll: roll,
+                                        type: order,
+                                        size: size,
+                                        styleCode: styleCode));
+                                    refreshProvider.refresh();
+                                    Navigator.of(context).pop();
+                                  } else {
+                                    ignoreButtonCubit.update(false);
+                                    MyShowSnackBar.hideSnackBar(context);
+                                    MyShowSnackBar.showSnackBar(context,
+                                        "خطا در برقراری ازتباط با اینترنت لطفا مجددا تلاش کنید.");
+                                  }
+                                } catch (e) {
                                   ignoreButtonCubit.update(false);
                                   MyShowSnackBar.hideSnackBar(context);
-                                  //Navigator.pop(context);
-                                  // print(result);
-                                } else {
-                                  ignoreButtonCubit.update(false);
-                                  MyShowSnackBar.hideSnackBar(context);
+                                  MyShowSnackBar.showSnackBar(context,
+                                      "خطا در برقراری ازتباط با اینترنت لطفا مجددا تلاش کنید.");
                                 }
                               }
                             },
