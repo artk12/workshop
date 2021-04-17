@@ -19,8 +19,8 @@ class Update {
   static String pauseMonitorCard({String pauseDateTime,String play,String score,String id,String remainingTime}){
     return "UPDATE `assignment` SET `pause_date_time`='$pauseDateTime',`play`='$play',`score`='$score',`remaining_time`='$remainingTime' ,`play_date_time`=NULL WHERE `ID`='$id'";
   }
-  static String playMonitorCard({String play,String id}){
-    String dateTime = DateTime.now().toString().substring(0,19);
+  static String playMonitorCard({String play,String id,String dateTime}){
+
     return "UPDATE `assignment` SET `play`='$play', `play_date_time`='$dateTime' WHERE `ID`='$id'";
   }
 
