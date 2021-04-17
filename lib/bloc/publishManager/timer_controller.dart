@@ -36,9 +36,9 @@ class TimerStreamer {
 
         double currentScore = remainingTime * level;
         double score = (double.parse(element.startAssign.assignPersonnel.time) * level) - currentScore;
-
+        print(remainingTime);
         map['play'] = '0';
-        map['remaining_time'] = remainingTime.toString();
+        map['remainingTime'] = remainingTime.toString();
         map['id'] = element.startAssign.assignPersonnel.id;
         map['pauseDateTime'] = dateTime;
         map['score'] = score.toString();
@@ -48,6 +48,7 @@ class TimerStreamer {
     });
     if(mapList.isNotEmpty){
       String json = jsonEncode(mapList);
+      print(json);
       MyShowSnackBar.showSnackBar(context, 'کمی صبر کنید...');
       String body = await MyRequest.pauseAllRequest(json);
       print(body);

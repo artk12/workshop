@@ -15,5 +15,6 @@ class MyIcons{
   static const String CUT = 'm';
   static const String CIRCLE = 'n';
   static const String CAMERA = 'o';
-
+  static const String PAUSE = 'p';
+  static const String PLAY = 'q';
 }

@@ -123,7 +123,7 @@ class _MonitoringMobilePageState extends State<MonitoringMobilePage> {
                           backgroundColor: MaterialStateProperty.resolveWith(
                               (states) => Colors.white24)),
                       child: Text(
-                        MyIcons.CIRCLE,
+                        MyIcons.PLAY,
                         style: MyTextStyle.iconStyle
                             .copyWith(fontSize: 25, color: Colors.green),
                       ),
@@ -139,9 +139,9 @@ class _MonitoringMobilePageState extends State<MonitoringMobilePage> {
                           backgroundColor: MaterialStateProperty.resolveWith(
                               (states) => Colors.white24)),
                       child: Text(
-                        MyIcons.CIRCLE,
+                        MyIcons.PAUSE,
                         style: MyTextStyle.iconStyle
-                            .copyWith(fontSize: 25, color: Colors.red),
+                            .copyWith(fontSize: 25, color: Color(0xFF7F1510)),
                       ),
                       onPressed: () {
                         widget.timerStreamer.pauseAll(context, p);
