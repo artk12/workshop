@@ -25,8 +25,8 @@ class UpdateItem extends StatelessWidget {
     IgnoreButtonCubit ignoreButtonCubit =
         IgnoreButtonCubit(IgnoreButtonState(ignore: false));
 
-    final TextEditingController firstQuantifier =
-        new TextEditingController(text: item.quantifierOne);
+    //item.quantifierOne
+    final TextEditingController firstQuantifier = new TextEditingController();
     final TextEditingController warning =
         new TextEditingController(text: item.warning);
     SingleDropDownItemCubit categoryCubit = new SingleDropDownItemCubit(
@@ -191,27 +191,30 @@ class UpdateItem extends StatelessWidget {
                                     int.parse(firstQuantifier.text)) {
                                   MyShowSnackBar.showSnackBar(context,
                                       "تعداد هشدار شما بیشتر از تعداد ورودی است.");
-                                } else if (int.parse(item.quantifierOne) >
+                                } else {
+                                  /*
+                                  else if (int.parse(item.quantifierOne) >
                                     int.parse(firstQuantifier.text)) {
                                   MyShowSnackBar.showSnackBar(context,
                                       "تعداد ورودی کمتر از قبل است لطفابرای خروج کالا از انبار از صفحه اصلی آیکون خروجی وارد شوید.");
-                                } else {
+                                }
+                                   */
                                   MyShowSnackBar.showSnackBar(
                                       context, "کمی صبرکنید...");
                                   String body;
                                   int currentQuantifier =
                                       int.parse(firstQuantifier.text);
                                   int itemQuantifier = int.parse(item.quantifierOne);
+                                  int total = currentQuantifier + itemQuantifier;
                                   String update = Update.queryUpdateItemInStockpile(
                                       item.id,
-                                      firstQuantifier.text,
+                                      total.toString(),
                                       quantifyCubit.state.value,
                                       categoryCubit.state.value,
                                       warning.text);
                                   String insert = Insert.queryInsertInputToLog(
                                       item.id,
-                                      int.parse(firstQuantifier.text) -
-                                          int.parse(item.quantifierOne));
+                                      int.parse(firstQuantifier.text));
                                   ignoreButtonCubit.update(true);
                                   if (currentQuantifier - itemQuantifier == 0) {
                                     //update

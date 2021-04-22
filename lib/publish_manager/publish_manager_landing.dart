@@ -2,23 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:workshop/bloc/publishManager/timer_controller.dart';
 import 'package:workshop/module/cutter/cut.dart';
-import 'package:workshop/module/publish_manager/assign_personnel.dart';
 import 'package:workshop/module/publish_manager/assignment_log.dart';
 import 'package:workshop/module/publish_manager/personnel.dart';
 import 'package:workshop/module/publish_manager/task.dart';
 import 'package:workshop/module/stockpile/user.dart';
 import 'package:workshop/provider/personnel_log_provider.dart';
-import 'package:workshop/provider/publish_manager_pages_controller.dart';
 import 'package:workshop/publish_manager/drawer_menu.dart';
 import 'package:workshop/publish_manager/monitoring.dart';
-import 'package:workshop/request/mylist.dart';
 import 'package:workshop/style/app_bar/my_appbar.dart';
 import 'package:workshop/style/component/my_icon_button.dart';
 import 'package:workshop/style/component/publish_manager/timeControllerProvider.dart';
 import 'package:workshop/style/device_detector.dart';
 import 'package:workshop/style/theme/my_icons.dart';
-import 'package:workshop/style/theme/show_snackbar.dart';
-
 import 'dashboard.dart';
 
 class PublishManagerLanding extends StatelessWidget {

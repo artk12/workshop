@@ -30,9 +30,6 @@ class _DashboardMonitoringMobilePageState extends State<DashboardMonitoringMobil
   @override
   Widget build(BuildContext context) {
     TimerControllerProvider p = Provider.of<TimerControllerProvider>(context);
-    // TimerStreamer tasks = Provider.of<TimerStreamer>(context);
-    ThemeData theme = Theme.of(context);
-
     int checkWarning() {
       if (p.warning) {
         return 26;

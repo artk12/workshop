@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:workshop/module/publish_manager/assignment_log.dart';
 import 'package:workshop/provider/personnel_log_provider.dart';
-import 'package:workshop/style/theme/show_snackbar.dart';
 
 class PersonnelLogTablet extends StatelessWidget {
   final TextStyle style;

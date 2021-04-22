@@ -93,7 +93,7 @@ class MyList {
         // print(items.length);
         yield items;
       }catch(e){
-
+        yield [];
       }
 
     }
@@ -210,7 +210,7 @@ class MyList {
       String body = await MyRequest.simpleQueryRequestOneSecondDelay(
           'stockpile/getResult.php', GetData.getTodayAssignments);
       if(body == 'not ok'){
-        TimerStreamer timerControllerCubit = TimerStreamer(monitorItemController: []);
+        // TimerStreamer timerControllerCubit = TimerStreamer(monitorItemController: []);
 
       }else {
         final json = jsonDecode(body).cast<Map<String, dynamic>>();

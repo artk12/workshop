@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:workshop/module/stockpile/message.dart';
 import 'package:workshop/module/stockpile/user.dart';
-import 'package:workshop/personnel/dialog_message.dart';
 import 'package:workshop/provider/publish_manager_pages_controller.dart';
 import 'package:workshop/request/request.dart';
 

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:workshop/bloc/personnel/score_cubit.dart';
 import 'package:workshop/module/publish_manager/assign_personnel.dart';
-import 'package:workshop/module/publish_manager/score.dart';
 import 'package:workshop/module/stockpile/message.dart';
 import 'package:workshop/module/stockpile/user.dart';
 import 'package:workshop/personnel/dialog_message.dart';
@@ -11,9 +10,7 @@ import 'package:workshop/personnel/personnel_task_list.dart';
 import 'package:workshop/provider/taskItemProvider.dart';
 import 'package:workshop/style/app_bar/my_appbar.dart';
 import 'package:workshop/style/component/my_icon_button.dart';
-import 'package:workshop/style/component/personnel/task_item.dart';
 import 'package:workshop/style/theme/my_icons.dart';
-import 'package:flutter/foundation.dart';
 
 
 class PersonnelLandingPage extends StatelessWidget {

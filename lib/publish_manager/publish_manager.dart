@@ -11,6 +11,7 @@ import 'package:workshop/module/stockpile/message.dart';
 import 'package:workshop/module/stockpile/user.dart';
 import 'package:workshop/provider/personnel_log_provider.dart';
 import 'package:workshop/provider/publish_manager_pages_controller.dart';
+import 'package:workshop/provider/stream_page_provider.dart';
 import 'package:workshop/publish_manager/assignment.dart';
 import 'package:workshop/publish_manager/personnel.dart';
 import 'package:workshop/publish_manager/stream_pages.dart';
@@ -49,6 +50,8 @@ class PublishManager extends StatelessWidget {
     TimerControllerProvider timerControllerProvider =
         TimerControllerProvider(timerControllerProviderState: []);
     PersonnelLogProvider personnelLogProvider = new PersonnelLogProvider();
+    StreamPageProvider streamPageProvider = new StreamPageProvider();
+
     PublishManagerPageController streamPageController = Provider.of(context);
     List<Message> messages = Provider.of(context) ?? [];
     PageController pageController =
@@ -108,6 +111,7 @@ class PublishManager extends StatelessWidget {
                           ],
                           child: StreamPages(
                             style: style,
+                            streamPageProvider: streamPageProvider,
                             timerControllerProvider: timerControllerProvider,
                             itemWidth: itemWidth,
                             itemHeight: itemHeight,

@@ -15,11 +15,12 @@ class PersonnelPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<Message> messages = Provider.of<List<Message>>(context);
+    UserScore userScore = Provider.of(context);
+
     TaskItemProvider provider = new TaskItemProvider();
     GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey();
 
     double totalScore = 0;
-    UserScore userScore = Provider.of(context);
     if (userScore != null) {
       if (userScore.id != '0') {
         userScore.scores.forEach((element) {

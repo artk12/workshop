@@ -6,7 +6,6 @@ import 'package:workshop/bloc/publishManager/timer_controller.dart';
 import 'package:workshop/bloc/publishManager/timer_personnel.dart';
 import 'package:workshop/module/publish_manager/personnel.dart';
 import 'package:workshop/provider/publish_manager_pages_controller.dart';
-import 'package:workshop/publish_manager/personnel_log_mobile.dart';
 import 'package:workshop/style/component/publish_manager/monitor_card.dart';
 import 'package:workshop/style/component/publish_manager/timeControllerProvider.dart';
 import 'package:workshop/style/theme/my_icons.dart';
@@ -34,15 +33,11 @@ class MonitoringMobilePage extends StatefulWidget {
 }
 
 class _MonitoringMobilePageState extends State<MonitoringMobilePage> {
-  @override
-  void didUpdateWidget(covariant MonitoringMobilePage oldWidget) {
-    super.didUpdateWidget(oldWidget);
-  }
 
   @override
   Widget build(BuildContext context) {
     TimerControllerProvider p = Provider.of<TimerControllerProvider>(context);
-
+    // print("hh : "+widget.timerStreamer.monitorItemController[0].startAssign.assignPersonnel.play);
     // TimerControllerProvider p = new TimerControllerProvider();
     // TimerStreamer tasks = Provider.of<TimerStreamer>(context);
     ThemeData theme = Theme.of(context);
@@ -237,6 +232,9 @@ class _MonitoringMobilePageState extends State<MonitoringMobilePage> {
                                                   value: p,
                                                   child: MonitorCard(
                                                     maxWidth: double.maxFinite,
+                                                    serverPlay: widget.timerStreamer.monitorItemController[index].startAssign.assignPersonnel.play,
+                                                    serverPlayDateTime: widget.timerStreamer.monitorItemController[index].startAssign.assignPersonnel.playDateTime,
+                                                    serverRemainingTime: widget.timerStreamer.monitorItemController[index].startAssign.assignPersonnel.remainingTime,
                                                     monitorItemController: widget
                                                             .timerStreamer
                                                             .monitorItemController[
@@ -292,6 +290,9 @@ class _MonitoringMobilePageState extends State<MonitoringMobilePage> {
                                             return ChangeNotifierProvider.value(
                                               value: p,
                                               child: MonitorCard(
+                                                serverPlay: widget.timerStreamer.monitorItemController[index].startAssign.assignPersonnel.play,
+                                                serverPlayDateTime: widget.timerStreamer.monitorItemController[index].startAssign.assignPersonnel.playDateTime,
+                                                serverRemainingTime: widget.timerStreamer.monitorItemController[index].startAssign.assignPersonnel.remainingTime,
                                                 maxWidth: double.maxFinite,
                                                 monitorItemController: widget
                                                     .timerStreamer

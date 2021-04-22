@@ -33,6 +33,7 @@ class SignIn extends StatelessWidget {
               child: DefaultTextField(
                 textEditingController: user,
                 label: "شماره تماس",
+                textInputType: TextInputType.number,
               ),
             ),
             SizedBox(

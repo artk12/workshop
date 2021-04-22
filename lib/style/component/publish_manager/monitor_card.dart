@@ -14,8 +14,16 @@ import 'CircleProgress.dart';
 class MonitorCard extends StatefulWidget {
   final double maxWidth;
   final MonitorItemController monitorItemController;
+  final String serverPlay;
+  final String serverPlayDateTime;
+  final String serverRemainingTime;
 
-  MonitorCard({this.maxWidth = 300, this.monitorItemController});
+  MonitorCard(
+      {this.maxWidth = 300,
+      this.monitorItemController,
+      this.serverPlay,
+      this.serverPlayDateTime,
+      this.serverRemainingTime});
 
   @override
   State<StatefulWidget> createState() =>
@@ -25,15 +33,16 @@ class MonitorCard extends StatefulWidget {
 class _MonitorCardState extends State<MonitorCard> {
   final MonitorItemController cubit;
   _MonitorCardState({this.cubit});
-  String playDateTime;
+  // String playDateTime;
 
   @override
   Widget build(BuildContext context) {
     TimerControllerProvider p = Provider.of<TimerControllerProvider>(context);
+    print(widget.serverPlayDateTime);
     String id = cubit.startAssign.assignPersonnel.id;
-    if (playDateTime == null) {
-      playDateTime = cubit.startAssign.assignPersonnel.playDateTime;
-    }
+    // if (playDateTime == null) {
+    //   playDateTime = cubit.startAssign.assignPersonnel.playDateTime;
+    // }
     bool pause = p.getPause(id);
     if (pause == null) {
       pause = cubit.startAssign.assignPersonnel.play == '0' ? true : false;
@@ -88,9 +97,9 @@ class _MonitorCardState extends State<MonitorCard> {
           String body = await MyRequest.simpleQueryRequest(
               'stockpile/runQuery.php', update);
           if (body.trim() == "OK") {
-            setState(() {
-              playDateTime = dateTime;
-            });
+            // setState(() {
+            //   playDateTime = dateTime;
+            // });
             MyShowSnackBar.hideSnackBar(context);
             try {
               p.playOne(id);
@@ -178,8 +187,12 @@ class _MonitorCardState extends State<MonitorCard> {
                       children: [
                         MyCircularProgress(
                           // pauseAll: currentPause,
+                          serverPlay: widget.serverPlay,
+                          serverPlayDateTime: widget.serverPlayDateTime,
                           assignPersonnel: cubit.startAssign.assignPersonnel,
-                          playDateTime: playDateTime,
+                          playDateTime: widget.serverPlayDateTime,
+                          remainingTime: widget.serverRemainingTime,
+
                           // pause: p.getPause(cubit.startAssign.assignPersonnel.id),
                           pause: pause,
                           p: p,
@@ -207,8 +220,11 @@ class MyCircularProgress extends StatefulWidget {
   final TimerPersonnelCubit cubit;
   final String playDateTime;
   TimerControllerProvider p;
+  final String serverPlay;
+  final String serverPlayDateTime;
   String s;
   int x;
+  final String remainingTime;
   MyCircularProgress(
       {this.assignPersonnel,
       this.cubit,
@@ -217,7 +233,10 @@ class MyCircularProgress extends StatefulWidget {
       this.pauseAll,
       this.s,
       this.playDateTime,
-      this.p});
+      this.p,
+      this.serverPlayDateTime,
+      this.serverPlay,
+      this.remainingTime});
 
   createState() =>
       _MyCircularProgressState(assignPersonnel: assignPersonnel, cubit: cubit);
@@ -230,6 +249,57 @@ class _MyCircularProgressState extends State<MyCircularProgress> {
   DateTime startDateTime;
 
   _MyCircularProgressState({this.assignPersonnel, this.cubit});
+
+  playFromServer()async{
+    await Future.delayed(Duration(milliseconds: 250));
+    widget.p.playOne(widget.assignPersonnel.id);
+  }
+  pauseFromServer()async{
+    await Future.delayed(Duration(milliseconds: 250));
+    widget.p.pauseOne(widget.assignPersonnel.id);
+  }
+
+
+  @override
+  void didUpdateWidget(covariant MyCircularProgress oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // // print(widget.serverPlayDateTime);
+    if (widget.serverPlay == '1' && widget.serverPlayDateTime != null) {
+      // print("OK");
+      // startDateTime = DateTime.parse(widget.serverPlayDateTime).add(Duration(
+      //     seconds: int.parse(widget.remainingTime) * (-1)));
+      if (widget.pause == true) {
+        playFromServer();
+        // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+
+
+        // });
+      }
+    }else if (widget.serverPlay == '0'){
+      if (widget.pause == false) {
+        pauseFromServer();
+        // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        //   widget.p.pauseOne(widget.assignPersonnel.id);
+        // });
+      }
+
+    }
+
+    if ((oldWidget.pause != widget.pause && widget.pause == false)) {
+      if (widget.serverPlayDateTime == null) {
+        startDateTime = DateTime.now()
+            .add(Duration(seconds: cubit.state.plus.inSeconds * (-1)));
+        print("here4");
+      } else {
+        // print(assignPersonnel.playDateTime);
+        startDateTime = DateTime.parse(widget.serverPlayDateTime)
+            .add(Duration(seconds: cubit.state.plus.inSeconds * (-1)));
+        print("here5");
+      }
+      updater(startDateTime, total, cubit, assignPersonnel.play);
+    } else {}
+  }
+
 
   void updater(DateTime startDateTime, Duration total,
       TimerPersonnelCubit cubit, String play) async {
@@ -244,6 +314,7 @@ class _MyCircularProgressState extends State<MyCircularProgress> {
         break;
       }
       DateTime now = DateTime.now();
+      print("here");
       if (endDateTime.difference(now).inSeconds >= 0) {
         mines = Duration(seconds: endDateTime.difference(now).inSeconds);
         plus = Duration(seconds: now.difference(startDateTime).inSeconds);
@@ -258,7 +329,7 @@ class _MyCircularProgressState extends State<MyCircularProgress> {
         cubit.updatePercent(total.inSeconds, mines, plus, p);
       } else {
         // plus = Duration(seconds: plus.inSeconds + 1);
-        plus = Duration(seconds: now.difference(endDateTime).inSeconds);
+        plus = Duration(seconds: now.difference(startDateTime).inSeconds);
         // double p = (mines.inSeconds / total.inSeconds) * 100;
         double p = 0;
         widget.p.update(TimerControllerProviderState(
@@ -337,25 +408,6 @@ class _MyCircularProgressState extends State<MyCircularProgress> {
         }
       });
     }
-  }
-
-  @override
-  void didUpdateWidget(covariant MyCircularProgress oldWidget) {
-    super.didUpdateWidget(oldWidget);
-
-    if (oldWidget.pause != widget.pause && widget.pause == false) {
-      if (assignPersonnel.playDateTime == null) {
-        startDateTime = DateTime.now()
-            .add(Duration(seconds: cubit.state.plus.inSeconds * (-1)));
-        print("here4");
-      } else {
-        // print(assignPersonnel.playDateTime);
-        startDateTime = DateTime.parse(widget.playDateTime)
-            .add(Duration(seconds: cubit.state.plus.inSeconds * (-1)));
-        print("here5");
-      }
-      updater(startDateTime, total, cubit, assignPersonnel.play);
-    } else {}
   }
 
   @override

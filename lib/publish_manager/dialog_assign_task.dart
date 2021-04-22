@@ -25,7 +25,7 @@ class AssignTaskDialog extends StatelessWidget {
 
     ThemeData theme = Theme.of(context);
     int time ;
-    int quantity;
+    int quantity = 0;
 
     if(personnel.level == "کارآموز"){
       time = int.parse(alignmentTask.internTime);
@@ -152,7 +152,9 @@ class AssignTaskDialog extends StatelessWidget {
                               ),
                             ),
                             onPressed: (){
-                              if(quantity > alignmentTask.number){
+                              if(quantity == 0){
+                                dialogMessageCubit.changeMessage("هیچ مقداری وارد نشده است.");
+                              } else if(quantity > alignmentTask.number){
                                 dialogMessageCubit.changeMessage("تعداد وارد شده از تعداد باقیمانده بیشتر است.");
                               }else{
                                 Duration d = TimeFormat.stringToDuration(dialogTimeCubit.state.message);

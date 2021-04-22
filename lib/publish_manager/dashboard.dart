@@ -8,17 +8,14 @@ import 'package:workshop/personnel/dialog_message.dart';
 import 'package:workshop/provider/personnel_log_provider.dart';
 import 'package:workshop/provider/publish_manager_pages_controller.dart';
 import 'package:workshop/publish_manager/dashboard_monitor.dart';
-import 'package:workshop/publish_manager/monitoring.dart';
-import 'package:workshop/publish_manager/personnel_log_mobile.dart';
 import 'package:workshop/style/component/dashboard_card_background.dart';
 import 'package:workshop/style/component/message_stock_Card.dart';
-import 'package:workshop/style/component/publish_manager/notification_card.dart';
 import 'package:workshop/style/component/publish_manager/personnel_log_card.dart';
 import 'package:workshop/style/component/publish_manager/timeControllerProvider.dart';
 
 // ignore: must_be_immutable
 class Dashboard extends StatelessWidget {
-  // final PageController streamPageController;
+
   final String device;
   TimerControllerProvider timerControllerProvider;
   final double itemHeight;

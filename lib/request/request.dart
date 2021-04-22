@@ -2,16 +2,12 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:workshop/module/cutter/cut_detail.dart';
-import 'package:workshop/module/general_manager/project.dart';
 import 'package:workshop/module/publish_manager/score.dart';
 import 'package:workshop/module/stockpile/user.dart';
 import 'package:workshop/request/query/get_data.dart';
 
 class MyRequest {
   static String baseUrl = "https://www.rhen.ir/backend/";
-
-
-
 
   static Future getUser(String user, String pass) async {
     try {
@@ -68,6 +64,7 @@ class MyRequest {
       if (response.statusCode != 200) {
         return 'not ok';
       }
+      print("body is :"+response.body);
       return response.body;
     } catch (e) {
       return 'not ok';

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:workshop/bloc/refresh_provider.dart';
 import 'package:workshop/module/publish_manager/task.dart';
-import 'package:workshop/provider/publish_manager_pages_controller.dart';
 import 'package:workshop/publish_manager/dialog_add_new_task.dart';
 import 'package:workshop/style/component/default_button.dart';
 import 'package:workshop/style/component/publish_manager/taskCard.dart';
