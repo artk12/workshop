@@ -41,7 +41,6 @@ class TaskItemProvider extends ChangeNotifier {
   Color color = Colors.green.withOpacity(0.1);
   DateTime now;
   set taskSetter(List<AssignPersonnel> tasks) {
-    print("${tasks.length} "+" ${this.tasks.length}");
     if (this.tasks.isEmpty) {
       this.tasks = tasks;
       tasks.forEach((element) {
@@ -70,7 +69,7 @@ class TaskItemProvider extends ChangeNotifier {
         if (element.play == '1') {
           check = true;
         }
-        if (false) {
+        if (current != null) {
           if (current.id == element.id && element.play == '1') {
             checks.add(current);
           } else {
@@ -94,31 +93,6 @@ class TaskItemProvider extends ChangeNotifier {
       checks.clear();
       this.tasks.clear();
       notifyListeners();
-      // this.tasks = tasks;
-      // // List<TaskItemProviderState> t = [];
-      // // checks.forEach((element) {
-      // //   element.cubit.close();
-      // // });
-      // checks.clear();
-      // int counter = 0;
-      // tasks.forEach((element) {
-      //   checks.add(TaskItemProviderState(
-      //       isDone: false,
-      //       isFirstTime: true,
-      //       id: element.id,
-      //       check: false,
-      //       index: counter,
-      //       cubit: TimerPersonnelCubit(TimerPersonnelState(
-      //           lastPercent: 100,
-      //           t2: '',
-      //           t1: '',
-      //           color: Colors.transparent,
-      //           currentPercent: 100))));
-      //   counter++;
-      //   // checks.add(t.firstWhere((item) => item.id == element.id));
-      // });
-      // change = true;
-      // notifyListeners();
     }
   }
 
@@ -136,40 +110,19 @@ class TaskItemProvider extends ChangeNotifier {
     } else if ((tasks.length > this.tasks.length)) {
       check = false;
     }
-    // else if((tasks.length < this.tasks.length)){
-    //   for (int i = 0; i < tasks.length; i++) {
-    //     AssignPersonnel a = tasks[i];
-    //     AssignPersonnel b = this.tasks.firstWhere((element) => element.id == a.id);
-    //     if (a.playDateTime != b.playDateTime || b.play != a.play) {
-    //       check = false;
-    //       break;
-    //     }
-    //   }
-    // }
     return check;
   }
 
   TaskItemProvider({this.refreshProvider}) {
     now = DateTime.now();
-    // this.tasks = tasks;
-    // tasks.forEach((element) {
-    //   checks.add(TaskItemProviderState(id: element.id, check: false));
-    // });
   }
 
   void submitTask(String id) {
-    // print("remove id $id");
-    // checks.removeWhere((element) => element.id == id);
-    // print(tasks.length);
-    // this.tasks.removeWhere((element) => element.id == id);
-    // print(tasks.length);
     int index = checks.indexWhere((element) => element.id == id);
     checks[index].isDone = true;
     checks[index].check = false;
-    // checks[index].cubit.close();
-
-    // checks[index].
-    // firstTime = true;
+    checks.clear();
+    this.tasks.clear();
     color = Colors.black.withOpacity(0.3);
     notifyListeners();
   }

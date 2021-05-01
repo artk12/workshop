@@ -286,7 +286,7 @@ class _TaskItemState extends State<TaskItem> {
                                     ),
                                     Text(
                                       'فعالیت : ' +
-                                          '${widget.index}/${widget.total}',
+                                          '${widget.index+widget.provider.removeIds.length}/${widget.total+widget.provider.removeIds.length}',
                                       style: theme.textTheme.headline5,
                                     ),
                                   ],

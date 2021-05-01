@@ -50,8 +50,7 @@ class GetData {
   static String getAllWarning = "SELECT `ID`, `user_id`, `warnings` FROM `user_warnings`";
 
   //------------------------------------------personnel
-  static final String getPersonnelMessage =
-      "SELECT * FROM `messages` WHERE `personnel`='1' ORDER BY `ID` DESC";
+  static final String getPersonnelMessage = "SELECT * FROM `messages` WHERE `personnel`='1' ORDER BY `ID` DESC";
 
   static String getScorePersonnel(String id){
     return "SELECT `ID`, `user_id`, `scores` FROM `user_score` WHERE `user_id`='$id'";

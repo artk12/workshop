@@ -33,8 +33,6 @@ class MyTaskList extends StatelessWidget {
             itemCount: provider.checks.length,
             cacheExtent: 0,
             itemBuilder: (BuildContext context, int index) {
-              // print("index is : "+index.toString());
-              //provider.checks[index].isDone?Container():
               return provider.checks[index].isDone
                   ? Container()
                   : TaskItem(
