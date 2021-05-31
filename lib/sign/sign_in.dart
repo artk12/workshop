@@ -68,7 +68,8 @@ class _SignInState extends State<SignIn> {
                     width: 90,
                     onPressed: () async {
                       MyShowSnackBar.showSnackBar(context, "لطفا کمی صبر کنید...");
-                      dynamic res = await MyRequest.getUser(user.text.toString(), pass.text.toString());
+                      // dynamic res = await MyRequest.getUser(user.text.toString(), pass.text.toString());
+                      dynamic res = await MyRequest.getUser("09176468835", "1243");
                       print(res);
                       if(res == "not ok"){
                         MyShowSnackBar.showSnackBar(context, "خطا در برقراری اینترنت");

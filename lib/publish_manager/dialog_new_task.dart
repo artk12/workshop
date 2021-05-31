@@ -21,7 +21,7 @@ class NewTaskDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     // List<String> tasksNames = ['زیپ','دکمه'];
     DialogMessageCubit dialogMessageCubit = new DialogMessageCubit(DialogMessageState(message:""));
-    SingleDropDownItemCubit tasksDropDownController = new SingleDropDownItemCubit(SingleDropDownItemState(value: tasks.first.id));
+    SingleDropDownItemCubit tasksDropDownController = tasks.length == 0 ? new SingleDropDownItemCubit(SingleDropDownItemState(value: "")): new SingleDropDownItemCubit(SingleDropDownItemState(value: tasks.first.id));
     IgnoreButtonCubit ignoreButtonCubit = IgnoreButtonCubit(IgnoreButtonState(ignore: false));
     TextEditingController cutCode = new TextEditingController();
     // TextEditingController quantity = new TextEditingController();

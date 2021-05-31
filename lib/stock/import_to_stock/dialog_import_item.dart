@@ -17,8 +17,10 @@ class ImportItemDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
+
     SingleDropDownItemCubit dialogItemCubit =
-        new SingleDropDownItemCubit(SingleDropDownItemState(value: item[0].id));
+        item.length == 0 ? new SingleDropDownItemCubit(SingleDropDownItemState(value: "")):new SingleDropDownItemCubit(SingleDropDownItemState(value: item[0].id));
+    // SingleDropDownItemCubit dialogItemCubit
 
     return DialogBg(
       child: Column(

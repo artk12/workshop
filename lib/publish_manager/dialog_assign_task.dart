@@ -26,6 +26,8 @@ class AssignTaskDialog extends StatelessWidget {
     ThemeData theme = Theme.of(context);
     int time ;
     int quantity = 0;
+    bool totalTime = false;
+    Duration tpu = Duration();
 
     if(personnel.level == "کارآموز"){
       time = int.parse(alignmentTask.internTime);
@@ -39,12 +41,36 @@ class AssignTaskDialog extends StatelessWidget {
 
       if(val.isNotEmpty){
         quantity = int.parse(val);
-        Duration tpu = Duration(seconds: quantity*time);
+        if(!totalTime){
+          tpu = Duration(seconds: quantity * time);
+          String message = TimeFormat.timeFormatFromDuration(tpu);
+          dialogTimeCubit.changeMessage(message);
+        }
+      }else{
+        quantity = 0;
+        if(!totalTime){
+          tpu = Duration(seconds: 0);
+          dialogTimeCubit.changeMessage("00:00:00");
+        }
+      }
+    }
+    void onChangeTotalTime(String val){
+
+      if(val.isNotEmpty){
+        totalTime = true;
+        tpu = Duration(minutes: int.parse(val));
         String message = TimeFormat.timeFormatFromDuration(tpu);
         dialogTimeCubit.changeMessage(message);
       }else{
-        quantity = 0;
-        dialogTimeCubit.changeMessage("00:00:00");
+        totalTime = false;
+        if(quantity > 0){
+          tpu = Duration(seconds: quantity * time);
+          String message = TimeFormat.timeFormatFromDuration(tpu);
+          dialogTimeCubit.changeMessage(message);
+        }else{
+          tpu = Duration(seconds: 0);
+          dialogTimeCubit.changeMessage("00:00:00");
+        }
       }
     }
 
@@ -88,6 +114,13 @@ class AssignTaskDialog extends StatelessWidget {
                             label: 'مقدار',
                             textInputType: TextInputType.number,
                             onChange: onChangeQuantity,
+                          ),
+                        ),Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: DefaultTextField(
+                            label: 'زمان کل(دقیقه)',
+                            textInputType: TextInputType.number,
+                            onChange: onChangeTotalTime,
                           ),
                         ),
                       ],

@@ -133,10 +133,8 @@ class PublishManager extends StatelessWidget {
                             cuts: cuts,
                             tasks: tasks,
                             personnel: personnel,
-                            assignPersonnelCubit:
-                                streamPageController.assignPersonnelCubit,
-                            assignTaskCubit:
-                                streamPageController.assignTaskCubit,
+                            assignPersonnelCubit: streamPageController.assignPersonnelCubit,
+                            assignTaskCubit: streamPageController.assignTaskCubit,
                             pageController: pageController,
                             streamPageController: streamPageController),
                         TasksPage(

@@ -37,76 +37,79 @@ class AssignmentPage extends StatelessWidget {
       margin: EdgeInsets.symmetric(horizontal: 7),
       child: Column(
         children: [
-          Row(
-            children: [
-              DefaultButton(
-                title: 'ثبت',
-                backgroundColor: Colors.green.withOpacity(0.4),
-                onPressed: () async {
-                  if(assignPersonnelCubit.state.assignments.length == 0){
-                    MyShowSnackBar.showSnackBar(context, "هیچ فعالیتی برای نیروی کار در نظر گرفته نشده است.");
-                  }else{
-                    List<Map> mapList = [];
-                    DateTime dateTime = DateTime.now();
-                    assignPersonnelCubit.state.assignments.forEach((element) {
-                      Map map = {};
-                      map['name'] = element.name;
-                      map['assignDateTime'] = dateTime.toString().substring(0,19);
-                      map['time'] = element.time;
-                      map['cutCode'] = element.cutCode;
-                      map['number'] = element.number;
-                      map['personnelId'] = element.personnel.id;
-                      double maxScore = 0;
-                      if(element.personnel.level == "حرفه ای"){
-                      maxScore = element.time * 1.5;
-                      }else if(element.personnel.level == "تازه کار"){
-                        maxScore = element.time * 1.0;
-                      }else{
-                        maxScore = element.time+0.5;
-                      }
-                      map['max_score'] = maxScore;
-                      mapList.add(map);
-                    });
-                    MyShowSnackBar.showSnackBar(context, "کمی صبر کنید...");
-                    await MyRequest.insertAssignRequest(jsonEncode(mapList));
-                    MyShowSnackBar.hideSnackBar(context);
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: [
+                DefaultButton(
+                  title: 'ثبت',
+                  backgroundColor: Colors.green.withOpacity(0.4),
+                  onPressed: () async {
+                    if(assignPersonnelCubit.state.assignments.length == 0){
+                      MyShowSnackBar.showSnackBar(context, "هیچ فعالیتی برای نیروی کار در نظر گرفته نشده است.");
+                    }else{
+                      List<Map> mapList = [];
+                      DateTime dateTime = DateTime.now();
+                      assignPersonnelCubit.state.assignments.forEach((element) {
+                        Map map = {};
+                        map['name'] = element.name;
+                        map['assignDateTime'] = dateTime.toString().substring(0,19);
+                        map['time'] = element.time;
+                        map['cutCode'] = element.cutCode;
+                        map['number'] = element.number;
+                        map['personnelId'] = element.personnel.id;
+                        double maxScore = 0;
+                        if(element.personnel.level == "حرفه ای"){
+                        maxScore = element.time * 1.5;
+                        }else if(element.personnel.level == "تازه کار"){
+                          maxScore = element.time * 1.0;
+                        }else{
+                          maxScore = element.time+0.5;
+                        }
+                        map['max_score'] = maxScore;
+                        mapList.add(map);
+                      });
+                      MyShowSnackBar.showSnackBar(context, "کمی صبر کنید...");
+                      await MyRequest.insertAssignRequest(jsonEncode(mapList));
+                      MyShowSnackBar.hideSnackBar(context);
+                      streamPageController.pageView = 0;
+                      pageController.animateToPage(0, duration: Duration(milliseconds: 500), curve: Curves.easeIn);
+                    }
+                  },
+                ),
+                DefaultButton(
+                  title: 'لغو',
+                  backgroundColor: Colors.red.withOpacity(0.4),
+                  onPressed: () async {
                     streamPageController.pageView = 0;
-                    pageController.animateToPage(0, duration: Duration(milliseconds: 500), curve: Curves.easeIn);
-                  }
-                },
-              ),
-              DefaultButton(
-                title: 'لغو',
-                backgroundColor: Colors.red.withOpacity(0.4),
-                onPressed: () async {
-                  streamPageController.pageView = 0;
-                  pageController.animateToPage(0, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
-                },
-              ),
-              DefaultButton(
-                title: 'تنظیم مجدد',
-                onPressed: (){
-                  assignTaskCubit.refresh();
-                  assignPersonnelCubit.refresh();
-                },
-              ),
-              DefaultButton(
-                title: 'فعالیت جدید',
-                onPressed: () async {
-                  List<AssignmentTask> t = await showDialog(
-                    context: context,
-                    builder: (context) => NewTaskDialog(
-                      cuts: cuts,
-                      tasks: tasks,
-                    ),
-                  );
-                  if (t != null) {
-                    assignTaskCubit.addTask(t);
-                  }
-                },
-              ),
+                    pageController.animateToPage(0, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                  },
+                ),
+                DefaultButton(
+                  title: 'تنظیم مجدد',
+                  onPressed: (){
+                    assignTaskCubit.refresh();
+                    assignPersonnelCubit.refresh();
+                  },
+                ),
+                DefaultButton(
+                  title: 'فعالیت جدید',
+                  onPressed: () async {
+                    List<AssignmentTask> t = await showDialog(
+                      context: context,
+                      builder: (context) => NewTaskDialog(
+                        cuts: cuts,
+                        tasks: tasks,
+                      ),
+                    );
+                    if (t != null) {
+                      assignTaskCubit.addTask(t);
+                    }
+                  },
+                ),
 
-            ],
+              ],
+            ),
           ),
           SizedBox(
             height: 5,
@@ -140,8 +143,7 @@ class AssignmentPage extends StatelessWidget {
                 Expanded(
                   child: BlocBuilder(
                     cubit: assignPersonnelCubit,
-                    builder:
-                        (BuildContext context, AssignPersonnelState state) =>
+                    builder: (BuildContext context, AssignPersonnelState state) =>
                             ListView.builder(
                       itemBuilder: (context, index) => DragTarget(
                         builder: (BuildContext context,
