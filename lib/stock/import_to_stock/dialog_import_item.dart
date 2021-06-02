@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workshop/bloc/stockpile/single_drop_down_bloc.dart';
@@ -8,18 +7,22 @@ import 'package:workshop/stock/import_to_stock/add_new_item.dart';
 import 'package:workshop/style/component/default_button.dart';
 import 'package:workshop/style/component/dialog_bg.dart';
 import 'package:workshop/style/component/dropdownWithOutNullSafety.dart';
+
 import 'update_item.dart';
 
 class ImportItemDialog extends StatelessWidget {
   final List<Item> item;
+
   ImportItemDialog({this.item});
 
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
 
-    SingleDropDownItemCubit dialogItemCubit =
-        item.length == 0 ? new SingleDropDownItemCubit(SingleDropDownItemState(value: "")):new SingleDropDownItemCubit(SingleDropDownItemState(value: item[0].id));
+    SingleDropDownItemCubit dialogItemCubit = item.length == 0
+        ? new SingleDropDownItemCubit(SingleDropDownItemState(value: ""))
+        : new SingleDropDownItemCubit(
+            SingleDropDownItemState(value: item[0].id));
     // SingleDropDownItemCubit dialogItemCubit
 
     return DialogBg(
@@ -29,10 +32,7 @@ class ImportItemDialog extends StatelessWidget {
           SizedBox(
             height: 10,
           ),
-          Text(
-            'اضافه کالا جدید',
-            style: theme.textTheme.headline2
-          ),
+          Text('اضافه کالا جدید', style: theme.textTheme.headline2),
           SizedBox(
             height: 20,
           ),

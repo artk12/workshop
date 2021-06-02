@@ -25,12 +25,13 @@ class AddPersonnel extends StatelessWidget {
     TextEditingController hireDay = new TextEditingController();
     TextEditingController position = new TextEditingController();
 
-
-    List<String> levelCategory = ['حرفه ای','تازه کار','کارآموز'];
+    List<String> levelCategory = ['حرفه ای', 'تازه کار', 'کارآموز'];
     IgnoreButtonCubit ignoreButtonCubit =
         IgnoreButtonCubit(IgnoreButtonState(ignore: false));
-    DialogMessageCubit dialogMessage = DialogMessageCubit(DialogMessageState(message: ''));
-    SingleDropDownItemCubit levelCategoryCubit = new SingleDropDownItemCubit(SingleDropDownItemState(value: 'حرفه ای'));
+    DialogMessageCubit dialogMessage =
+        DialogMessageCubit(DialogMessageState(message: ''));
+    SingleDropDownItemCubit levelCategoryCubit =
+        new SingleDropDownItemCubit(SingleDropDownItemState(value: 'حرفه ای'));
 
     return DialogBg(
       child: SingleChildScrollView(
@@ -135,23 +136,23 @@ class AddPersonnel extends StatelessWidget {
                             cubit: levelCategoryCubit,
                             builder: (context, SingleDropDownItemState state) =>
                                 CustomDropdownButton<String>(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  items: levelCategory.map((String value) {
-                                    return new CustomDropdownMenuItem<String>(
-                                      value: value,
-                                      child: new Text(
-                                        value,
-                                        style: theme.textTheme.headline6,
-                                      ),
-                                    );
-                                  }).toList(),
-                                  value: levelCategory
-                                      .where((element) => element == state.value)
-                                      .first,
-                                  onChanged: (value) {
-                                      levelCategoryCubit.changeItem(value);
-                                  },
-                                ),
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              items: levelCategory.map((String value) {
+                                return new CustomDropdownMenuItem<String>(
+                                  value: value,
+                                  child: new Text(
+                                    value,
+                                    style: theme.textTheme.headline6,
+                                  ),
+                                );
+                              }).toList(),
+                              value: levelCategory
+                                  .where((element) => element == state.value)
+                                  .first,
+                              onChanged: (value) {
+                                levelCategoryCubit.changeItem(value);
+                              },
+                            ),
                           ),
                         ),
                       ),
@@ -162,7 +163,8 @@ class AddPersonnel extends StatelessWidget {
               SizedBox(height: 10),
               BlocBuilder(
                 cubit: dialogMessage,
-                builder:(BuildContext context,DialogMessageState state)=> Text(state.message),
+                builder: (BuildContext context, DialogMessageState state) =>
+                    Text(state.message),
               ),
               SizedBox(height: 10),
               BlocBuilder(
@@ -183,10 +185,12 @@ class AddPersonnel extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(horizontal: 8.0),
                           child: TextButton(
                             style: ButtonStyle(
-                              foregroundColor: MaterialStateProperty.resolveWith(
+                              foregroundColor:
+                                  MaterialStateProperty.resolveWith(
                                 (states) => Colors.green.withOpacity(0.4),
                               ),
-                              backgroundColor: MaterialStateProperty.resolveWith(
+                              backgroundColor:
+                                  MaterialStateProperty.resolveWith(
                                 (states) => Colors.green.withOpacity(0.4),
                               ),
                             ),
@@ -194,24 +198,48 @@ class AddPersonnel extends StatelessWidget {
                               padding: const EdgeInsets.all(8.0),
                               child: Text(
                                 MyIcons.CHECK,
-                                style:
-                                    MyTextStyle.iconStyle.copyWith(fontSize: 30),
+                                style: MyTextStyle.iconStyle
+                                    .copyWith(fontSize: 30),
                               ),
                             ),
                             onPressed: () async {
-                              if(name.text.isEmpty || fatherName.text.isEmpty || nationalCode.text.isEmpty || birthDay.text.isEmpty || hireDay.text.isEmpty || position.text.isEmpty){
-                                dialogMessage.changeMessage("لطفا تمامی فیلدها را پر کنید...");
-                              }else{
-                                String query = Insert.queryInsertPersonnel(name.text, nationalCode.text, fatherName.text, birthDay.text, hireDay.text, position.text, levelCategoryCubit.state.value);
+                              if (name.text.isEmpty ||
+                                  fatherName.text.isEmpty ||
+                                  nationalCode.text.isEmpty ||
+                                  birthDay.text.isEmpty ||
+                                  hireDay.text.isEmpty ||
+                                  position.text.isEmpty) {
+                                dialogMessage.changeMessage(
+                                    "لطفا تمامی فیلدها را پر کنید...");
+                              } else {
+                                String query = Insert.queryInsertPersonnel(
+                                    name.text,
+                                    nationalCode.text,
+                                    fatherName.text,
+                                    birthDay.text,
+                                    hireDay.text,
+                                    position.text,
+                                    levelCategoryCubit.state.value);
                                 ignoreButtonCubit.update(true);
                                 dialogMessage.changeMessage("کمی صبر کنید...");
-                                String result = await MyRequest.simpleQueryRequest('runQueryId.php', query);
-                                if(int.tryParse(result) != null){
-                                  Personnel p = new Personnel(position: position.text,level: levelCategoryCubit.state.value,nationalCode: nationalCode.text,hireDate: hireDay.text,fatherName: fatherName.text,birthDay: birthDay.text,name: name.text,id: result);
-                                  Navigator.pop(context,p);
-                                }else{
+                                String result =
+                                    await MyRequest.simpleQueryRequest(
+                                        'runQueryId.php', query);
+                                if (int.tryParse(result) != null) {
+                                  Personnel p = new Personnel(
+                                      position: position.text,
+                                      level: levelCategoryCubit.state.value,
+                                      nationalCode: nationalCode.text,
+                                      hireDate: hireDay.text,
+                                      fatherName: fatherName.text,
+                                      birthDay: birthDay.text,
+                                      name: name.text,
+                                      id: result);
+                                  Navigator.pop(context, p);
+                                } else {
                                   ignoreButtonCubit.update(false);
-                                  dialogMessage.changeMessage("لطفا وضعیت اینترنت خود را چک کنید...");
+                                  dialogMessage.changeMessage(
+                                      "لطفا وضعیت اینترنت خود را چک کنید...");
                                 }
                               }
                             },
@@ -224,7 +252,8 @@ class AddPersonnel extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(horizontal: 8.0),
                           child: TextButton(
                             style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.resolveWith(
+                              backgroundColor:
+                                  MaterialStateProperty.resolveWith(
                                 (states) => Colors.red.withOpacity(0.4),
                               ),
                             ),
@@ -232,8 +261,8 @@ class AddPersonnel extends StatelessWidget {
                               padding: const EdgeInsets.all(8.0),
                               child: Text(
                                 MyIcons.CANCEL,
-                                style:
-                                    MyTextStyle.iconStyle.copyWith(fontSize: 30),
+                                style: MyTextStyle.iconStyle
+                                    .copyWith(fontSize: 30),
                               ),
                             ),
                             onPressed: () {

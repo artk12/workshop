@@ -5,6 +5,7 @@ import 'package:workshop/style/component/cutter/cut_card.dart';
 class CutPage extends StatelessWidget {
   final PageController pageController;
   final List<Cut> cutList;
+
   CutPage({this.pageController, this.cutList});
 
   @override

@@ -13,20 +13,24 @@ class DashboardMonitoringMobilePage extends StatefulWidget {
   final double itemHeight;
   final double itemWidth;
   final TimerStreamer tasks;
+
   // final PageController streamPageController;
   // final String dashboard;
 
-  DashboardMonitoringMobilePage(
-      {this.personnel,
-      this.itemHeight,
-      this.itemWidth,
-      this.tasks,});
+  DashboardMonitoringMobilePage({
+    this.personnel,
+    this.itemHeight,
+    this.itemWidth,
+    this.tasks,
+  });
 
   @override
-  _DashboardMonitoringMobilePageState createState() => _DashboardMonitoringMobilePageState();
+  _DashboardMonitoringMobilePageState createState() =>
+      _DashboardMonitoringMobilePageState();
 }
 
-class _DashboardMonitoringMobilePageState extends State<DashboardMonitoringMobilePage> {
+class _DashboardMonitoringMobilePageState
+    extends State<DashboardMonitoringMobilePage> {
   @override
   Widget build(BuildContext context) {
     TimerControllerProvider p = Provider.of<TimerControllerProvider>(context);
@@ -51,6 +55,7 @@ class _DashboardMonitoringMobilePageState extends State<DashboardMonitoringMobil
       }
       return false;
     }
+
     // if(widget.tasks != null){
     //   print(widget.tasks.monitorItemController.length);
     // }

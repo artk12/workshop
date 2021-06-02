@@ -15,14 +15,20 @@ import 'package:workshop/style/theme/textstyle.dart';
 class NewTaskDialog extends StatelessWidget {
   final List<Cut> cuts;
   final List<Task> tasks;
-  NewTaskDialog({this.cuts,this.tasks});
+
+  NewTaskDialog({this.cuts, this.tasks});
 
   @override
   Widget build(BuildContext context) {
     // List<String> tasksNames = ['زیپ','دکمه'];
-    DialogMessageCubit dialogMessageCubit = new DialogMessageCubit(DialogMessageState(message:""));
-    SingleDropDownItemCubit tasksDropDownController = tasks.length == 0 ? new SingleDropDownItemCubit(SingleDropDownItemState(value: "")): new SingleDropDownItemCubit(SingleDropDownItemState(value: tasks.first.id));
-    IgnoreButtonCubit ignoreButtonCubit = IgnoreButtonCubit(IgnoreButtonState(ignore: false));
+    DialogMessageCubit dialogMessageCubit =
+        new DialogMessageCubit(DialogMessageState(message: ""));
+    SingleDropDownItemCubit tasksDropDownController = tasks.length == 0
+        ? new SingleDropDownItemCubit(SingleDropDownItemState(value: ""))
+        : new SingleDropDownItemCubit(
+            SingleDropDownItemState(value: tasks.first.id));
+    IgnoreButtonCubit ignoreButtonCubit =
+        IgnoreButtonCubit(IgnoreButtonState(ignore: false));
     TextEditingController cutCode = new TextEditingController();
     // TextEditingController quantity = new TextEditingController();
 
@@ -30,7 +36,7 @@ class NewTaskDialog extends StatelessWidget {
 
     return DialogBg(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal:8.0,vertical: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 20),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -54,7 +60,8 @@ class NewTaskDialog extends StatelessWidget {
                         value: value.id,
                         child: new Text(
                           value.name,
-                          style: TextStyle(fontFamily: 'light', color: Colors.white),
+                          style: TextStyle(
+                              fontFamily: 'light', color: Colors.white),
                         ),
                       );
                     }).toList(),
@@ -90,52 +97,84 @@ class NewTaskDialog extends StatelessWidget {
                 // ),
               ],
             ),
-            SizedBox(height:10,),
-            BlocBuilder(cubit:dialogMessageCubit,builder:(BuildContext context,DialogMessageState state) => Text(state.message)),
-            SizedBox(height:10,),
+            SizedBox(
+              height: 10,
+            ),
+            BlocBuilder(
+                cubit: dialogMessageCubit,
+                builder: (BuildContext context, DialogMessageState state) =>
+                    Text(state.message)),
+            SizedBox(
+              height: 10,
+            ),
             BlocBuilder(
               cubit: ignoreButtonCubit,
-              builder: (BuildContext context,IgnoreButtonState state) => IgnorePointer(
+              builder: (BuildContext context, IgnoreButtonState state) =>
+                  IgnorePointer(
                 ignoring: state.ignore,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Expanded(child: Container(),flex: 1,),
+                    Expanded(
+                      child: Container(),
+                      flex: 1,
+                    ),
                     Expanded(
                       flex: 2,
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal:8.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
                         child: TextButton(
                           style: ButtonStyle(
-                            foregroundColor: MaterialStateProperty.resolveWith((states) => Colors.green.withOpacity(0.4),),
-                            backgroundColor: MaterialStateProperty.resolveWith((states) => Colors.green.withOpacity(0.4),),
+                            foregroundColor: MaterialStateProperty.resolveWith(
+                              (states) => Colors.green.withOpacity(0.4),
+                            ),
+                            backgroundColor: MaterialStateProperty.resolveWith(
+                              (states) => Colors.green.withOpacity(0.4),
+                            ),
                           ),
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Text(MyIcons.CHECK,style: MyTextStyle.iconStyle.copyWith(fontSize: 30),),
+                            child: Text(
+                              MyIcons.CHECK,
+                              style:
+                                  MyTextStyle.iconStyle.copyWith(fontSize: 30),
+                            ),
                           ),
                           onPressed: () async {
-                            try{
-                              Cut cut = cuts.firstWhere((element) => element.cutCode == cutCode.text);
-                              Task task = tasks.firstWhere((element) => element.id == tasksDropDownController.state.value);
-                              String size = ','+cut.project.size;
+                            try {
+                              Cut cut = cuts.firstWhere(
+                                  (element) => element.cutCode == cutCode.text);
+                              Task task = tasks.firstWhere((element) =>
+                                  element.id ==
+                                  tasksDropDownController.state.value);
+                              String size = ',' + cut.project.size;
                               List<int> sizes = [];
-                              while(true){
-                                String number = size.substring(size.indexOf(','),size.indexOf(',')+3);
-                                sizes.add(int.parse(number.replaceFirst(',','')));
-                                size  = size.substring(size.indexOf(',')+3);
-                                if(size.length == 0){
+                              while (true) {
+                                String number = size.substring(
+                                    size.indexOf(','), size.indexOf(',') + 3);
+                                sizes.add(
+                                    int.parse(number.replaceFirst(',', '')));
+                                size = size.substring(size.indexOf(',') + 3);
+                                if (size.length == 0) {
                                   break;
                                 }
                               }
-                              int x = (int.parse(cut.realUsage) / sizes.length).round();
+                              int x = (int.parse(cut.realUsage) / sizes.length)
+                                  .round();
                               List<AssignmentTask> list = [];
-                              for(int i = 0 ; i < sizes.length ; i++){
-                                list.add(AssignmentTask(x,task.internTime,task.amateurTime,task.expertTime,task.name,cut.cutCode+"-"+sizes[i].toString()));
+                              for (int i = 0; i < sizes.length; i++) {
+                                list.add(AssignmentTask(
+                                    x,
+                                    task.internTime,
+                                    task.amateurTime,
+                                    task.expertTime,
+                                    task.name,
+                                    cut.cutCode + "-" + sizes[i].toString()));
                               }
                               Navigator.of(context).pop(list);
-                            }catch(e){
-                              dialogMessageCubit.changeMessage("کد برش یافت نشد.");
+                            } catch (e) {
+                              dialogMessageCubit
+                                  .changeMessage("کد برش یافت نشد.");
                             }
 
                             // print(tasksDropDownController.state.value);
@@ -146,14 +185,20 @@ class NewTaskDialog extends StatelessWidget {
                     Expanded(
                       flex: 2,
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal:8.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
                         child: TextButton(
                           style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.resolveWith((states) => Colors.red.withOpacity(0.4),),
+                            backgroundColor: MaterialStateProperty.resolveWith(
+                              (states) => Colors.red.withOpacity(0.4),
+                            ),
                           ),
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Text(MyIcons.CANCEL,style: MyTextStyle.iconStyle.copyWith(fontSize: 30),),
+                            child: Text(
+                              MyIcons.CANCEL,
+                              style:
+                                  MyTextStyle.iconStyle.copyWith(fontSize: 30),
+                            ),
                           ),
                           onPressed: () {
                             Navigator.pop(context);
@@ -161,7 +206,10 @@ class NewTaskDialog extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Expanded(child: Container(),flex: 1,),
+                    Expanded(
+                      child: Container(),
+                      flex: 1,
+                    ),
                   ],
                 ),
               ),

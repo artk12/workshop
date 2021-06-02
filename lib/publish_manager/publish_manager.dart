@@ -23,11 +23,14 @@ import 'package:workshop/style/component/my_icon_button.dart';
 import 'package:workshop/style/component/publish_manager/timeControllerProvider.dart';
 import 'package:workshop/style/device_detector.dart';
 import 'package:workshop/style/theme/my_icons.dart';
+
 import 'drawer_menu.dart';
 
 class PublishManager extends StatelessWidget {
   final SuperUser user;
+
   PublishManager({this.user});
+
   @override
   Widget build(BuildContext context) {
     GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -133,8 +136,10 @@ class PublishManager extends StatelessWidget {
                             cuts: cuts,
                             tasks: tasks,
                             personnel: personnel,
-                            assignPersonnelCubit: streamPageController.assignPersonnelCubit,
-                            assignTaskCubit: streamPageController.assignTaskCubit,
+                            assignPersonnelCubit:
+                                streamPageController.assignPersonnelCubit,
+                            assignTaskCubit:
+                                streamPageController.assignTaskCubit,
                             pageController: pageController,
                             streamPageController: streamPageController),
                         TasksPage(

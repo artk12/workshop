@@ -204,7 +204,7 @@ class AddFabricItem extends StatelessWidget {
                                   pieces.isEmpty) {
                                 MyShowSnackBar.showSnackBar(
                                     context, "لطفا تمامی فیلدها را پر کنید.");
-                              }else if(barcode.trim().isEmpty){
+                              } else if (barcode.trim().isEmpty) {
                                 MyShowSnackBar.showSnackBar(
                                     context, "بارکد تعیین نشده است.");
                               } else {

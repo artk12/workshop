@@ -14,6 +14,7 @@ import 'package:workshop/style/component/default_button.dart';
 import 'package:workshop/style/component/publish_manager/personnel_assignment.dart';
 import 'package:workshop/style/component/publish_manager/task_assignment.dart';
 import 'package:workshop/style/theme/show_snackbar.dart';
+
 import 'dialog_assign_task.dart';
 
 class AssignmentPage extends StatelessWidget {
@@ -24,11 +25,18 @@ class AssignmentPage extends StatelessWidget {
   final AssignPersonnelCubit assignPersonnelCubit;
   final PageController pageController;
   final PublishManagerPageController streamPageController;
-  AssignmentPage({this.cuts, this.tasks, this.personnel,this.assignPersonnelCubit,this.assignTaskCubit,this.pageController,this.streamPageController});
+
+  AssignmentPage(
+      {this.cuts,
+      this.tasks,
+      this.personnel,
+      this.assignPersonnelCubit,
+      this.assignTaskCubit,
+      this.pageController,
+      this.streamPageController});
 
   @override
   Widget build(BuildContext context) {
-
     // WidgetsBinding.instance
     //     .addPostFrameCallback((_) => showDialog(context: context, builder: (context)=>AssignTaskDialog(),barrierColor: Colors.transparent));
 
@@ -45,26 +53,28 @@ class AssignmentPage extends StatelessWidget {
                   title: 'ثبت',
                   backgroundColor: Colors.green.withOpacity(0.4),
                   onPressed: () async {
-                    if(assignPersonnelCubit.state.assignments.length == 0){
-                      MyShowSnackBar.showSnackBar(context, "هیچ فعالیتی برای نیروی کار در نظر گرفته نشده است.");
-                    }else{
+                    if (assignPersonnelCubit.state.assignments.length == 0) {
+                      MyShowSnackBar.showSnackBar(context,
+                          "هیچ فعالیتی برای نیروی کار در نظر گرفته نشده است.");
+                    } else {
                       List<Map> mapList = [];
                       DateTime dateTime = DateTime.now();
                       assignPersonnelCubit.state.assignments.forEach((element) {
                         Map map = {};
                         map['name'] = element.name;
-                        map['assignDateTime'] = dateTime.toString().substring(0,19);
+                        map['assignDateTime'] =
+                            dateTime.toString().substring(0, 19);
                         map['time'] = element.time;
                         map['cutCode'] = element.cutCode;
                         map['number'] = element.number;
                         map['personnelId'] = element.personnel.id;
                         double maxScore = 0;
-                        if(element.personnel.level == "حرفه ای"){
-                        maxScore = element.time * 1.5;
-                        }else if(element.personnel.level == "تازه کار"){
+                        if (element.personnel.level == "حرفه ای") {
+                          maxScore = element.time * 1.5;
+                        } else if (element.personnel.level == "تازه کار") {
                           maxScore = element.time * 1.0;
-                        }else{
-                          maxScore = element.time+0.5;
+                        } else {
+                          maxScore = element.time + 0.5;
                         }
                         map['max_score'] = maxScore;
                         mapList.add(map);
@@ -73,7 +83,9 @@ class AssignmentPage extends StatelessWidget {
                       await MyRequest.insertAssignRequest(jsonEncode(mapList));
                       MyShowSnackBar.hideSnackBar(context);
                       streamPageController.pageView = 0;
-                      pageController.animateToPage(0, duration: Duration(milliseconds: 500), curve: Curves.easeIn);
+                      pageController.animateToPage(0,
+                          duration: Duration(milliseconds: 500),
+                          curve: Curves.easeIn);
                     }
                   },
                 ),
@@ -82,12 +94,14 @@ class AssignmentPage extends StatelessWidget {
                   backgroundColor: Colors.red.withOpacity(0.4),
                   onPressed: () async {
                     streamPageController.pageView = 0;
-                    pageController.animateToPage(0, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+                    pageController.animateToPage(0,
+                        duration: Duration(milliseconds: 200),
+                        curve: Curves.easeIn);
                   },
                 ),
                 DefaultButton(
                   title: 'تنظیم مجدد',
-                  onPressed: (){
+                  onPressed: () {
                     assignTaskCubit.refresh();
                     assignPersonnelCubit.refresh();
                   },
@@ -107,7 +121,6 @@ class AssignmentPage extends StatelessWidget {
                     }
                   },
                 ),
-
               ],
             ),
           ),
@@ -143,7 +156,8 @@ class AssignmentPage extends StatelessWidget {
                 Expanded(
                   child: BlocBuilder(
                     cubit: assignPersonnelCubit,
-                    builder: (BuildContext context, AssignPersonnelState state) =>
+                    builder:
+                        (BuildContext context, AssignPersonnelState state) =>
                             ListView.builder(
                       itemBuilder: (context, index) => DragTarget(
                         builder: (BuildContext context,
@@ -151,9 +165,10 @@ class AssignmentPage extends StatelessWidget {
                                 List<dynamic> rejectedData) =>
                             PersonnelAssignmentCard(
                           personnel: personnel[index],
-                          assignPersonnelTasks: state.assignments.where(
-                              (element) =>
-                                  element.personnel == personnel[index]).toList(),
+                          assignPersonnelTasks: state.assignments
+                              .where((element) =>
+                                  element.personnel == personnel[index])
+                              .toList(),
                         ),
                         onAccept: (AssignmentTask data) async {
                           AssignTaskPersonnel a = await showDialog(
@@ -161,9 +176,10 @@ class AssignmentPage extends StatelessWidget {
                               builder: (context) => AssignTaskDialog(
                                   alignmentTask: data,
                                   personnel: personnel[index]));
-                          if(a != null){
+                          if (a != null) {
                             assignPersonnelCubit.update(a);
-                            assignTaskCubit.updateTask(a.cutCode, a.number,a.name);
+                            assignTaskCubit.updateTask(
+                                a.cutCode, a.number, a.name);
                           }
                         },
                       ),

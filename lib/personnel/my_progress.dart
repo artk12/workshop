@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workshop/bloc/publishManager/timer_personnel.dart';
@@ -10,6 +8,7 @@ import 'package:workshop/style/component/personnel/CircleProgress.dart';
 class MyCircularProgress extends StatefulWidget {
   final AssignPersonnel assignPersonnel;
   final bool check;
+
   // final TimerPersonnelCubit cubit;
   final bool stopServer;
   final bool stop;
@@ -17,6 +16,7 @@ class MyCircularProgress extends StatefulWidget {
   final int index;
   final TimerPersonnelCubit cubit;
   final String playDateTime;
+
   // final int i;
   MyCircularProgress({
     this.assignPersonnel,
@@ -29,28 +29,31 @@ class MyCircularProgress extends StatefulWidget {
     this.stop,
     // this.i,
   });
+
   createState() => _MyCircularProgressState(
-    assignPersonnel: assignPersonnel,
-  );
+        assignPersonnel: assignPersonnel,
+      );
 }
 
 class _MyCircularProgressState extends State<MyCircularProgress> {
   final AssignPersonnel assignPersonnel;
+
   // final TimerPersonnelCubit cubit;
   // final int index;
   Duration total;
   DateTime startDateTime;
   bool test = false;
   String id;
+
   // TimerPersonnelCubit cubit;
   // bool stop = false;
 
   _MyCircularProgressState({this.assignPersonnel});
-  
+
   void updater(DateTime startDateTime, Duration total, String play) async {
     Duration plus = Duration(seconds: 0);
     DateTime endDateTime =
-    startDateTime.add(Duration(seconds: total.inSeconds + 1));
+        startDateTime.add(Duration(seconds: total.inSeconds + 1));
     Duration mines = total;
     while (true) {
       await Future.delayed(Duration(seconds: 1));
@@ -87,7 +90,8 @@ class _MyCircularProgressState extends State<MyCircularProgress> {
             widget.provider.color != Colors.red.withOpacity(0.1)) {
           widget.provider.updateColor(Colors.red.withOpacity(0.1));
         }
-        widget.cubit.updatePercent(total.inSeconds, Duration(seconds: 0), plus, p);
+        widget.cubit
+            .updatePercent(total.inSeconds, Duration(seconds: 0), plus, p);
       }
       if (!widget.check || widget.stop) {
         break;
@@ -99,6 +103,7 @@ class _MyCircularProgressState extends State<MyCircularProgress> {
   DateTime endDateTime;
   Duration mines;
   DateTime now = DateTime.now();
+
   @override
   void initState() {
     id = widget.assignPersonnel.id;
@@ -129,8 +134,7 @@ class _MyCircularProgressState extends State<MyCircularProgress> {
   void didUpdateWidget(covariant MyCircularProgress oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-
-    if(widget.cubit != null) {
+    if (widget.cubit != null) {
       if (widget.check && widget.provider.getUpdateFirstTime(id)) {
         if (widget.playDateTime != null) {
           DateTime d = DateTime.parse(widget.playDateTime).add(Duration(
@@ -142,42 +146,36 @@ class _MyCircularProgressState extends State<MyCircularProgress> {
         }
         widget.provider.updateFirstTime(false, id);
         WidgetsBinding.instance.addPostFrameCallback(
-              (_) =>
-              updater(
-                startDateTime,
-                total,
-                assignPersonnel.play,
-              ),
+          (_) => updater(
+            startDateTime,
+            total,
+            assignPersonnel.play,
+          ),
         );
       } else {
         WidgetsBinding.instance.addPostFrameCallback(
-              (timeStamp) {
+          (timeStamp) {
             if (widget.provider.getUpdateFirstTime(id)) {
               widget.provider.updateFirstTime(false, id);
               now = DateTime.now();
-              if (endDateTime
-                  .difference(now)
-                  .inSeconds >= 0) {
+              if (endDateTime.difference(now).inSeconds >= 0) {
                 startDateTime = now.add(Duration(
-                    seconds:
-                    int.parse(widget.assignPersonnel.remainingTime) * (-1)));
+                    seconds: int.parse(widget.assignPersonnel.remainingTime) *
+                        (-1)));
                 DateTime endDateTime =
-                startDateTime.add(Duration(seconds: total.inSeconds));
-                mines = Duration(seconds: endDateTime
-                    .difference(now)
-                    .inSeconds);
-                plus = Duration(seconds: now
-                    .difference(startDateTime)
-                    .inSeconds);
+                    startDateTime.add(Duration(seconds: total.inSeconds));
+                mines =
+                    Duration(seconds: endDateTime.difference(now).inSeconds);
+                plus =
+                    Duration(seconds: now.difference(startDateTime).inSeconds);
                 double p = (mines.inSeconds / total.inSeconds) * 100;
                 widget.cubit.updatePercent(total.inSeconds, mines, plus, p);
               } else {
                 startDateTime = DateTime.now().add(Duration(
                     seconds: int.parse(widget.assignPersonnel.remainingTime) *
                         (-1)));
-                plus = Duration(seconds: now
-                    .difference(startDateTime)
-                    .inSeconds);
+                plus =
+                    Duration(seconds: now.difference(startDateTime).inSeconds);
                 // plus = Duration(seconds: plus.inSeconds);
                 // double p = (mines.inSeconds / total.inSeconds) * 100;
                 double p = 0;
@@ -194,37 +192,49 @@ class _MyCircularProgressState extends State<MyCircularProgress> {
   @override
   Widget build(BuildContext context) {
     ThemeData theme(context) => Theme.of(context);
-    return widget.provider.checks.indexWhere((element) => element.id == assignPersonnel.id) == -1? Container(height: 100,width: 100,color: Colors.white,):Container(
-      height: 140,
-      width: 140,
-      child: widget.cubit == null?Container():BlocBuilder(
-        cubit: widget.cubit,
-        builder: (BuildContext context, TimerPersonnelState state) =>
-            CustomPaint(
-              foregroundPainter: CircleProgress(
-                  currentProgress: state.currentPercent, color: state.color),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 5),
-                    child: Text(state.t1,
-                        textAlign: TextAlign.center,
-                        style: theme(context).textTheme.headline3),
+    return widget.provider.checks
+                .indexWhere((element) => element.id == assignPersonnel.id) ==
+            -1
+        ? Container(
+            height: 100,
+            width: 100,
+            color: Colors.white,
+          )
+        : Container(
+            height: 140,
+            width: 140,
+            child: widget.cubit == null
+                ? Container()
+                : BlocBuilder(
+                    cubit: widget.cubit,
+                    builder:
+                        (BuildContext context, TimerPersonnelState state) =>
+                            CustomPaint(
+                      foregroundPainter: CircleProgress(
+                          currentProgress: state.currentPercent,
+                          color: state.color),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 5),
+                            child: Text(state.t1,
+                                textAlign: TextAlign.center,
+                                style: theme(context).textTheme.headline3),
+                          ),
+                          SizedBox(
+                            height: 0,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 5),
+                            child: Text(state.t2,
+                                textAlign: TextAlign.center,
+                                style: theme(context).textTheme.headline6),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
-                  SizedBox(
-                    height: 0,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 5),
-                    child: Text(state.t2,
-                        textAlign: TextAlign.center,
-                        style: theme(context).textTheme.headline6),
-                  ),
-                ],
-              ),
-            ),
-      ),
-    );
+          );
   }
 }

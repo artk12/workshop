@@ -11,6 +11,7 @@ class GetData {
   static final String getFabricLogs = "SELECT * FROM `stock_pile_fabric_logs`";
   static final String getItemLogs =
       "SELECT `ID`, `item_id`, `log`, `person`, `amount`, `year`, `month`, `day`, `description` FROM `stock_pile_item_logs` ORDER BY `ID` DESC";
+
   static String getSuperUser(String user, String pass) {
     return "SELECT `ID`, `name`, `side`, `profile_address`, `user`, `pass` FROM `super_users` WHERE  `user`='$user' AND `pass`='$pass'";
   }
@@ -22,6 +23,7 @@ class GetData {
   //--------------------------------------------publish manager
   static final String getAllUser = "SELECT * FROM `user`";
   static final String getAllTask = "SELECT * FROM `task`";
+
   static get getTodayAssignments {
     return "SELECT * FROM `assignment`";
   }
@@ -37,7 +39,7 @@ class GetData {
   static final String getPersonnelLog =
       "SELECT `ID`, `personnel_id`, `personnel_name`, `task_name`, `cut_code`, `log` FROM `assignment_log` ORDER BY `ID` DESC LIMIT 100";
 
-  static String getAbsentMonth(){
+  static String getAbsentMonth() {
     DateTime dateTime = DateTime.now();
     String year = dateTime.year.toString();
     String month = dateTime.month.toString();
@@ -45,17 +47,24 @@ class GetData {
     return "SELECT `ID`, `personnel_id`, `year`, `month`, `day` FROM `absent` WHERE `year`='$year' AND `month`='$month'";
   }
 
-  static String getAllScore = "SELECT `ID`, `user_id`, `scores` FROM `user_score`";
+  static String getAllScore =
+      "SELECT `ID`, `user_id`, `scores` FROM `user_score`";
 
-  static String getAllWarning = "SELECT `ID`, `user_id`, `warnings` FROM `user_warnings`";
+  static String getAllWarning =
+      "SELECT `ID`, `user_id`, `warnings` FROM `user_warnings`";
 
   //------------------------------------------personnel
-  static final String getPersonnelMessage = "SELECT * FROM `messages` WHERE `personnel`='1' ORDER BY `ID` DESC";
+  static final String getPersonnelMessage =
+      "SELECT * FROM `messages` WHERE `personnel`='1' ORDER BY `ID` DESC";
 
-  static String getScorePersonnel(String id){
+  static String getScorePersonnel(String id) {
     return "SELECT `ID`, `user_id`, `scores` FROM `user_score` WHERE `user_id`='$id'";
   }
+
   //------------------------------------------general manage
-  static String getAllProject = "SELECT `ID`, `type`, `brand`, `roll`, `style_code`, `size`, `description` FROM `project` ";
-  // static final String getTodayAssignments = "SELECT * FROM `assignment` ";
+  static String getAllProject =
+      "SELECT `ID`, `type`, `brand`, `roll`, `style_code`, `size`, `description` FROM `project` ORDER BY `ID` DESC";
+
+  static String getAllStyleCode = "SELECT `ID`, `name`, `short_name` FROM `style_code` WHERE 1";
+// static final String getTodayAssignments = "SELECT * FROM `assignment` ";
 }

@@ -11,7 +11,9 @@ import 'package:workshop/stock/loading_page.dart';
 
 class PersonnelPage extends StatelessWidget {
   final User user;
+
   PersonnelPage({this.user});
+
   @override
   Widget build(BuildContext context) {
     List<Message> messages = Provider.of<List<Message>>(context);
@@ -35,12 +37,11 @@ class PersonnelPage extends StatelessWidget {
         : StreamProvider(
             create: (_) => MyList().getUserTasks(user.id),
             child: PersonnelLandingPage(
-              user: user,
-              messages: messages,
-              provider: provider,
-              scoreCubit: scoreCubit,
-              scaffoldKey:scaffoldKey
-            ),
+                user: user,
+                messages: messages,
+                provider: provider,
+                scoreCubit: scoreCubit,
+                scaffoldKey: scaffoldKey),
           );
   }
 }

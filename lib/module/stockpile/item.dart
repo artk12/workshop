@@ -16,10 +16,20 @@ class Item {
       this.year,
       this.quantify,
       this.warning,
-      this.name,this.category,
+      this.name,
+      this.category,
       this.quantifierOne});
 
-  factory Item.fromJson(Map map){
-    return Item(category: map['category'],id: map['ID'],day: map['day'],name: map['name'],month: map['month'],quantifierOne: map['quantifier_one'],quantify: map['quantify'],warning: map['warning'],year: map['year']);
+  factory Item.fromJson(Map map) {
+    return Item(
+        category: map['category'],
+        id: map['ID'],
+        day: map['day'],
+        name: map['name'],
+        month: map['month'],
+        quantifierOne: map['quantifier_one'],
+        quantify: map['quantify'],
+        warning: map['warning'],
+        year: map['year']);
   }
 }

@@ -4,11 +4,13 @@ import 'package:workshop/module/cutter/cut.dart';
 import 'package:workshop/style/app_bar/my_appbar.dart';
 import 'package:workshop/style/component/default_textfield.dart';
 import 'package:workshop/style/component/stockpile/dialog_background_blur.dart';
+
 import 'cutter_page.dart';
 
 class Pieces {
   final String layer;
   final String surplus;
+
   Pieces({this.surplus, this.layer});
 
   factory Pieces.fromJson(Map map) {
@@ -21,6 +23,7 @@ class Pieces {
 
 class CutterDetailPage extends StatelessWidget {
   final Cut cutDetail;
+
   CutterDetailPage({this.cutDetail});
 
   @override

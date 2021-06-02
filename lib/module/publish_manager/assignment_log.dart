@@ -1,4 +1,3 @@
-
 class AssignmentLog {
   String id;
   String personnelId;
@@ -7,9 +6,15 @@ class AssignmentLog {
   String log;
   String cutCode;
 
-  AssignmentLog({this.taskName,this.personnelName,this.personnelId,this.id,this.log,this.cutCode});
+  AssignmentLog(
+      {this.taskName,
+      this.personnelName,
+      this.personnelId,
+      this.id,
+      this.log,
+      this.cutCode});
 
-  factory AssignmentLog.fromJson(Map map){
+  factory AssignmentLog.fromJson(Map map) {
     return AssignmentLog(
       id: map['ID'],
       personnelId: map['personnel_id'],
@@ -19,5 +24,4 @@ class AssignmentLog {
       cutCode: map['cut_code'],
     );
   }
-
 }

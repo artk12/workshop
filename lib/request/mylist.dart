@@ -1,10 +1,13 @@
 import 'dart:convert';
+
 import 'package:workshop/bloc/publishManager/timer_controller.dart';
 import 'package:workshop/module/cutter/cut.dart';
 import 'package:workshop/module/general_manager/project.dart';
+import 'package:workshop/module/general_manager/styleCode.dart';
 import 'package:workshop/module/publish_manager/absent.dart';
 import 'package:workshop/module/publish_manager/assign_personnel.dart';
 import 'package:workshop/module/publish_manager/assignment_log.dart';
+import 'package:workshop/module/publish_manager/personnel.dart';
 import 'package:workshop/module/publish_manager/personnel_assign.dart';
 import 'package:workshop/module/publish_manager/score.dart';
 import 'package:workshop/module/publish_manager/task.dart';
@@ -14,21 +17,32 @@ import 'package:workshop/module/stockpile/fabric_log.dart';
 import 'package:workshop/module/stockpile/item.dart';
 import 'package:workshop/module/stockpile/item_log.dart';
 import 'package:workshop/module/stockpile/message.dart';
-import 'package:workshop/module/publish_manager/personnel.dart';
 import 'package:workshop/request/query/get_data.dart';
 import 'package:workshop/request/request.dart';
 
 class MyList {
-
-
-  static Future<List<Project>> getAllProjects()async{
-    try{
+  static Future<List<Project>> getAllProjects() async {
+    try {
       String body = await MyRequest.simpleQueryRequest(
           'stockpile/getResult.php', GetData.getAllProject);
       final json = jsonDecode(body).cast<Map<String, dynamic>>();
-      List<Project> items = json.map<Project>((json) => Project.fromJson(json)).toList();
+      List<Project> items =
+          json.map<Project>((json) => Project.fromJson(json)).toList();
       return items;
-    }catch(e){
+    } catch (e) {
+      return null;
+    }
+  }
+
+  static Future<List<StyleCode>> getAllStyleCode() async {
+    try {
+      String body = await MyRequest.simpleQueryRequest(
+          'stockpile/getResult.php', GetData.getAllStyleCode);
+      final json = jsonDecode(body).cast<Map<String, dynamic>>();
+      List<StyleCode> items =
+          json.map<StyleCode>((json) => StyleCode.fromJson(json)).toList();
+      return items;
+    } catch (e) {
       return null;
     }
   }
@@ -37,36 +51,41 @@ class MyList {
     String body = await MyRequest.simpleQueryRequest(
         'stockpile/getResult.php', GetData.getAllScore);
     final json = jsonDecode(body).cast<Map<String, dynamic>>();
-    List<UserScore> items = json.map<UserScore>((json) => UserScore.fromJson(json)).toList();
+    List<UserScore> items =
+        json.map<UserScore>((json) => UserScore.fromJson(json)).toList();
 
     return items;
   }
+
   Future<List<UserWarning>> getWarningList() async {
     String body = await MyRequest.simpleQueryRequest(
         'stockpile/getResult.php', GetData.getAllWarning);
     final json = jsonDecode(body).cast<Map<String, dynamic>>();
     List<UserWarning> items =
-    json.map<UserWarning>((json) => UserWarning.fromJson(json)).toList();
+        json.map<UserWarning>((json) => UserWarning.fromJson(json)).toList();
     return items;
   }
+
   Future<List<Absent>> getAbsentList() async {
     String body = await MyRequest.simpleQueryRequest(
         'stockpile/getResult.php', GetData.getAbsentMonth());
     final json = jsonDecode(body).cast<Map<String, dynamic>>();
-    List<Absent> items = json.map<Absent>((json) => Absent.fromJson(json)).toList();
+    List<Absent> items =
+        json.map<Absent>((json) => Absent.fromJson(json)).toList();
     return items;
   }
 
-
-  static Stream<List<AssignmentLog>> getAssignmentLogs()async*{
-    while(true){
+  static Stream<List<AssignmentLog>> getAssignmentLogs() async* {
+    while (true) {
       await Future.delayed(Duration(seconds: 5));
       String body = await MyRequest.getPersonnelLog();
-      if(body == "not ok"){
+      if (body == "not ok") {
         yield [];
-      }else{
+      } else {
         final json = jsonDecode(body).cast<Map<String, dynamic>>();
-        List<AssignmentLog> items = json.map<AssignmentLog>((json) => AssignmentLog.fromJson(json)).toList();
+        List<AssignmentLog> items = json
+            .map<AssignmentLog>((json) => AssignmentLog.fromJson(json))
+            .toList();
         yield items;
       }
     }
@@ -81,8 +100,8 @@ class MyList {
   }
 
   Stream<List<AssignPersonnel>> getUserTasks(String id) async* {
-    while(true){
-      try{
+    while (true) {
+      try {
         await Future.delayed(Duration(seconds: 3));
         String body = await MyRequest.simpleQueryRequestWithTimeOut(
             'stockpile/getResult.php', GetData.getPersonnelTask(id));
@@ -92,12 +111,10 @@ class MyList {
             .toList();
         // print(items.length);
         yield items;
-      }catch(e){
+      } catch (e) {
         yield [];
       }
-
     }
-
   }
 
   Future<List<Fabric>> getFabrics() async {
@@ -135,12 +152,13 @@ class MyList {
         json.map<Message>((json) => Message.fromJson(json)).toList();
     return items;
   }
+
   Future<List<Message>> getPublishMangerMessages() async {
     String body = await MyRequest.simpleQueryRequest(
         'stockpile/getResult.php', GetData.getPublishManagerMessage);
     final json = jsonDecode(body).cast<Map<String, dynamic>>();
     List<Message> items =
-    json.map<Message>((json) => Message.fromJson(json)).toList();
+        json.map<Message>((json) => Message.fromJson(json)).toList();
     return items;
   }
 
@@ -149,7 +167,7 @@ class MyList {
         'stockpile/getResult.php', GetData.getPersonnelMessage);
     final json = jsonDecode(body).cast<Map<String, dynamic>>();
     List<Message> items =
-    json.map<Message>((json) => Message.fromJson(json)).toList();
+        json.map<Message>((json) => Message.fromJson(json)).toList();
     return items;
   }
 
@@ -209,10 +227,10 @@ class MyList {
       await Future.delayed(Duration(seconds: 1));
       String body = await MyRequest.simpleQueryRequestOneSecondDelay(
           'stockpile/getResult.php', GetData.getTodayAssignments);
-      if(body == 'not ok'){
+      if (body == 'not ok') {
         // TimerStreamer timerControllerCubit = TimerStreamer(monitorItemController: []);
 
-      }else {
+      } else {
         final json = jsonDecode(body).cast<Map<String, dynamic>>();
         tasks = json
             .map<AssignPersonnel>((json) => AssignPersonnel.fromJson(json))
@@ -221,12 +239,12 @@ class MyList {
           PersonnelAssignHolder h = new PersonnelAssignHolder();
           h.personnelSetter = item;
           List<AssignPersonnel> t =
-          tasks.where((element) => element.personnelId == item.id).toList();
+              tasks.where((element) => element.personnelId == item.id).toList();
           h.assignSetter = t;
           try {
             if (t.length > 0) {
               AssignPersonnel a = t.firstWhere((element) =>
-              element.startDateTime != null && element.endDateTime == null);
+                  element.startDateTime != null && element.endDateTime == null);
               a.totalTask = t.length.toString();
               a.currentTask = t
                   .where((element) => element.startDateTime != null)
@@ -248,7 +266,8 @@ class MyList {
           monitorItemList.add(item);
         });
 
-        TimerStreamer timerControllerCubit = TimerStreamer(monitorItemController: monitorItemList);
+        TimerStreamer timerControllerCubit =
+            TimerStreamer(monitorItemController: monitorItemList);
         yield timerControllerCubit;
       }
 

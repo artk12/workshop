@@ -9,6 +9,7 @@ class FabricLogDialog extends StatelessWidget {
   final List<FabricLog> fabricLogs;
   final List<Fabric> fabrics;
   final Fabric fabric;
+
   FabricLogDialog({this.fabricLogs, this.fabric, @required this.fabrics});
 
   @override
@@ -17,7 +18,9 @@ class FabricLogDialog extends StatelessWidget {
     Widget space(double height) => SizedBox(height: height);
 
     CalculateStock.sortFabric(fabrics);
-    List<FabricLogHolder> fabricLogHolder = FabricToFabricLogHolder(fabricLogs: fabricLogs,fabric: fabric,fabrics: fabrics).convert();
+    List<FabricLogHolder> fabricLogHolder = FabricToFabricLogHolder(
+            fabricLogs: fabricLogs, fabric: fabric, fabrics: fabrics)
+        .convert();
 
     return BlurDialogBg(
       maxWidth: 400,
@@ -65,7 +68,9 @@ class FabricLogDialog extends StatelessWidget {
           Expanded(
               child: ListView.builder(
             itemCount: fabricLogHolder.length,
-            itemBuilder: (context, index) => FabricLogCard(fabricHolder: fabricLogHolder[index],),
+            itemBuilder: (context, index) => FabricLogCard(
+              fabricHolder: fabricLogHolder[index],
+            ),
           ))
         ],
       ),
@@ -77,27 +82,36 @@ class FabricLogHolder {
   DateTime input;
   DateTime output;
   String calite;
+
   FabricLogHolder({this.calite, this.input, this.output});
 }
-class FabricToFabricLogHolder{
+
+class FabricToFabricLogHolder {
   final List<Fabric> fabrics;
   final Fabric fabric;
   final List<FabricLog> fabricLogs;
-  FabricToFabricLogHolder({this.fabrics,this.fabric,this.fabricLogs});
 
-   List<FabricLogHolder> convert(){
-     List<FabricLogHolder> fabricsLogHolder = [];
+  FabricToFabricLogHolder({this.fabrics, this.fabric, this.fabricLogs});
+
+  List<FabricLogHolder> convert() {
+    List<FabricLogHolder> fabricsLogHolder = [];
     fabrics.forEach((element) {
-      if(element.id != fabric.id){
-        DateTime input = DateTime(element.year.parseInt(),element.month.parseInt(),element.day.parseInt());
+      if (element.id != fabric.id) {
+        DateTime input = DateTime(element.year.parseInt(),
+            element.month.parseInt(), element.day.parseInt());
         String calite = element.calite;
 
-        FabricLog fabricLog = fabricLogs.firstWhere((log) => log.fabricId == element.id,orElse: (){return null;});
+        FabricLog fabricLog = fabricLogs
+            .firstWhere((log) => log.fabricId == element.id, orElse: () {
+          return null;
+        });
         DateTime output;
-        if(fabricLog != null){
-          output = DateTime(fabricLog.year.parseInt(),fabricLog.month.parseInt(),fabricLog.day.parseInt());
+        if (fabricLog != null) {
+          output = DateTime(fabricLog.year.parseInt(),
+              fabricLog.month.parseInt(), fabricLog.day.parseInt());
         }
-        fabricsLogHolder.add(FabricLogHolder(calite: calite,input: input,output: output));
+        fabricsLogHolder
+            .add(FabricLogHolder(calite: calite, input: input, output: output));
       }
     });
     return fabricsLogHolder;

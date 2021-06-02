@@ -24,7 +24,12 @@ class StockPage extends StatelessWidget {
   final List<Item> items;
   final PageController pageController;
 
-  StockPage({this.items, this.fabrics, this.fabricLogs, this.itemLogs,this.pageController});
+  StockPage(
+      {this.items,
+      this.fabrics,
+      this.fabricLogs,
+      this.itemLogs,
+      this.pageController});
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +41,11 @@ class StockPage extends StatelessWidget {
     SingleDropDownItemCubit categoryCubit =
         new SingleDropDownItemCubit(SingleDropDownItemState(value: 'همه'));
     StockCategoryCubit stockCategoryCubit = new StockCategoryCubit(
-        StockCategoryState(allItem: allItems, myList: myList,fabricLogs: fabricLogs,itemLogs: itemLogs));
+        StockCategoryState(
+            allItem: allItems,
+            myList: myList,
+            fabricLogs: fabricLogs,
+            itemLogs: itemLogs));
     List<String> category = ['همه', 'خرج کار', 'بسته بندی', 'پارچه'];
     var size = MediaQuery.of(context).size;
 
@@ -49,7 +58,7 @@ class StockPage extends StatelessWidget {
 
     allItems.forEach((element) {
       if (element.category == "fabric") {
-        if(element.fabric.log == "1"){
+        if (element.fabric.log == "1") {
           if (device == 'phone') {
             myList.add(FabricCardMobile(
               fabrics: fabrics,
@@ -81,8 +90,9 @@ class StockPage extends StatelessWidget {
     print(myList.length);
 
     return WillPopScope(
-      onWillPop: ()async{
-        pageController.animateToPage(0,curve: Curves.easeIn,duration: Duration(milliseconds: 200));
+      onWillPop: () async {
+        pageController.animateToPage(0,
+            curve: Curves.easeIn, duration: Duration(milliseconds: 200));
         return false;
       },
       child: Scaffold(
@@ -105,8 +115,8 @@ class StockPage extends StatelessWidget {
                             onChanged: onChange,
                             decoration: InputDecoration(
                               hintText: 'جستجو...',
-                              hintStyle: theme.textTheme.bodyText1
-                                  .copyWith(color: Colors.white.withOpacity(0.5)),
+                              hintStyle: theme.textTheme.bodyText1.copyWith(
+                                  color: Colors.white.withOpacity(0.5)),
                               enabledBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(
                                     color: Colors.black.withOpacity(0.2),
@@ -138,36 +148,37 @@ class StockPage extends StatelessWidget {
                             cubit: categoryCubit,
                             builder: (context, SingleDropDownItemState state) =>
                                 CustomDropdownButtonHideUnderline(
-                                  child: CustomDropdownButton<String>(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    items: category.map((String value) {
-                                      return new CustomDropdownMenuItem<String>(
-                                        value: value,
-                                        child: new Text(
-                                          value,
-                                          style: theme.textTheme.headline6,
-                                        ),
-                                      );
-                                    }).toList(),
-                                    value: category
-                                        .where((element) => element == state.value)
-                                        .first,
-                                    onChanged: (value) {
-                                      categoryCubit.changeItem(value);
-                                      if (value == "همه") {
-                                        stockCategoryCubit.noFilter(allItems, device);
-                                      } else {
-                                        if (value == "پارچه") {
-                                          stockCategoryCubit.categoryFilter(
-                                              allItems, 'fabric', device);
-                                        } else {
-                                          stockCategoryCubit.categoryFilter(
-                                              allItems, value, device);
-                                        }
-                                      }
-                                    },
-                                  ),
-                                ),
+                              child: CustomDropdownButton<String>(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                items: category.map((String value) {
+                                  return new CustomDropdownMenuItem<String>(
+                                    value: value,
+                                    child: new Text(
+                                      value,
+                                      style: theme.textTheme.headline6,
+                                    ),
+                                  );
+                                }).toList(),
+                                value: category
+                                    .where((element) => element == state.value)
+                                    .first,
+                                onChanged: (value) {
+                                  categoryCubit.changeItem(value);
+                                  if (value == "همه") {
+                                    stockCategoryCubit.noFilter(
+                                        allItems, device);
+                                  } else {
+                                    if (value == "پارچه") {
+                                      stockCategoryCubit.categoryFilter(
+                                          allItems, 'fabric', device);
+                                    } else {
+                                      stockCategoryCubit.categoryFilter(
+                                          allItems, value, device);
+                                    }
+                                  }
+                                },
+                              ),
+                            ),
                           ),
                         ),
                       ),
@@ -176,9 +187,13 @@ class StockPage extends StatelessWidget {
                         height: 40,
                         child: TextButton(
                           style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.resolveWith((states) => Color(0xff5e3443))
+                              backgroundColor:
+                                  MaterialStateProperty.resolveWith(
+                                      (states) => Color(0xff5e3443))),
+                          child: Text(
+                            MyIcons.ALERT,
+                            style: MyTextStyle.iconStyle.copyWith(fontSize: 25),
                           ),
-                          child: Text(MyIcons.ALERT,style: MyTextStyle.iconStyle.copyWith(fontSize: 25),),
                           onPressed: () {
                             stockCategoryCubit.warningFilter(allItems, device);
                           },
@@ -191,7 +206,8 @@ class StockPage extends StatelessWidget {
               device == 'phone'
                   ? BlocBuilder(
                       cubit: stockCategoryCubit,
-                      builder: (BuildContext context, StockCategoryState state) {
+                      builder:
+                          (BuildContext context, StockCategoryState state) {
                         return Expanded(
                             child: ListView(
                           children: state.myList,
@@ -199,11 +215,13 @@ class StockPage extends StatelessWidget {
                       })
                   : BlocBuilder(
                       cubit: stockCategoryCubit,
-                      builder: (BuildContext context, StockCategoryState state) =>
-                          Expanded(
-                              child: GridView.count(
+                      builder:
+                          (BuildContext context, StockCategoryState state) =>
+                              Expanded(
+                                  child: GridView.count(
                         childAspectRatio: (itemWidth / itemHeight),
-                        controller: new ScrollController(keepScrollOffset: false),
+                        controller:
+                            new ScrollController(keepScrollOffset: false),
                         crossAxisCount: 4,
                         children: state.myList,
                       )),

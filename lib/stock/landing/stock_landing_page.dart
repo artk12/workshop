@@ -14,6 +14,7 @@ import 'package:workshop/stock/landing/stock_page.dart';
 import 'package:workshop/style/app_bar/my_appbar.dart';
 import 'package:workshop/style/component/my_icon_button.dart';
 import 'package:workshop/style/theme/my_icons.dart';
+
 import '../import_to_stock/dialog_import_item.dart';
 
 class StockLandingPage extends StatelessWidget {
@@ -48,145 +49,145 @@ class StockLandingPage extends StatelessWidget {
     ThemeData theme = Theme.of(context);
 
     return Scaffold(
-        key: _scaffoldKey,
-        drawer: items == null ||
-                fabrics == null ||
-                itemLogs == null ||
-                fabricLogs == null ||
-                messages == null
-            ? Container()
-            : Container(
-                color: Colors.black,
-                width: 200,
-                child: ListView(
-                  padding: EdgeInsets.zero,
-                  children: <Widget>[
-                    Container(
-                      width: 200,
-                      height: 200,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          fit: BoxFit.contain,
-                          image: NetworkImage(
-                              MyRequest.baseUrl + '/' + user.profile),
-                        ),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              user.side,
-                              style: theme.textTheme.headline2.copyWith(
-                                color: Colors.black.withOpacity(0.7),
-                                fontSize: 14,
-                                shadows: [
-                                  Shadow(color: Colors.black, blurRadius: 3)
-                                ],
-                              ),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Text(
-                              user.name,
-                              style: theme.textTheme.headline1.copyWith(
-                                color: Colors.black.withOpacity(0.7),
-                                fontSize: 14,
-                              ),
-                            ),
-                            SizedBox(
-                              height: 5,
-                            ),
-                          ],
-                        ),
+      key: _scaffoldKey,
+      drawer: items == null ||
+              fabrics == null ||
+              itemLogs == null ||
+              fabricLogs == null ||
+              messages == null
+          ? Container()
+          : Container(
+              color: Colors.black,
+              width: 200,
+              child: ListView(
+                padding: EdgeInsets.zero,
+                children: <Widget>[
+                  Container(
+                    width: 200,
+                    height: 200,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        fit: BoxFit.contain,
+                        image: NetworkImage(
+                            MyRequest.baseUrl + '/' + user.profile),
                       ),
                     ),
-                    ListTile(
-                      title: Text('انبار', style: theme.textTheme.headline2),
-                      onTap: () {
-                        _scaffoldKey.currentState.openEndDrawer();
-                        pageController.animateToPage(1,
-                            duration: Duration(milliseconds: 250),
-                            curve: Curves.easeIn);
-                      },
-                    ),
-                  ],
-                ),
-              ),
-        body: SafeArea(
-          child: Column(
-            children: [
-              MyAppbar(
-                rightWidget: [
-                  MyIconButton(
-                    icon: MyIcons.DRAWER_ICON,
-                    onPressed: () {
-                      _scaffoldKey.currentState.openDrawer();
-                    },
-                  ),
-                  MyIconButton(
-                      icon: MyIcons.REFRESH,
-                      onPressed: () {
-                        refreshProvider.refresh();
-                      }),
-                ],
-                title: 'داشبورد',
-                leftWidget: [
-                  MyIconButton(
-                      icon: MyIcons.ARROW_DOWN,
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) => ImportItemDialog(
-                          item: items,
-                        ),
-                      );
-                    },
-                  ),
-                  MyIconButton(
-                    icon:MyIcons.ARROW_UP,
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ExportFromStock(
-                            items: items,
-                            fabrics: fabrics,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            user.side,
+                            style: theme.textTheme.headline2.copyWith(
+                              color: Colors.black.withOpacity(0.7),
+                              fontSize: 14,
+                              shadows: [
+                                Shadow(color: Colors.black, blurRadius: 3)
+                              ],
+                            ),
                           ),
-                          settings: RouteSettings(name: '/ExportFromStock'),
-                        ),
-                      );
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            user.name,
+                            style: theme.textTheme.headline1.copyWith(
+                              color: Colors.black.withOpacity(0.7),
+                              fontSize: 14,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  ListTile(
+                    title: Text('انبار', style: theme.textTheme.headline2),
+                    onTap: () {
+                      _scaffoldKey.currentState.openEndDrawer();
+                      pageController.animateToPage(1,
+                          duration: Duration(milliseconds: 250),
+                          curve: Curves.easeIn);
                     },
                   ),
                 ],
               ),
-              Expanded(
-                child: PageView(
-                  controller: pageController,
-                  physics: NeverScrollableScrollPhysics(),
-                  children: [
-                    StockDashboardPage(
-                        itemLogs: itemLogs.take(10).toList(),
-                        items: items.take(10).toList(),
-                        pageController: pageController,
-                        fabrics: fabrics.take(10).toList(),
-                        messages: messages),
-                    StockPage(
-                      pageController: pageController,
-                      fabricLogs: fabricLogs,
-                      fabrics: fabrics,
-                      itemLogs: itemLogs,
-                      items: items,
-                    ),
-                  ],
+            ),
+      body: SafeArea(
+        child: Column(
+          children: [
+            MyAppbar(
+              rightWidget: [
+                MyIconButton(
+                  icon: MyIcons.DRAWER_ICON,
+                  onPressed: () {
+                    _scaffoldKey.currentState.openDrawer();
+                  },
                 ),
+                MyIconButton(
+                    icon: MyIcons.REFRESH,
+                    onPressed: () {
+                      refreshProvider.refresh();
+                    }),
+              ],
+              title: 'داشبورد',
+              leftWidget: [
+                MyIconButton(
+                  icon: MyIcons.ARROW_DOWN,
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) => ImportItemDialog(
+                        item: items,
+                      ),
+                    );
+                  },
+                ),
+                MyIconButton(
+                  icon: MyIcons.ARROW_UP,
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ExportFromStock(
+                          items: items,
+                          fabrics: fabrics,
+                        ),
+                        settings: RouteSettings(name: '/ExportFromStock'),
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
+            Expanded(
+              child: PageView(
+                controller: pageController,
+                physics: NeverScrollableScrollPhysics(),
+                children: [
+                  StockDashboardPage(
+                      itemLogs: itemLogs.take(10).toList(),
+                      items: items.take(10).toList(),
+                      pageController: pageController,
+                      fabrics: fabrics.take(10).toList(),
+                      messages: messages),
+                  StockPage(
+                    pageController: pageController,
+                    fabricLogs: fabricLogs,
+                    fabrics: fabrics,
+                    itemLogs: itemLogs,
+                    items: items,
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
+      ),
     );
   }
 }

@@ -6,7 +6,8 @@ class Insert {
   static int month = dateTime.month;
   static int day = dateTime.day;
 
-  static String queryInsertInProject(String type,String brand,String roll,String styleCode,String size,String description ) {
+  static String queryInsertInProject(String type, String brand, String roll,
+      String styleCode, String size, String description) {
     return "INSERT INTO `project`(`type`, `brand`, `roll`, `style_code`, `size`, `description`) VALUES ('$type','$brand','$roll','$styleCode','$size','$description')";
   }
 
@@ -39,28 +40,46 @@ class Insert {
     return "INSERT INTO `stock_pile_fabric_logs`(`fabric_id`,`person`, `log`, `description`, `year`, `month`, `day`) VALUES ('$fabricId','$person','0','$description','$year','$month','$day')";
   }
 
-  static String queryInsertMessageNewProject(String brand){
+  static String queryInsertMessageNewProject(String brand) {
     String title = "ایجادپروژه جدید";
-    String message = "یک پروژه جدید برای برند"+" $brand "+" توسط مدیر عامل اضافه شد.";
+    String message =
+        "یک پروژه جدید برای برند" + " $brand " + " توسط مدیر عامل اضافه شد.";
     return "INSERT INTO `messages`(`title`, `sender`, `message`, `stockpile`, `cutter`) VALUES ('$title','0','$message','1','1')";
   }
 
-  static String queryInsertCutterProject(String projectId , String fabricId,String realUsage,String usage,String height,String pieces,String totalGoods,String cutCode,String description){
+  static String queryInsertCutterProject(
+      String projectId,
+      String fabricId,
+      String realUsage,
+      String usage,
+      String height,
+      String pieces,
+      String totalGoods,
+      String cutCode,
+      String description) {
     return "INSERT INTO `cutter`(`project_id`, `fabric_id`, `real_usage`, `all_usage`, `height`, `pieces`, `total_goods`, `cut_code`, `description`,`year`,`month`,`day`) VALUES"
-            " ('$projectId','$fabricId','$realUsage','$usage','$height','$pieces','$totalGoods','$cutCode','$description','$year','$month','$day')";
+        " ('$projectId','$fabricId','$realUsage','$usage','$height','$pieces','$totalGoods','$cutCode','$description','$year','$month','$day')";
   }
 
-  static String queryInsertPersonnel(String name,String nationalCode,String fatherName,String birthDay,String hireDate,String position,String level ){
+  static String queryInsertPersonnel(
+      String name,
+      String nationalCode,
+      String fatherName,
+      String birthDay,
+      String hireDate,
+      String position,
+      String level) {
     return "INSERT INTO `user`(`name`, `national_code`, `father_name`, `birth_date`, `hire_date`, `position`, `level`) "
         "VALUES ('$name','$nationalCode','$fatherName','$birthDay','$hireDate','$position','$level')";
   }
 
-  static String queryInsertTask(String name,String expertTime,String amateurTime,String internTime){
+  static String queryInsertTask(
+      String name, String expertTime, String amateurTime, String internTime) {
     return "INSERT INTO `task`(`name`, `expert_time`, `amateur_time`, `intern_time`) VALUES ('$name','$expertTime','$amateurTime','$internTime')";
   }
 
-  // static String queryInputToFabricLog(String fabricId,int year,int month,int day){
-  //   return "INSERT INTO `stock_pile_fabric_logs`(`fabric_id`,`person`, `log`, `description`, `year`, `month`, `day`) VALUES ('$fabricId','-','1','-','$year','$month','$day')";
-  // }
+// static String queryInputToFabricLog(String fabricId,int year,int month,int day){
+//   return "INSERT INTO `stock_pile_fabric_logs`(`fabric_id`,`person`, `log`, `description`, `year`, `month`, `day`) VALUES ('$fabricId','-','1','-','$year','$month','$day')";
+// }
 
 }

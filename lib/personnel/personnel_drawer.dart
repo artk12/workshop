@@ -176,17 +176,21 @@ class PersonnelDrawer extends StatelessWidget {
                                               ),
                                               onPressed: () async {
                                                 ignoreButtonCubit.update(true);
-                                                dialogMessageCubit.changeMessage("کمی صیر کنید...");
+                                                dialogMessageCubit
+                                                    .changeMessage(
+                                                        "کمی صیر کنید...");
                                                 String res = await MyRequest
                                                     .simpleQueryRequest(
                                                         'stockpile/runQuery.php',
                                                         Update
                                                             .updatePassPersonnel(
                                                                 user.id, pass));
-                                                if(res.trim() != "OK"){
-                                                  dialogMessageCubit.changeMessage("خطا در برقراری ارتباط");
-                                                  ignoreButtonCubit.update(false);
-                                                }else{
+                                                if (res.trim() != "OK") {
+                                                  dialogMessageCubit.changeMessage(
+                                                      "خطا در برقراری ارتباط");
+                                                  ignoreButtonCubit
+                                                      .update(false);
+                                                } else {
                                                   Navigator.of(context).pop();
                                                 }
                                               },

@@ -15,7 +15,6 @@ import 'package:workshop/style/component/publish_manager/timeControllerProvider.
 
 // ignore: must_be_immutable
 class Dashboard extends StatelessWidget {
-
   final String device;
   TimerControllerProvider timerControllerProvider;
   final double itemHeight;
@@ -107,11 +106,11 @@ class Dashboard extends StatelessWidget {
                     ),
                     Expanded(
                       child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
+                          scrollDirection: Axis.horizontal,
                           itemCount: assignmentLogs.length,
                           itemBuilder: (BuildContext context, int index) =>
                               PersonnelLogCard(
-                                width:200,
+                                width: 200,
                                 style: style,
                                 a: assignmentLogs[index],
                               )),
@@ -137,16 +136,16 @@ class Dashboard extends StatelessWidget {
                         //     context,
                         //     MaterialPageRoute(
                         //         builder: (BuildContext context) =>
-                                    // ChangeNotifierProvider(
-                                    //   create: (_) => timerControllerProvider,
-                                    //   child: MonitoringMobilePage(
-                                    //     dashboard: 'd',
-                                    //     personnel: personnel,
-                                    //     itemWidth: itemWidth,
-                                    //     itemHeight: itemHeight,
-                                    //     timerStreamer: timerStreamer,
-                                    //   ),
-                                    // )));
+                        // ChangeNotifierProvider(
+                        //   create: (_) => timerControllerProvider,
+                        //   child: MonitoringMobilePage(
+                        //     dashboard: 'd',
+                        //     personnel: personnel,
+                        //     itemWidth: itemWidth,
+                        //     itemHeight: itemHeight,
+                        //     timerStreamer: timerStreamer,
+                        //   ),
+                        // )));
                         // pageController.changePage(MONITOR);
                         // timerControllerProvider = new TimerControllerProvider(timerControllerProviderState: []);
                         // Navigator.of(context).push(
@@ -196,7 +195,11 @@ class Dashboard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     title('پیامها', () {
-                      showDialog(context: context, builder: (BuildContext context)=>DialogMessage(messages: messages,));
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) => DialogMessage(
+                                messages: messages,
+                              ));
                     }),
                     SizedBox(
                       height: 2,

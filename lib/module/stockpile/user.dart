@@ -5,6 +5,7 @@ class SuperUser {
   String profile;
   String user;
   String pass;
+
   SuperUser(
       {this.id, this.name, this.profile, this.side, this.user, this.pass});
 

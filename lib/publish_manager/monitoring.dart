@@ -17,6 +17,7 @@ class MonitoringMobilePage extends StatefulWidget {
   final double itemWidth;
   final TimerStreamer timerStreamer;
   final PublishManagerPageController pageController;
+
   // final PageController streamPageController;
   final String dashboard;
 
@@ -33,7 +34,6 @@ class MonitoringMobilePage extends StatefulWidget {
 }
 
 class _MonitoringMobilePageState extends State<MonitoringMobilePage> {
-
   @override
   Widget build(BuildContext context) {
     TimerControllerProvider p = Provider.of<TimerControllerProvider>(context);
@@ -87,7 +87,8 @@ class _MonitoringMobilePageState extends State<MonitoringMobilePage> {
                   Expanded(
                     flex: 1,
                     child: Container(
-                      padding: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+                      padding:
+                          EdgeInsets.symmetric(vertical: 8, horizontal: 10),
                       height: 70,
                       child: TextField(
                         style: theme.textTheme.bodyText1,
@@ -98,14 +99,17 @@ class _MonitoringMobilePageState extends State<MonitoringMobilePage> {
                               .copyWith(color: Colors.white.withOpacity(0.5)),
                           enabledBorder: UnderlineInputBorder(
                             borderSide: BorderSide(
-                                color: Colors.white.withOpacity(0.2), width: 2.5),
+                                color: Colors.white.withOpacity(0.2),
+                                width: 2.5),
                           ),
                           focusedBorder: UnderlineInputBorder(
                             borderSide: BorderSide(
-                                color: Colors.white.withOpacity(0.4), width: 2.5),
+                                color: Colors.white.withOpacity(0.4),
+                                width: 2.5),
                           ),
                           border: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white, width: 1),
+                            borderSide:
+                                BorderSide(color: Colors.white, width: 1),
                           ),
                         ),
                       ),
@@ -186,7 +190,9 @@ class _MonitoringMobilePageState extends State<MonitoringMobilePage> {
                                 // crossAxisCount: 3,
                                 // crossAxisCount: 2,
                                 children: List.generate(
-                                  widget.timerStreamer.monitorItemController.length ?? 0,
+                                  widget.timerStreamer.monitorItemController
+                                          .length ??
+                                      0,
                                   (index) => getPercentageItems(widget
                                               .timerStreamer
                                               .monitorItemController[index]
@@ -232,9 +238,27 @@ class _MonitoringMobilePageState extends State<MonitoringMobilePage> {
                                                   value: p,
                                                   child: MonitorCard(
                                                     maxWidth: double.maxFinite,
-                                                    serverPlay: widget.timerStreamer.monitorItemController[index].startAssign.assignPersonnel.play,
-                                                    serverPlayDateTime: widget.timerStreamer.monitorItemController[index].startAssign.assignPersonnel.playDateTime,
-                                                    serverRemainingTime: widget.timerStreamer.monitorItemController[index].startAssign.assignPersonnel.remainingTime,
+                                                    serverPlay: widget
+                                                        .timerStreamer
+                                                        .monitorItemController[
+                                                            index]
+                                                        .startAssign
+                                                        .assignPersonnel
+                                                        .play,
+                                                    serverPlayDateTime: widget
+                                                        .timerStreamer
+                                                        .monitorItemController[
+                                                            index]
+                                                        .startAssign
+                                                        .assignPersonnel
+                                                        .playDateTime,
+                                                    serverRemainingTime: widget
+                                                        .timerStreamer
+                                                        .monitorItemController[
+                                                            index]
+                                                        .startAssign
+                                                        .assignPersonnel
+                                                        .remainingTime,
                                                     monitorItemController: widget
                                                             .timerStreamer
                                                             .monitorItemController[
@@ -249,8 +273,9 @@ class _MonitoringMobilePageState extends State<MonitoringMobilePage> {
                             ),
                           )
                         : ListView.builder(
-                            itemCount:
-                                widget.timerStreamer.monitorItemController.length ?? 0,
+                            itemCount: widget.timerStreamer
+                                    .monitorItemController.length ??
+                                0,
                             itemBuilder: (BuildContext context, int index) =>
                                 getPercentageItems(widget
                                             .timerStreamer
@@ -258,8 +283,12 @@ class _MonitoringMobilePageState extends State<MonitoringMobilePage> {
                                             .startAssign
                                             .assignPersonnel
                                             .id) &&
-                                        (widget.timerStreamer.monitorItemController[index]
-                                                .startAssign.assignPersonnel.name
+                                        (widget
+                                                .timerStreamer
+                                                .monitorItemController[index]
+                                                .startAssign
+                                                .assignPersonnel
+                                                .name
                                                 .contains(p.search) ||
                                             widget
                                                 .timerStreamer
@@ -290,13 +319,32 @@ class _MonitoringMobilePageState extends State<MonitoringMobilePage> {
                                             return ChangeNotifierProvider.value(
                                               value: p,
                                               child: MonitorCard(
-                                                serverPlay: widget.timerStreamer.monitorItemController[index].startAssign.assignPersonnel.play,
-                                                serverPlayDateTime: widget.timerStreamer.monitorItemController[index].startAssign.assignPersonnel.playDateTime,
-                                                serverRemainingTime: widget.timerStreamer.monitorItemController[index].startAssign.assignPersonnel.remainingTime,
+                                                serverPlay: widget
+                                                    .timerStreamer
+                                                    .monitorItemController[
+                                                        index]
+                                                    .startAssign
+                                                    .assignPersonnel
+                                                    .play,
+                                                serverPlayDateTime: widget
+                                                    .timerStreamer
+                                                    .monitorItemController[
+                                                        index]
+                                                    .startAssign
+                                                    .assignPersonnel
+                                                    .playDateTime,
+                                                serverRemainingTime: widget
+                                                    .timerStreamer
+                                                    .monitorItemController[
+                                                        index]
+                                                    .startAssign
+                                                    .assignPersonnel
+                                                    .remainingTime,
                                                 maxWidth: double.maxFinite,
                                                 monitorItemController: widget
-                                                    .timerStreamer
-                                                    .monitorItemController[index],
+                                                        .timerStreamer
+                                                        .monitorItemController[
+                                                    index],
                                               ),
                                             );
                                           },

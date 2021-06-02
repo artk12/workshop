@@ -18,9 +18,9 @@ class Personnel {
       this.nationalCode,
       this.position});
 
-  factory Personnel.fromJson(Map map){
+  factory Personnel.fromJson(Map map) {
     return Personnel(
-      id:map['ID'],
+      id: map['ID'],
       name: map['name'],
       birthDay: map['birth_date'],
       fatherName: map['father_name'],
@@ -32,12 +32,19 @@ class Personnel {
   }
 }
 
-class PersonnelCompeteDetail{
+class PersonnelCompeteDetail {
   final Personnel p;
   final double monthScore;
   final int monthWarning;
   final double totalScore;
   final int totalWarning;
   final int absent;
-  PersonnelCompeteDetail({this.monthScore,this.totalWarning,this.totalScore,this.monthWarning,this.p,this.absent});
+
+  PersonnelCompeteDetail(
+      {this.monthScore,
+      this.totalWarning,
+      this.totalScore,
+      this.monthWarning,
+      this.p,
+      this.absent});
 }

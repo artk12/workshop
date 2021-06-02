@@ -6,7 +6,8 @@ class CutterDrawerMenu extends StatelessWidget {
   final SuperUser user;
   final GlobalKey<ScaffoldState> scaffoldKey;
   final PageController pageController;
-  CutterDrawerMenu({this.scaffoldKey,this.user,this.pageController});
+
+  CutterDrawerMenu({this.scaffoldKey, this.user, this.pageController});
 
   @override
   Widget build(BuildContext context) {
@@ -24,8 +25,7 @@ class CutterDrawerMenu extends StatelessWidget {
             decoration: BoxDecoration(
               image: DecorationImage(
                 fit: BoxFit.contain,
-                image: NetworkImage(
-                    MyRequest.baseUrl + '/' + user.profile),
+                image: NetworkImage(MyRequest.baseUrl + '/' + user.profile),
               ),
             ),
             child: Padding(
@@ -39,9 +39,7 @@ class CutterDrawerMenu extends StatelessWidget {
                     style: theme.textTheme.headline2.copyWith(
                       color: Colors.black.withOpacity(0.7),
                       fontSize: 14,
-                      shadows: [
-                        Shadow(color: Colors.black, blurRadius: 3)
-                      ],
+                      shadows: [Shadow(color: Colors.black, blurRadius: 3)],
                     ),
                   ),
                   SizedBox(
@@ -66,8 +64,7 @@ class CutterDrawerMenu extends StatelessWidget {
             onTap: () {
               scaffoldKey.currentState.openEndDrawer();
               pageController.animateToPage(1,
-                  duration: Duration(milliseconds: 250),
-                  curve: Curves.easeIn);
+                  duration: Duration(milliseconds: 250), curve: Curves.easeIn);
             },
           ),
         ],

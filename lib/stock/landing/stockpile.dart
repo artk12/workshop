@@ -12,44 +12,53 @@ import 'package:workshop/stock/loading_page.dart';
 
 class StockPile extends StatelessWidget {
   final SuperUser user;
+
   StockPile({this.user});
+
   @override
   Widget build(BuildContext context) {
     RefreshProvider refreshProvider = Provider.of<RefreshProvider>(context);
 
-    return user == null? LoadingPage():FutureBuilder(
-      future: refreshProvider.items,
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          List<Item> items = snapshot.data;
-          return FutureBuilder(
-            future: refreshProvider.fabrics,
+    return user == null
+        ? LoadingPage()
+        : FutureBuilder(
+            future: refreshProvider.items,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                List<Fabric> fabrics = snapshot.data;
+                List<Item> items = snapshot.data;
                 return FutureBuilder(
-                  future: refreshProvider.fabricLogs,
+                  future: refreshProvider.fabrics,
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
-                      List<FabricLog> fabricLogs = snapshot.data;
+                      List<Fabric> fabrics = snapshot.data;
                       return FutureBuilder(
-                        future: refreshProvider.itemLogs,
+                        future: refreshProvider.fabricLogs,
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
-                            List<ItemLog> itemLogs = snapshot.data;
+                            List<FabricLog> fabricLogs = snapshot.data;
                             return FutureBuilder(
-                              future: refreshProvider.messages,
+                              future: refreshProvider.itemLogs,
                               builder: (context, snapshot) {
                                 if (snapshot.hasData) {
-                                  List<Message> messages = snapshot.data;
-                                  return StockLandingPage(
-                                    refreshProvider: refreshProvider,
-                                    fabricLogs: fabricLogs,
-                                    fabrics: fabrics,
-                                    itemLogs: itemLogs,
-                                    items: items,
-                                    messages: messages,
-                                    user: user,
+                                  List<ItemLog> itemLogs = snapshot.data;
+                                  return FutureBuilder(
+                                    future: refreshProvider.messages,
+                                    builder: (context, snapshot) {
+                                      if (snapshot.hasData) {
+                                        List<Message> messages = snapshot.data;
+                                        return StockLandingPage(
+                                          refreshProvider: refreshProvider,
+                                          fabricLogs: fabricLogs,
+                                          fabrics: fabrics,
+                                          itemLogs: itemLogs,
+                                          items: items,
+                                          messages: messages,
+                                          user: user,
+                                        );
+                                      } else {
+                                        return LoadingPage();
+                                      }
+                                    },
                                   );
                                 } else {
                                   return LoadingPage();
@@ -71,11 +80,6 @@ class StockPile extends StatelessWidget {
               }
             },
           );
-        } else {
-          return LoadingPage();
-        }
-      },
-    );
     // return MultiProvider(
     //   providers: [
     //     FutureProvider.value(value: MyList.getItems()),

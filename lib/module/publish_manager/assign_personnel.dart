@@ -16,6 +16,7 @@ class AssignPersonnel {
   String assignDateTime;
   String score;
   String remainingTime;
+
   AssignPersonnel(
       {this.id,
       this.time,
@@ -33,10 +34,11 @@ class AssignPersonnel {
       this.currentTask,
       this.totalTask});
 
-    set totalTaskSetter(String total){
-      this.totalTask = total;
-    }
-  set currentTaskSetter(String current){
+  set totalTaskSetter(String total) {
+    this.totalTask = total;
+  }
+
+  set currentTaskSetter(String current) {
     this.currentTask = current;
   }
 

@@ -19,8 +19,13 @@ class StockDashboardPage extends StatelessWidget {
   final PageController pageController;
   final List<Fabric> fabrics;
   final List<Message> messages;
+
   StockDashboardPage(
-      {this.items, this.pageController, this.itemLogs, this.fabrics,this.messages});
+      {this.items,
+      this.pageController,
+      this.itemLogs,
+      this.fabrics,
+      this.messages});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +34,7 @@ class StockDashboardPage extends StatelessWidget {
     List<AllItem> allItems = CalculateStock.mergeFabricAndItem(items, fabrics);
     CalculateStock.sortAllItem(allItems);
 
-    Widget title(String title, String icon,Function() onPress) {
+    Widget title(String title, String icon, Function() onPress) {
       return GestureDetector(
         onTap: onPress,
         child: Row(
@@ -49,10 +54,7 @@ class StockDashboardPage extends StatelessWidget {
                 ),
               ),
               margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-              child: Text(
-                title,
-                style: theme.textTheme.headline2
-              ),
+              child: Text(title, style: theme.textTheme.headline2),
             ),
           ],
         ),
@@ -74,7 +76,7 @@ class StockDashboardPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    title('پیام', 'l',() {}),
+                    title('پیام', 'l', () {}),
                     SizedBox(
                       height: 2,
                     ),
@@ -82,7 +84,8 @@ class StockDashboardPage extends StatelessWidget {
                       child: ListView.builder(
                           scrollDirection: Axis.horizontal,
                           itemCount: messages.length,
-                          itemBuilder: (context, index) => MessageCard(message:messages[index])),
+                          itemBuilder: (context, index) =>
+                              MessageCard(message: messages[index])),
                     ),
                   ],
                 ),
@@ -100,7 +103,8 @@ class StockDashboardPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     title(
-                      'انبار','h',
+                      'انبار',
+                      'h',
                       () {
                         pageController.animateToPage(1,
                             curve: Curves.easeIn,
@@ -145,7 +149,7 @@ class StockDashboardPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    title('هشدارها','f', () {}),
+                    title('هشدارها', 'f', () {}),
                     SizedBox(
                       height: 2,
                     ),
@@ -181,7 +185,7 @@ class StockDashboardPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    title('ورودی و خروجی ها', 'k',() {}),
+                    title('ورودی و خروجی ها', 'k', () {}),
                     SizedBox(
                       height: 2,
                     ),

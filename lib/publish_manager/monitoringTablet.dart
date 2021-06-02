@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:workshop/bloc/publishManager/timer_controller.dart';
@@ -16,7 +15,13 @@ class MonitoringTablet extends StatelessWidget {
   final TimerStreamer tasks;
   final PersonnelLogProvider personnelLogProvider;
 
-  MonitoringTablet({this.timerControllerProvider,this.itemWidth,this.itemHeight,this.personnel,this.tasks,this.personnelLogProvider});
+  MonitoringTablet(
+      {this.timerControllerProvider,
+      this.itemWidth,
+      this.itemHeight,
+      this.personnel,
+      this.tasks,
+      this.personnelLogProvider});
 
   @override
   Widget build(BuildContext context) {
@@ -24,23 +29,26 @@ class MonitoringTablet extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-            flex: 1,
-            child:ChangeNotifierProvider(
-              create: (_)=>personnelLogProvider,
-              child: PersonnelLogTablet(style: style,personnelLogProvider: personnelLogProvider,),
+          flex: 1,
+          child: ChangeNotifierProvider(
+            create: (_) => personnelLogProvider,
+            child: PersonnelLogTablet(
+              style: style,
+              personnelLogProvider: personnelLogProvider,
             ),
+          ),
         ),
         Expanded(
-         flex: 3,
-         child:ChangeNotifierProvider(
-           create: (_)=>timerControllerProvider,
-           child: MonitoringMobilePage(
-             personnel: personnel,
-             itemWidth:itemWidth,
-             itemHeight:itemHeight,
-             timerStreamer: tasks,
-           ),
-         ),
+          flex: 3,
+          child: ChangeNotifierProvider(
+            create: (_) => timerControllerProvider,
+            child: MonitoringMobilePage(
+              personnel: personnel,
+              itemWidth: itemWidth,
+              itemHeight: itemHeight,
+              timerStreamer: tasks,
+            ),
+          ),
         ),
       ],
     );

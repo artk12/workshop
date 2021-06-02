@@ -10,19 +10,22 @@ import 'package:workshop/style/theme/show_snackbar.dart';
 
 class TimerStreamer {
   List<MonitorItemController> monitorItemController = [];
+
   TimerStreamer({this.monitorItemController});
 
-  void pauseAll(BuildContext context,TimerControllerProvider p) async {
+  void pauseAll(BuildContext context, TimerControllerProvider p) async {
     List<Map> mapList = [];
     String dateTime = DateTime.now().toString().substring(0, 19);
     monitorItemController.forEach((element) {
-      TimerControllerProviderState t = p.timerControllerProviderState.firstWhere((item) => item.id == element.startAssign.assignPersonnel.id);
+      TimerControllerProviderState t = p.timerControllerProviderState
+          .firstWhere(
+              (item) => item.id == element.startAssign.assignPersonnel.id);
       if (t.pause == false) {
         Map<String, String> map = {};
-        int remainingTime ;
-        try{
-          remainingTime = t.x -1;
-        }catch(e){
+        int remainingTime;
+        try {
+          remainingTime = t.x - 1;
+        } catch (e) {
           remainingTime = 0;
         }
         double level = 0;
@@ -35,7 +38,9 @@ class TimerStreamer {
         }
 
         double currentScore = remainingTime * level;
-        double score = (double.parse(element.startAssign.assignPersonnel.time) * level) - currentScore;
+        double score =
+            (double.parse(element.startAssign.assignPersonnel.time) * level) -
+                currentScore;
         print(remainingTime);
         map['play'] = '0';
         map['remainingTime'] = remainingTime.toString();
@@ -46,30 +51,32 @@ class TimerStreamer {
         mapList.add(map);
       }
     });
-    if(mapList.isNotEmpty){
+    if (mapList.isNotEmpty) {
       String json = jsonEncode(mapList);
       print(json);
       MyShowSnackBar.showSnackBar(context, 'کمی صبر کنید...');
       String body = await MyRequest.pauseAllRequest(json);
       print(body);
-      if(body.trim().contains('OK') && body != 'not ok'){
+      if (body.trim().contains('OK') && body != 'not ok') {
         print('here');
         MyShowSnackBar.hideSnackBar(context);
         p.pauseAll();
-      }else{
-        MyShowSnackBar.showSnackBar(context, "لطفا وضعیت اینترنت خودرا چک کنید.");
+      } else {
+        MyShowSnackBar.showSnackBar(
+            context, "لطفا وضعیت اینترنت خودرا چک کنید.");
       }
     }
   }
 
-  void playAll(TimerControllerProvider p,BuildContext context) async{
+  void playAll(TimerControllerProvider p, BuildContext context) async {
     MyShowSnackBar.showSnackBar(context, "کمی صبرکنید...");
     String query = Update.playAllMonitorCard();
-    String res = await MyRequest.simpleQueryRequest('stockpile/runQuery.php', query);
-    if(res != "not ok"){
+    String res =
+        await MyRequest.simpleQueryRequest('stockpile/runQuery.php', query);
+    if (res != "not ok") {
       MyShowSnackBar.hideSnackBar(context);
       p.playAll();
-    }else{
+    } else {
       MyShowSnackBar.showSnackBar(context, "لطفا وضعیت اینترنت خودرا چک کنید.");
     }
   }
@@ -79,6 +86,7 @@ class MonitorItemController {
   StartAssign startAssign;
   TimerPersonnelCubit timerPersonnelCubit;
   bool pause;
+
   MonitorItemController(
       {this.timerPersonnelCubit, this.startAssign, this.pause = false}) {
     if (timerPersonnelCubit == null) {

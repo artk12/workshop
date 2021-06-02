@@ -29,7 +29,8 @@ class FakeAssignmentTask {
   String amateurTime;
   String internTime;
 
-  FakeAssignmentTask(int number, String internTime, String amateurTime,String expertTime,String name,String cutCode) {
+  FakeAssignmentTask(int number, String internTime, String amateurTime,
+      String expertTime, String name, String cutCode) {
     this.number = number;
     this.name = name;
     this.expertTime = expertTime;
@@ -38,16 +39,23 @@ class FakeAssignmentTask {
     this.cutCode = cutCode;
   }
 
-  static List<AssignmentTask> toOriginal(List<FakeAssignmentTask> a){
+  static List<AssignmentTask> toOriginal(List<FakeAssignmentTask> a) {
     List<AssignmentTask> myList = [];
     a.forEach((element) {
-      myList.add(AssignmentTask(element.number, element.internTime, element.amateurTime, element.expertTime, element.name, element.cutCode));
+      myList.add(AssignmentTask(
+          element.number,
+          element.internTime,
+          element.amateurTime,
+          element.expertTime,
+          element.name,
+          element.cutCode));
     });
     return myList;
   }
 
-  static FakeAssignmentTask addOriginalToFake(AssignmentTask a){
-    return FakeAssignmentTask(a.number, a.internTime, a.amateurTime, a.expertTime, a.name, a.cutCode);
+  static FakeAssignmentTask addOriginalToFake(AssignmentTask a) {
+    return FakeAssignmentTask(
+        a.number, a.internTime, a.amateurTime, a.expertTime, a.name, a.cutCode);
   }
 }
 
@@ -59,7 +67,8 @@ class AssignmentTask {
   String amateurTime;
   String internTime;
 
-  AssignmentTask(int number, String internTime, String amateurTime,String expertTime,String name,String cutCode) {
+  AssignmentTask(int number, String internTime, String amateurTime,
+      String expertTime, String name, String cutCode) {
     this.number = number;
     this.name = name;
     this.expertTime = expertTime;
@@ -69,11 +78,13 @@ class AssignmentTask {
   }
 }
 
-class AssignTaskPersonnel{
+class AssignTaskPersonnel {
   int number;
   int time;
   String name;
   Personnel personnel;
   String cutCode;
-  AssignTaskPersonnel({this.time,this.name,this.number,this.personnel,this.cutCode});
+
+  AssignTaskPersonnel(
+      {this.time, this.name, this.number, this.personnel, this.cutCode});
 }

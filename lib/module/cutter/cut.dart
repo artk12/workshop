@@ -36,19 +36,18 @@ class Cut {
 
   factory Cut.fromJson(Map map) {
     return Cut(
-      id: map['id'],
-      height: map['height'],
-      pieces: map['pieces'],
-      day: map['day'],
-      description: map['description'],
-      month: map['month'],
-      year: map['year'],
-      realUsage: map['real_usage'],
-      totalGoods: map['total_goods'],
-      cutCode: map['cut_code'],
-      usage: map['all_usage'],
-      fabric: Fabric.fromJson(jsonDecode(map['fabric'])),
-      project: Project.fromJson(jsonDecode(map['project']))
-    );
+        id: map['id'],
+        height: map['height'],
+        pieces: map['pieces'],
+        day: map['day'],
+        description: map['description'],
+        month: map['month'],
+        year: map['year'],
+        realUsage: map['real_usage'],
+        totalGoods: map['total_goods'],
+        cutCode: map['cut_code'],
+        usage: map['all_usage'],
+        fabric: Fabric.fromJson(jsonDecode(map['fabric'])),
+        project: Project.fromJson(jsonDecode(map['project'])));
   }
 }

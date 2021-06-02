@@ -12,7 +12,6 @@ import 'package:workshop/style/app_bar/my_appbar.dart';
 import 'package:workshop/style/component/my_icon_button.dart';
 import 'package:workshop/style/theme/my_icons.dart';
 
-
 class PersonnelLandingPage extends StatelessWidget {
   final User user;
   final List<Message> messages;
@@ -20,7 +19,12 @@ class PersonnelLandingPage extends StatelessWidget {
   final ScoreCubit scoreCubit;
   final GlobalKey<ScaffoldState> scaffoldKey;
 
-  PersonnelLandingPage({this.user,this.messages,this.provider,this.scoreCubit,this.scaffoldKey});
+  PersonnelLandingPage(
+      {this.user,
+      this.messages,
+      this.provider,
+      this.scoreCubit,
+      this.scaffoldKey});
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +36,7 @@ class PersonnelLandingPage extends StatelessWidget {
       drawer: PersonnelDrawer(
         scaffoldKey: scaffoldKey,
         user: user,
-        scoreCubit:scoreCubit,
+        scoreCubit: scoreCubit,
       ),
       body: SafeArea(
         child: Column(
@@ -57,7 +61,7 @@ class PersonnelLandingPage extends StatelessWidget {
                 Expanded(
                   flex: 2,
                   child: TextButton(
-                    onPressed: (){},
+                    onPressed: () {},
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       mainAxisSize: MainAxisSize.min,
@@ -68,7 +72,10 @@ class PersonnelLandingPage extends StatelessWidget {
                         SizedBox(
                           height: 5,
                         ),
-                        Text('گزارش',style: Theme.of(context).textTheme.bodyText2,),
+                        Text(
+                          'گزارش',
+                          style: Theme.of(context).textTheme.bodyText2,
+                        ),
                       ],
                     ),
                   ),
@@ -80,18 +87,29 @@ class PersonnelLandingPage extends StatelessWidget {
                 Expanded(
                   flex: 2,
                   child: TextButton(
-                    onPressed: (){
-                    showDialog(barrierColor: Colors.black12,context: context, builder: (BuildContext context)=>DialogMessage(messages: messages,));
+                    onPressed: () {
+                      showDialog(
+                          barrierColor: Colors.black12,
+                          context: context,
+                          builder: (BuildContext context) => DialogMessage(
+                                messages: messages,
+                              ));
                     },
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Container(child: Image.asset('asset/images/message_personnel.png'),),
+                        Container(
+                          child:
+                              Image.asset('asset/images/message_personnel.png'),
+                        ),
                         SizedBox(
                           height: 5,
                         ),
-                        Text('پیامها',style: Theme.of(context).textTheme.bodyText2,),
+                        Text(
+                          'پیامها',
+                          style: Theme.of(context).textTheme.bodyText2,
+                        ),
                       ],
                     ),
                   ),
@@ -100,7 +118,7 @@ class PersonnelLandingPage extends StatelessWidget {
                 Expanded(
                   flex: 2,
                   child: TextButton(
-                    onPressed: (){},
+                    onPressed: () {},
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       mainAxisSize: MainAxisSize.min,
@@ -135,7 +153,10 @@ class PersonnelLandingPage extends StatelessWidget {
                         SizedBox(
                           height: 5,
                         ),
-                        Text('اعلانها',style: Theme.of(context).textTheme.bodyText2,),
+                        Text(
+                          'اعلانها',
+                          style: Theme.of(context).textTheme.bodyText2,
+                        ),
                       ],
                     ),
                   ),
@@ -149,7 +170,10 @@ class PersonnelLandingPage extends StatelessWidget {
             Expanded(
               child: ChangeNotifierProvider.value(
                 value: provider,
-                child: MyTaskList(user:user,scoreCubit: scoreCubit,),
+                child: MyTaskList(
+                  user: user,
+                  scoreCubit: scoreCubit,
+                ),
               ),
             ),
           ],

@@ -7,17 +7,23 @@ import 'package:workshop/request/mylist.dart';
 
 class Cutter extends StatelessWidget {
   final SuperUser user;
+
   Cutter({this.user});
+
   @override
   Widget build(BuildContext context) {
     // return CutterPage();
-    return MultiProvider(providers:[
-      FutureProvider(create: (_)=>MyList().getCutterMessages()),
-      FutureProvider(create: (_)=>MyList().getCutList()),
-    ],
+    return MultiProvider(
+      providers: [
+        FutureProvider(create: (_) => MyList().getCutterMessages()),
+        FutureProvider(create: (_) => MyList().getCutList()),
+        FutureProvider(
+          create: (_) => MyList.getAllStyleCode(),
+        )
+      ],
       child: ChangeNotifierProvider.value(
         value: RefreshProvider(),
-        child: CutterLanding(user:user),
+        child: CutterLanding(user: user),
       ),
     );
   }

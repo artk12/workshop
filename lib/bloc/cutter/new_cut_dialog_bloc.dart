@@ -1,14 +1,14 @@
-
 import 'package:bloc/bloc.dart';
 
-class NewCutDialogCubit extends Cubit<NewCutDialogState>{
+class NewCutDialogCubit extends Cubit<NewCutDialogState> {
   NewCutDialogCubit(NewCutDialogState state) : super(state);
 
-  void changeMessage(String message) => emit(NewCutDialogState(message: message));
+  void changeMessage(String message) =>
+      emit(NewCutDialogState(message: message));
 }
 
-
-class NewCutDialogState{
+class NewCutDialogState {
   final String message;
-  NewCutDialogState({this.message=''});
+
+  NewCutDialogState({this.message = ''});
 }

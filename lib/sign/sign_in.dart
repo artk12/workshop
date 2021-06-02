@@ -8,7 +8,6 @@ import 'package:workshop/style/component/default_textfield.dart';
 import 'package:workshop/style/theme/show_snackbar.dart';
 
 class SignIn extends StatefulWidget {
-
   @override
   _SignInState createState() => _SignInState();
 }
@@ -16,6 +15,7 @@ class SignIn extends StatefulWidget {
 class _SignInState extends State<SignIn> {
   TextEditingController user = new TextEditingController();
   TextEditingController pass = new TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -54,10 +54,9 @@ class _SignInState extends State<SignIn> {
                   ConstrainedBox(
                     constraints: BoxConstraints(maxWidth: 350),
                     child: DefaultTextField(
-                      textEditingController: pass,
-                      label: "رمز عبور",
-                      textInputType: TextInputType.number
-                    ),
+                        textEditingController: pass,
+                        label: "رمز عبور",
+                        textInputType: TextInputType.number),
                   ),
                   SizedBox(
                     height: 30,
@@ -67,13 +66,16 @@ class _SignInState extends State<SignIn> {
                     height: 50,
                     width: 90,
                     onPressed: () async {
-                      MyShowSnackBar.showSnackBar(context, "لطفا کمی صبر کنید...");
-                      dynamic res = await MyRequest.getUser(user.text.toString(), pass.text.toString());
+                      MyShowSnackBar.showSnackBar(
+                          context, "لطفا کمی صبر کنید...");
+                      dynamic res = await MyRequest.getUser(
+                          user.text.toString(), pass.text.toString());
                       // dynamic res = await MyRequest.getUser("09176468835", "1243");
                       print(res);
-                      if(res == "not ok"){
-                        MyShowSnackBar.showSnackBar(context, "خطا در برقراری اینترنت");
-                      }else if (res == "wrong" || res == null) {
+                      if (res == "not ok") {
+                        MyShowSnackBar.showSnackBar(
+                            context, "خطا در برقراری اینترنت");
+                      } else if (res == "wrong" || res == null) {
                         MyShowSnackBar.showSnackBar(
                             context, "رمز عبور یا شماره تماس شما اشتباه است.");
                       } else if (res is User || res is SuperUser) {

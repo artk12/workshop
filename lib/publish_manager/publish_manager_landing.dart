@@ -14,6 +14,7 @@ import 'package:workshop/style/component/my_icon_button.dart';
 import 'package:workshop/style/component/publish_manager/timeControllerProvider.dart';
 import 'package:workshop/style/device_detector.dart';
 import 'package:workshop/style/theme/my_icons.dart';
+
 import 'dashboard.dart';
 
 class PublishManagerLanding extends StatelessWidget {
@@ -34,6 +35,7 @@ class PublishManagerLanding extends StatelessWidget {
     this.personnelLogProvider,
     this.timerControllerProvider,
   });
+
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
@@ -193,6 +195,7 @@ class MonitorCheck extends StatefulWidget {
 
 class _MonitorCheckState extends State<MonitorCheck> {
   Widget w;
+
   @override
   void initState() {
     w = ChangeNotifierProvider(

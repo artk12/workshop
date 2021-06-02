@@ -11,70 +11,70 @@ import 'package:workshop/style/theme/textstyle.dart';
 import 'package:workshop/time_format.dart';
 
 class AssignTaskDialog extends StatelessWidget {
-
   final AssignmentTask alignmentTask;
   final Personnel personnel;
 
-  AssignTaskDialog({this.alignmentTask,this.personnel});
+  AssignTaskDialog({this.alignmentTask, this.personnel});
 
   Widget build(BuildContext context) {
     IgnoreButtonCubit ignoreButtonCubit =
         IgnoreButtonCubit(IgnoreButtonState(ignore: false));
-    DialogMessageCubit dialogTimeCubit = new DialogMessageCubit(DialogMessageState(message: '00:00:00'));
-    DialogMessageCubit dialogMessageCubit = new DialogMessageCubit(DialogMessageState(message: ''));
+    DialogMessageCubit dialogTimeCubit =
+        new DialogMessageCubit(DialogMessageState(message: '00:00:00'));
+    DialogMessageCubit dialogMessageCubit =
+        new DialogMessageCubit(DialogMessageState(message: ''));
 
     ThemeData theme = Theme.of(context);
-    int time ;
+    int time;
     int quantity = 0;
     bool totalTime = false;
     Duration tpu = Duration();
 
-    if(personnel.level == "کارآموز"){
+    if (personnel.level == "کارآموز") {
       time = int.parse(alignmentTask.internTime);
-    }else if(personnel.level == "تازه کار"){
+    } else if (personnel.level == "تازه کار") {
       time = int.parse(alignmentTask.amateurTime);
-    }else if(personnel.level == "حرفه ای"){
+    } else if (personnel.level == "حرفه ای") {
       time = int.parse(alignmentTask.expertTime);
     }
 
-    void onChangeQuantity(String val){
-
-      if(val.isNotEmpty){
+    void onChangeQuantity(String val) {
+      if (val.isNotEmpty) {
         quantity = int.parse(val);
-        if(!totalTime){
+        if (!totalTime) {
           tpu = Duration(seconds: quantity * time);
           String message = TimeFormat.timeFormatFromDuration(tpu);
           dialogTimeCubit.changeMessage(message);
         }
-      }else{
+      } else {
         quantity = 0;
-        if(!totalTime){
+        if (!totalTime) {
           tpu = Duration(seconds: 0);
           dialogTimeCubit.changeMessage("00:00:00");
         }
       }
     }
-    void onChangeTotalTime(String val){
 
-      if(val.isNotEmpty){
+    void onChangeTotalTime(String val) {
+      if (val.isNotEmpty) {
         totalTime = true;
         tpu = Duration(minutes: int.parse(val));
         String message = TimeFormat.timeFormatFromDuration(tpu);
         dialogTimeCubit.changeMessage(message);
-      }else{
+      } else {
         totalTime = false;
-        if(quantity > 0){
+        if (quantity > 0) {
           tpu = Duration(seconds: quantity * time);
           String message = TimeFormat.timeFormatFromDuration(tpu);
           dialogTimeCubit.changeMessage(message);
-        }else{
+        } else {
           tpu = Duration(seconds: 0);
           dialogTimeCubit.changeMessage("00:00:00");
         }
       }
     }
 
-    void onChangeTime(String val){
+    void onChangeTime(String val) {
       dialogTimeCubit.changeMessage(val);
     }
 
@@ -115,7 +115,8 @@ class AssignTaskDialog extends StatelessWidget {
                             textInputType: TextInputType.number,
                             onChange: onChangeQuantity,
                           ),
-                        ),Padding(
+                        ),
+                        Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: DefaultTextField(
                             label: 'زمان کل(دقیقه)',
@@ -131,8 +132,10 @@ class AssignTaskDialog extends StatelessWidget {
                       child: Center(
                         child: BlocBuilder(
                           cubit: dialogTimeCubit,
-                          builder:(BuildContext context,DialogMessageState state) => Text(
-                            "زمان کل"+"\n\n${state.message}",
+                          builder: (BuildContext context,
+                                  DialogMessageState state) =>
+                              Text(
+                            "زمان کل" + "\n\n${state.message}",
                             textAlign: TextAlign.center,
                           ),
                         ),
@@ -144,7 +147,10 @@ class AssignTaskDialog extends StatelessWidget {
               SizedBox(
                 height: 10,
               ),
-              BlocBuilder(cubit: dialogMessageCubit,builder: (BuildContext c,DialogMessageState state)=>Text(state.message)),
+              BlocBuilder(
+                  cubit: dialogMessageCubit,
+                  builder: (BuildContext c, DialogMessageState state) =>
+                      Text(state.message)),
               SizedBox(
                 height: 10,
               ),
@@ -169,10 +175,12 @@ class AssignTaskDialog extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(horizontal: 8.0),
                           child: TextButton(
                             style: ButtonStyle(
-                              foregroundColor: MaterialStateProperty.resolveWith(
+                              foregroundColor:
+                                  MaterialStateProperty.resolveWith(
                                 (states) => Colors.green.withOpacity(0.4),
                               ),
-                              backgroundColor: MaterialStateProperty.resolveWith(
+                              backgroundColor:
+                                  MaterialStateProperty.resolveWith(
                                 (states) => Colors.green.withOpacity(0.4),
                               ),
                             ),
@@ -180,21 +188,31 @@ class AssignTaskDialog extends StatelessWidget {
                               padding: const EdgeInsets.all(8.0),
                               child: Text(
                                 MyIcons.CHECK,
-                                style:
-                                    MyTextStyle.iconStyle.copyWith(fontSize: 30),
+                                style: MyTextStyle.iconStyle
+                                    .copyWith(fontSize: 30),
                               ),
                             ),
-                            onPressed: (){
-                              if(quantity == 0){
-                                dialogMessageCubit.changeMessage("هیچ مقداری وارد نشده است.");
-                              } else if(quantity > alignmentTask.number){
-                                dialogMessageCubit.changeMessage("تعداد وارد شده از تعداد باقیمانده بیشتر است.");
-                              }else{
-                                Duration d = TimeFormat.stringToDuration(dialogTimeCubit.state.message);
+                            onPressed: () {
+                              if (quantity == 0) {
+                                dialogMessageCubit
+                                    .changeMessage("هیچ مقداری وارد نشده است.");
+                              } else if (quantity > alignmentTask.number) {
+                                dialogMessageCubit.changeMessage(
+                                    "تعداد وارد شده از تعداد باقیمانده بیشتر است.");
+                              } else {
+                                Duration d = TimeFormat.stringToDuration(
+                                    dialogTimeCubit.state.message);
                                 int time = d.inSeconds;
                                 String name = alignmentTask.name;
                                 int number = quantity;
-                                Navigator.pop(context,AssignTaskPersonnel(name: name,number: number,personnel: personnel,time: time,cutCode: alignmentTask.cutCode));
+                                Navigator.pop(
+                                    context,
+                                    AssignTaskPersonnel(
+                                        name: name,
+                                        number: number,
+                                        personnel: personnel,
+                                        time: time,
+                                        cutCode: alignmentTask.cutCode));
                               }
                             },
                           ),
@@ -206,7 +224,8 @@ class AssignTaskDialog extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(horizontal: 8.0),
                           child: TextButton(
                             style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.resolveWith(
+                              backgroundColor:
+                                  MaterialStateProperty.resolveWith(
                                 (states) => Colors.red.withOpacity(0.4),
                               ),
                             ),
@@ -214,8 +233,8 @@ class AssignTaskDialog extends StatelessWidget {
                               padding: const EdgeInsets.all(8.0),
                               child: Text(
                                 MyIcons.CANCEL,
-                                style:
-                                    MyTextStyle.iconStyle.copyWith(fontSize: 30),
+                                style: MyTextStyle.iconStyle
+                                    .copyWith(fontSize: 30),
                               ),
                             ),
                             onPressed: () {

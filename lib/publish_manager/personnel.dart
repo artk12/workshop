@@ -14,6 +14,7 @@ import 'package:workshop/style/theme/my_icons.dart';
 import 'package:workshop/style/theme/textstyle.dart';
 
 final _sigInFormKey = GlobalKey<FormState>();
+
 class PersonnelPage extends StatefulWidget {
   final List<Personnel> personnel;
   final RefreshProvider refreshProvider;
@@ -36,67 +37,78 @@ class _PersonnelPageState extends State<PersonnelPage> {
   PersonnelFilterCubit personnelFilterCubit;
   SingleDropDownItemCubit categoryCubit;
   List<PersonnelCompeteDetail> personnelCompleteDetail = [];
+
   // final _formKey = GlobalKey<FormState>();
   DateTime now = DateTime.now();
-  List<String> category = [
-    'امتیاز',
-    'هشدار',
-    'حرفه ای',
-    'تازه کار',
-    'کارآموز'
-  ];
+  List<String> category = ['امتیاز', 'هشدار', 'حرفه ای', 'تازه کار', 'کارآموز'];
 
   @override
   void initState() {
-    categoryCubit = new SingleDropDownItemCubit(SingleDropDownItemState(value: 'امتیاز'));
+    categoryCubit =
+        new SingleDropDownItemCubit(SingleDropDownItemState(value: 'امتیاز'));
     widget.personnel.forEach((p) {
       UserScore userScore;
       UserWarning userWarning;
       int monthAbsent = 0;
-      try{
-        monthAbsent = widget.absents.where((element) => element.id == p.id).toList().length;
-      }catch(e){}
-      try{
-        userScore = widget.userScores.firstWhere((element) => element.userId == p.id);
-      }catch(e){
-        userScore = UserScore(id: '0',scores: [],userId: '0');
+      try {
+        monthAbsent = widget.absents
+            .where((element) => element.id == p.id)
+            .toList()
+            .length;
+      } catch (e) {}
+      try {
+        userScore =
+            widget.userScores.firstWhere((element) => element.userId == p.id);
+      } catch (e) {
+        userScore = UserScore(id: '0', scores: [], userId: '0');
       }
-      try{
-        userWarning = widget.userWarnings.firstWhere((element) => element.userId == p.id);
-      }catch(e){
-        userWarning = UserWarning(id: '0',warnings: [],userId: '0');
+      try {
+        userWarning =
+            widget.userWarnings.firstWhere((element) => element.userId == p.id);
+      } catch (e) {
+        userWarning = UserWarning(id: '0', warnings: [], userId: '0');
       }
       double totalScore = 0;
       double monthScore = 0;
       int totalWarning = 0;
       int monthWarning = 0;
 
-      if(userScore.id != '0'){
+      if (userScore.id != '0') {
         userScore.scores.forEach((element) {
-          totalScore +=element.score;
-          if(element.dateTime.year == now.year && element.dateTime.month == now.month ){
+          totalScore += element.score;
+          if (element.dateTime.year == now.year &&
+              element.dateTime.month == now.month) {
             monthScore += element.score;
           }
         });
       }
 
-      if(userWarning.id != '0'){
+      if (userWarning.id != '0') {
         userWarning.warnings.forEach((element) {
-          totalWarning +=element.warning;
-          if(element.dateTime.year == now.year && element.dateTime.month == now.month ){
+          totalWarning += element.warning;
+          if (element.dateTime.year == now.year &&
+              element.dateTime.month == now.month) {
             monthWarning += element.warning;
           }
         });
       }
-      personnelCompleteDetail.add(PersonnelCompeteDetail(absent: monthAbsent,p: p,monthScore: monthScore,monthWarning: monthWarning,totalScore: totalScore,totalWarning: totalWarning));
+      personnelCompleteDetail.add(PersonnelCompeteDetail(
+          absent: monthAbsent,
+          p: p,
+          monthScore: monthScore,
+          monthWarning: monthWarning,
+          totalScore: totalScore,
+          totalWarning: totalWarning));
     });
-    personnelCompleteDetail.sort((a,b)=> b.totalScore.compareTo(a.totalScore));
+    personnelCompleteDetail
+        .sort((a, b) => b.totalScore.compareTo(a.totalScore));
 
-    personnelFilterCubit = PersonnelFilterCubit(PersonnelFilterCubitState(filterList: personnelCompleteDetail,myList: personnelCompleteDetail));
-
+    personnelFilterCubit = PersonnelFilterCubit(PersonnelFilterCubitState(
+        filterList: personnelCompleteDetail, myList: personnelCompleteDetail));
 
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     // List<Personnel> staff = Provider.of<List<Personnel>>(context);
@@ -129,8 +141,8 @@ class _PersonnelPageState extends State<PersonnelPage> {
                             // autofocus: true,
                             decoration: InputDecoration(
                               hintText: 'جستجو...',
-                              hintStyle: theme.textTheme.bodyText1
-                                  .copyWith(color: Colors.white.withOpacity(0.5)),
+                              hintStyle: theme.textTheme.bodyText1.copyWith(
+                                  color: Colors.white.withOpacity(0.5)),
                               enabledBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(
                                     color: Colors.black.withOpacity(0.2),
@@ -178,8 +190,8 @@ class _PersonnelPageState extends State<PersonnelPage> {
                                   .where((element) => element == state.value)
                                   .first,
                               onChanged: (value) {
-                                  categoryCubit.changeItem(value);
-                                  personnelFilterCubit.filter(value);
+                                categoryCubit.changeItem(value);
+                                personnelFilterCubit.filter(value);
                               },
                             ),
                           ),
@@ -214,11 +226,15 @@ class _PersonnelPageState extends State<PersonnelPage> {
             Expanded(
               child: BlocBuilder(
                 cubit: personnelFilterCubit,
-                builder: (BuildContext context, PersonnelFilterCubitState state) => ListView.builder(
-                    itemCount:state.filterList.length,
-                    itemBuilder: (context, index) {
-                      return PersonnelCard(personnelCompeteDetail: state.filterList[index],);
-                    }),
+                builder:
+                    (BuildContext context, PersonnelFilterCubitState state) =>
+                        ListView.builder(
+                            itemCount: state.filterList.length,
+                            itemBuilder: (context, index) {
+                              return PersonnelCard(
+                                personnelCompeteDetail: state.filterList[index],
+                              );
+                            }),
               ),
             )
           ],

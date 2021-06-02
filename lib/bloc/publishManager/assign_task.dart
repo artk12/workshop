@@ -5,12 +5,13 @@ class AssignTaskCubit extends Cubit<AssignTaskState> {
   AssignTaskCubit(AssignTaskState state) : super(state);
   List<FakeAssignmentTask> assignTask = [];
 
-  void calculateUpdate(String cutCode, int number,String name) {
-    AssignmentTask s = state.assignTaskUpdate
-        .firstWhere((element) => element.cutCode == cutCode && element.name == name);
+  void calculateUpdate(String cutCode, int number, String name) {
+    AssignmentTask s = state.assignTaskUpdate.firstWhere(
+        (element) => element.cutCode == cutCode && element.name == name);
     int x = s.number - number;
     state.assignTaskUpdate
-        .firstWhere((element) => element.cutCode == cutCode && element.name == name)
+        .firstWhere(
+            (element) => element.cutCode == cutCode && element.name == name)
         .number = x;
     emit(AssignTaskState(assignTaskUpdate: state.assignTaskUpdate));
   }
@@ -25,9 +26,11 @@ class AssignTaskCubit extends Cubit<AssignTaskState> {
     emit(AssignTaskState(assignTaskUpdate: assignTaskUpdate));
   }
 
-  void updateTask(String cutCode, int number , String name) =>
-      calculateUpdate(cutCode, number,name);
+  void updateTask(String cutCode, int number, String name) =>
+      calculateUpdate(cutCode, number, name);
+
   void addTask(List<AssignmentTask> t) => calculateAddTask(t);
+
   void refresh() {
     emit(AssignTaskState(
         assignTaskUpdate: FakeAssignmentTask.toOriginal(assignTask)));
@@ -36,5 +39,6 @@ class AssignTaskCubit extends Cubit<AssignTaskState> {
 
 class AssignTaskState {
   final List<AssignmentTask> assignTaskUpdate;
+
   AssignTaskState({this.assignTaskUpdate});
 }

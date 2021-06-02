@@ -64,7 +64,7 @@ class MyRequest {
       if (response.statusCode != 200) {
         return 'not ok';
       }
-      print("body is :"+response.body);
+      print("body is :" + response.body);
       return response.body;
     } catch (e) {
       return 'not ok';
@@ -136,8 +136,8 @@ class MyRequest {
       now.add(Duration(days: 1));
     }
     print(json);
-    http.Response response = await http
-        .post(baseUrl + 'publish_manager/insertAssign.php', body: {
+    http.Response response =
+        await http.post(baseUrl + 'publish_manager/insertAssign.php', body: {
       'assignJson': json,
       'year': now.year.toString(),
       'month': now.month.toString(),

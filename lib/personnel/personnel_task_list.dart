@@ -8,6 +8,7 @@ import 'package:workshop/style/component/personnel/task_item.dart';
 class MyTaskList extends StatelessWidget {
   final User user;
   final ScoreCubit scoreCubit;
+
   MyTaskList({this.user, this.scoreCubit});
 
   @override
@@ -24,8 +25,13 @@ class MyTaskList extends StatelessWidget {
                         Theme.of(context).primaryColor),
                   ),
                 ),
-                SizedBox(height: 25,),
-                Text("لطقا کمی منتظر بمانید",style: Theme.of(context).textTheme.headline4,)
+                SizedBox(
+                  height: 25,
+                ),
+                Text(
+                  "لطقا کمی منتظر بمانید",
+                  style: Theme.of(context).textTheme.headline4,
+                )
               ],
             ),
           )

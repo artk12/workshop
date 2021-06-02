@@ -40,8 +40,9 @@ class TaskItemProvider extends ChangeNotifier {
 
   Color color = Colors.green.withOpacity(0.1);
   DateTime now;
+
   set taskSetter(List<AssignPersonnel> tasks) {
-    if(tasks != null){
+    if (tasks != null) {
       if (this.tasks.isEmpty) {
         this.tasks = tasks;
         tasks.forEach((element) {

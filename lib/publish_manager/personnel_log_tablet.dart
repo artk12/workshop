@@ -5,7 +5,9 @@ import 'package:workshop/provider/personnel_log_provider.dart';
 class PersonnelLogTablet extends StatelessWidget {
   final TextStyle style;
   final PersonnelLogProvider personnelLogProvider;
-  PersonnelLogTablet({this.style,this.personnelLogProvider});
+
+  PersonnelLogTablet({this.style, this.personnelLogProvider});
+
   @override
   Widget build(BuildContext context) {
     // List<AssignmentLog> assignmentLogs =
@@ -31,18 +33,12 @@ class PersonnelLogTablet extends StatelessWidget {
           String done;
           Color color;
           if (a.log == "1") {
-            text = a.personnelName +
-                " فعالیت " +
-                a.taskName +
-                " با کد برش ";
-                cutCode = a.cutCode;
+            text = a.personnelName + " فعالیت " + a.taskName + " با کد برش ";
+            cutCode = a.cutCode;
             done = " شروع کرد.";
             color = Colors.green.withOpacity(0.1);
           } else {
-            text = a.personnelName +
-                " فعالیت " +
-                a.taskName +
-                " با کد برش " ;
+            text = a.personnelName + " فعالیت " + a.taskName + " با کد برش ";
             cutCode = a.cutCode;
             done = " به اتمام رساند.";
             color = Colors.red.withOpacity(0.1);

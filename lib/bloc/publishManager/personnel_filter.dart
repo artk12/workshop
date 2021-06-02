@@ -18,15 +18,13 @@ class PersonnelFilterCubit extends Cubit<PersonnelFilterCubitState> {
       state.filterList = state.myList;
       state.filterList.sort((a, b) => b.totalScore.compareTo(a.totalScore));
       check = state.filterList;
-      emit(PersonnelFilterCubitState(
-          myList: state.myList, filterList: check));
+      emit(PersonnelFilterCubitState(myList: state.myList, filterList: check));
     } else if (filter == "هشدار") {
       List<PersonnelCompeteDetail> check = [];
       state.filterList = state.myList;
       state.filterList.sort((a, b) => b.totalWarning.compareTo(a.totalWarning));
       check = state.filterList;
-      emit(PersonnelFilterCubitState(
-          myList: state.myList, filterList: check));
+      emit(PersonnelFilterCubitState(myList: state.myList, filterList: check));
     } else if (filter == "حرفه ای") {
       emit(PersonnelFilterCubitState(
           myList: state.myList,
@@ -52,6 +50,7 @@ class PersonnelFilterCubit extends Cubit<PersonnelFilterCubitState> {
 class PersonnelFilterCubitState {
   List<PersonnelCompeteDetail> myList;
   List<PersonnelCompeteDetail> filterList;
+
   PersonnelFilterCubitState({this.myList, this.filterList});
 }
 /*

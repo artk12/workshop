@@ -23,7 +23,7 @@ class StockCategoryCubit extends Cubit<StockCategoryState> {
           .toList();
 
       currentList.forEach((element) {
-        if(element.fabric.log == "1"){
+        if (element.fabric.log == "1") {
           if (device == 'phone') {
             myList.add(FabricCardMobile(
               fabrics: state.getFabrics,
@@ -65,7 +65,7 @@ class StockCategoryCubit extends Cubit<StockCategoryState> {
 
     allItems.forEach((element) {
       if (element.category == "fabric") {
-        if(element.fabric.log == "1"){
+        if (element.fabric.log == "1") {
           if (device == 'phone') {
             myList.add(FabricCardMobile(
               fabrics: state.getFabrics,
@@ -125,7 +125,7 @@ class StockCategoryCubit extends Cubit<StockCategoryState> {
 
     allItems.forEach((element) {
       if (element.category == "fabric") {
-        if(element.fabric.log == "1"){
+        if (element.fabric.log == "1") {
           if (element.fabric.calite.contains(value)) {
             filterItems.add(element);
           }
@@ -141,7 +141,7 @@ class StockCategoryCubit extends Cubit<StockCategoryState> {
     if (device == "phone") {
       filterItems.forEach((element) {
         if (element.category == "fabric") {
-          if(element.fabric.log == "1"){
+          if (element.fabric.log == "1") {
             myList.add(FabricCardMobile(
               fabrics: state.getFabrics,
               fabric: element.fabric,
@@ -157,7 +157,7 @@ class StockCategoryCubit extends Cubit<StockCategoryState> {
     } else {
       filterItems.forEach((element) {
         if (element.category == "fabric") {
-          if(element.fabric.log == "1"){
+          if (element.fabric.log == "1") {
             myList.add(FabricCardTablet(
               fabrics: state.getFabrics,
               fabricLogs: state.fabricLogs,
@@ -177,10 +177,13 @@ class StockCategoryCubit extends Cubit<StockCategoryState> {
 
   void noFilter(List<AllItem> allItems, String device) =>
       emit(changeToNoFilter(allItems, device));
+
   void categoryFilter(List<AllItem> allItems, String category, String device) =>
       emit(changeCategory(allItems, category, device));
+
   void warningFilter(List<AllItem> allItems, String device) =>
       emit(changeToWarningFilter(allItems, device));
+
   void search(List<AllItem> allItems, String value, String device) =>
       emit(searchFilter(value, allItems, device));
 }
@@ -190,12 +193,14 @@ class StockCategoryState {
   List<Widget> myList;
   List<FabricLog> fabricLogs;
   List<ItemLog> itemLogs;
-  StockCategoryState({this.allItem, this.myList, this.fabricLogs, this.itemLogs});
+
+  StockCategoryState(
+      {this.allItem, this.myList, this.fabricLogs, this.itemLogs});
 
   List<Fabric> get getFabrics {
     List<Fabric> fabrics = [];
     allItem.forEach((element) {
-      if(element.category == 'fabric'){
+      if (element.category == 'fabric') {
         fabrics.add(element.fabric);
       }
     });

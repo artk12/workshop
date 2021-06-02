@@ -9,7 +9,7 @@ class TasksPage extends StatelessWidget {
   final RefreshProvider refreshProvider;
   final List<Task> tasks;
 
-  TasksPage({this.tasks,this.refreshProvider});
+  TasksPage({this.tasks, this.refreshProvider});
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +33,7 @@ class TasksPage extends StatelessWidget {
                     builder: (context) => AddNewTask(),
                     barrierColor: Colors.black54,
                   );
-                  if(t != null){
+                  if (t != null) {
                     tasks.add(t);
                     refreshProvider.refresh();
                   }
@@ -48,7 +48,13 @@ class TasksPage extends StatelessWidget {
               controller: new ScrollController(keepScrollOffset: false),
               shrinkWrap: true,
               scrollDirection: Axis.vertical,
-              children: List.generate(tasks.length, (index) => TaskCard(task:tasks[index],refreshProvider: refreshProvider,tasks: tasks,)),
+              children: List.generate(
+                  tasks.length,
+                  (index) => TaskCard(
+                        task: tasks[index],
+                        refreshProvider: refreshProvider,
+                        tasks: tasks,
+                      )),
             ),
           )
         ],

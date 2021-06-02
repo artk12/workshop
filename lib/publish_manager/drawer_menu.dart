@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:workshop/module/stockpile/message.dart';
 import 'package:workshop/module/stockpile/user.dart';
@@ -13,7 +12,13 @@ class DrawerMenu extends StatelessWidget {
   final List<Message> messages;
   final PublishManagerPageController streamPageController;
 
-  DrawerMenu({this.user,this.scaffoldKey,this.dashboardPageController,this.pageController,this.messages,this.streamPageController});
+  DrawerMenu(
+      {this.user,
+      this.scaffoldKey,
+      this.dashboardPageController,
+      this.pageController,
+      this.messages,
+      this.streamPageController});
 
   @override
   Widget build(BuildContext context) {
@@ -31,8 +36,7 @@ class DrawerMenu extends StatelessWidget {
             decoration: BoxDecoration(
               image: DecorationImage(
                 fit: BoxFit.contain,
-                image: NetworkImage(
-                    MyRequest.baseUrl + user.profile),
+                image: NetworkImage(MyRequest.baseUrl + user.profile),
               ),
             ),
             child: Padding(
@@ -46,9 +50,7 @@ class DrawerMenu extends StatelessWidget {
                     style: theme.textTheme.headline2.copyWith(
                       color: Colors.black.withOpacity(0.7),
                       fontSize: 14,
-                      shadows: [
-                        Shadow(color: Colors.black, blurRadius: 3)
-                      ],
+                      shadows: [Shadow(color: Colors.black, blurRadius: 3)],
                     ),
                   ),
                   SizedBox(
@@ -70,34 +72,37 @@ class DrawerMenu extends StatelessWidget {
           ),
           ListTile(
             title: Text('داشبورد', style: theme.textTheme.headline2),
-            onTap: () async{
+            onTap: () async {
               scaffoldKey.currentState.openEndDrawer();
               streamPageController.pageView = 0;
-              if(pageController.page != 0){
+              if (pageController.page != 0) {
                 await Future.delayed(Duration(milliseconds: 200));
-                pageController.animateToPage(0, duration: Duration(milliseconds: 250), curve: Curves.easeIn);
+                pageController.animateToPage(0,
+                    duration: Duration(milliseconds: 250),
+                    curve: Curves.easeIn);
               }
               dashboardPageController.changePage(DASHBOARD);
             },
           ),
           ListTile(
             title: Text('پرسنل', style: theme.textTheme.headline2),
-            onTap: () async{
+            onTap: () async {
               streamPageController.pageView = 1;
               scaffoldKey.currentState.openEndDrawer();
               await Future.delayed(Duration(milliseconds: 200));
-              pageController.animateToPage(1, duration: Duration(milliseconds: 250), curve: Curves.easeIn);
+              pageController.animateToPage(1,
+                  duration: Duration(milliseconds: 250), curve: Curves.easeIn);
             },
           ),
           ListTile(
             title: Text('مانیتورینگ', style: theme.textTheme.headline2),
-            onTap: () async{
+            onTap: () async {
               scaffoldKey.currentState.openEndDrawer();
               streamPageController.pageView = 0;
               await Future.delayed(Duration(milliseconds: 200));
-              if(pageController.page != 0) {
-                pageController.animateToPage(
-                    0, duration: Duration(milliseconds: 250),
+              if (pageController.page != 0) {
+                pageController.animateToPage(0,
+                    duration: Duration(milliseconds: 250),
                     curve: Curves.easeIn);
               }
               dashboardPageController.changePage(MONITOR);
@@ -105,26 +110,25 @@ class DrawerMenu extends StatelessWidget {
           ),
           ListTile(
             title: Text('تقسیم وظایف', style: theme.textTheme.headline2),
-            onTap: () async{
+            onTap: () async {
               scaffoldKey.currentState.openEndDrawer();
               streamPageController.pageView = 2;
               await Future.delayed(Duration(milliseconds: 200));
-              if(pageController.page != 2) {
-                pageController.animateToPage(
-                    2, duration: Duration(milliseconds: 250),
+              if (pageController.page != 2) {
+                pageController.animateToPage(2,
+                    duration: Duration(milliseconds: 250),
                     curve: Curves.easeIn);
               }
             },
           ),
           ListTile(
             title: Text('فعالیتها', style: theme.textTheme.headline2),
-            onTap: () async{
+            onTap: () async {
               streamPageController.pageView = 3;
               scaffoldKey.currentState.openEndDrawer();
               await Future.delayed(Duration(milliseconds: 200));
-              pageController.animateToPage(
-                  3, duration: Duration(milliseconds: 250),
-                  curve: Curves.easeIn);
+              pageController.animateToPage(3,
+                  duration: Duration(milliseconds: 250), curve: Curves.easeIn);
               // showDialog(barrierColor: Colors.black12,context: context, builder: (context)=>DialogMessage(messages: messages,));
             },
           ),

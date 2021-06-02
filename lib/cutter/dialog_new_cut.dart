@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workshop/bloc/cutter/new_cut_dialog_bloc.dart';
 import 'package:workshop/bloc/ignoreButtonsBloc.dart';
 import 'package:workshop/cutter/cutter_page.dart';
-import 'package:workshop/module/cutter/cut.dart';
 import 'package:workshop/module/cutter/cut_detail.dart';
+import 'package:workshop/module/general_manager/styleCode.dart';
 import 'package:workshop/request/request.dart';
 import 'package:workshop/style/component/default_textfield.dart';
 import 'package:workshop/style/component/dialog_bg.dart';
@@ -12,6 +12,9 @@ import 'package:workshop/style/theme/my_icons.dart';
 import 'package:workshop/style/theme/textstyle.dart';
 
 class NewCutDialog extends StatelessWidget {
+  final List<StyleCode> styleCodes;
+  NewCutDialog({this.styleCodes});
+
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
@@ -28,7 +31,6 @@ class NewCutDialog extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            // DefaultTextField(label: 'کالیته',),
             SizedBox(
               height: 10,
             ),
@@ -105,20 +107,25 @@ class NewCutDialog extends StatelessWidget {
                             CutDetail result = await MyRequest.getCutDetail(
                                 barcode.text, projectCode.text);
                             if (result == null) {
-                              newCutDialogCubit.changeMessage('کالیته و کد پروژه یافت نشد.');
+                              newCutDialogCubit
+                                  .changeMessage('کالیته و کد پروژه یافت نشد.');
                               ignoreButtonCubit.update(false);
                             } else {
                               if (result.projectId == null) {
-                                newCutDialogCubit.changeMessage('پروژه یافت نشد.');
+                                newCutDialogCubit
+                                    .changeMessage('پروژه یافت نشد.');
                                 ignoreButtonCubit.update(false);
                               } else if (result.fabricId == null) {
-                                newCutDialogCubit.changeMessage('بارکد یافت نشد.');
+                                newCutDialogCubit
+                                    .changeMessage('بارکد یافت نشد.');
                                 ignoreButtonCubit.update(false);
                               } else {
-                                CutReturn cutReturn = await Navigator.of(context).push(
+                                CutReturn cutReturn =
+                                    await Navigator.of(context).push(
                                   MaterialPageRoute(
                                     builder: (context) => CutterPage(
                                       cutDetail: result,
+                                      styleCodes:styleCodes,
                                     ),
                                   ),
                                 );

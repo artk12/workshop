@@ -14,6 +14,7 @@ import 'module/stockpile/user.dart';
 
 class SplitPages extends StatelessWidget {
   final dynamic user;
+
   SplitPages({this.user});
 
   @override
@@ -21,7 +22,7 @@ class SplitPages extends StatelessWidget {
     if (user is User) {
       return MultiProvider(
         providers: [
-          FutureProvider(create:(_)=>MyRequest.getUserScore(user.id)),
+          FutureProvider(create: (_) => MyRequest.getUserScore(user.id)),
           FutureProvider(
             create: (_) => MyList().getPersonnelMessages(),
           ),
@@ -38,7 +39,7 @@ class SplitPages extends StatelessWidget {
           child: StockPile(user: s),
         );
       } else if (s.side == "برشکار") {
-        return Cutter(user:user);
+        return Cutter(user: user);
       } else if (s.side == "مدیر تولید") {
         return ChangeNotifierProvider.value(
           value: RefreshProvider(),
@@ -60,7 +61,16 @@ class SplitPages extends StatelessWidget {
           ),
         );
       } else if (s.side == "مدیر کل") {
-        return ChangeNotifierProvider.value(value: RefreshProvider(),child: FutureProvider(create: (_)=>MyList.getAllProjects() , child: GeneralManager()));
+        return ChangeNotifierProvider.value(
+          value: RefreshProvider(),
+          child: MultiProvider(
+            providers: [
+              FutureProvider(create: (_) => MyList.getAllProjects(),),
+              FutureProvider(create: (_) => MyList.getAllStyleCode(),),
+            ],
+            child: GeneralManager(),
+          ),
+        );
       }
     }
     return Container(
