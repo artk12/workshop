@@ -2,7 +2,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:workshop/bloc/publishManager/assign_personnel.dart';
 import 'package:workshop/bloc/publishManager/assign_task.dart';
-import 'package:workshop/module/publish_manager/task.dart';
 
 const String MONITOR = "MONITORING";
 const String DASHBOARD = "DASHBOARD";

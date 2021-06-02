@@ -113,10 +113,10 @@ class MyRequest {
   }
 
   static Future<CutDetail> getCutDetail(
-      String calite, String projectCode) async {
+      String barcode, String projectCode) async {
     http.Response response = await http.post(
         baseUrl + "cutter/getCutDetail.php",
-        body: {'id': projectCode, 'calite': calite});
+        body: {'id': projectCode, 'barcode': barcode});
     if (response.body.trim() != "null") {
       CutDetail cutDetail = CutDetail.formJson(jsonDecode(response.body));
       return cutDetail;

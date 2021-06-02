@@ -32,4 +32,8 @@ class Update {
   static String updateTask(String id,String name,String expertTime,String amateur,String internTime){
     return "UPDATE `task` SET `name`='$name',`expert_time`='$expertTime',`amateur_time`='$amateur',`intern_time`='$internTime' WHERE `ID`='$id'";
   }
+
+  static String updatePassPersonnel(String id,String pass){
+    return "UPDATE `user` SET `pass`='$pass' WHERE `ID`='$id'";
+  }
 }

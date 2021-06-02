@@ -24,7 +24,7 @@ class PersonnelLandingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<AssignPersonnel> tasks = Provider.of<List<AssignPersonnel>>(context) ?? [];
+    List<AssignPersonnel> tasks = Provider.of<List<AssignPersonnel>>(context);
     provider.taskSetter = tasks;
 
     return Scaffold(

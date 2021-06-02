@@ -38,7 +38,7 @@ class SplitPages extends StatelessWidget {
           child: StockPile(user: s),
         );
       } else if (s.side == "برشکار") {
-        return Cutter();
+        return Cutter(user:user);
       } else if (s.side == "مدیر تولید") {
         return ChangeNotifierProvider.value(
           value: RefreshProvider(),

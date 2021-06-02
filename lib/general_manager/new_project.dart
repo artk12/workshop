@@ -9,6 +9,7 @@ import 'package:workshop/request/request.dart';
 import 'package:workshop/style/app_bar/my_appbar.dart';
 import 'package:workshop/style/component/background_widget.dart';
 import 'package:workshop/style/component/default_textfield.dart';
+import 'package:workshop/style/component/my_icon_button.dart';
 import 'package:workshop/style/theme/my_icons.dart';
 import 'package:workshop/style/theme/show_snackbar.dart';
 import 'package:workshop/style/theme/textstyle.dart';
@@ -208,6 +209,7 @@ class NewProject extends StatelessWidget {
                                     ignoreButtonCubit.update(false);
                                     MyShowSnackBar.hideSnackBar(context);
                                     projects.add(Project(
+                                        id: id.toString(),
                                         description: description,
                                         brand: brand,
                                         roll: roll,

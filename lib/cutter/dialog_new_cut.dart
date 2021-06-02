@@ -19,7 +19,7 @@ class NewCutDialog extends StatelessWidget {
         IgnoreButtonCubit(IgnoreButtonState(ignore: false));
     NewCutDialogCubit newCutDialogCubit =
         new NewCutDialogCubit(NewCutDialogState());
-    TextEditingController calite = new TextEditingController();
+    TextEditingController barcode = new TextEditingController();
     TextEditingController projectCode = new TextEditingController();
 
     return DialogBg(
@@ -41,8 +41,16 @@ class NewCutDialog extends StatelessWidget {
             ),
             Row(
               children: [
-                Expanded(child: DefaultTextField(hint: 'کالیته',textEditingController: calite,)),
-                Expanded(child: DefaultTextField(hint: 'کد پروژه',textEditingController: projectCode,))
+                Expanded(
+                    child: DefaultTextField(
+                  hint: 'بارکد طاقه',
+                  textEditingController: barcode,
+                )),
+                Expanded(
+                    child: DefaultTextField(
+                  hint: 'کد پروژه',
+                  textEditingController: projectCode,
+                ))
               ],
             ),
             SizedBox(
@@ -94,22 +102,27 @@ class NewCutDialog extends StatelessWidget {
                           onPressed: () async {
                             newCutDialogCubit.changeMessage('کمی صبرکنید...');
                             ignoreButtonCubit.update(true);
-                            CutDetail result = await MyRequest.getCutDetail(calite.text, projectCode.text);
-                            if(result == null){
+                            CutDetail result = await MyRequest.getCutDetail(
+                                barcode.text, projectCode.text);
+                            if (result == null) {
                               newCutDialogCubit.changeMessage('کالیته و کد پروژه یافت نشد.');
                               ignoreButtonCubit.update(false);
-                            }else{
-                              if(result.projectId == null){
+                            } else {
+                              if (result.projectId == null) {
                                 newCutDialogCubit.changeMessage('پروژه یافت نشد.');
                                 ignoreButtonCubit.update(false);
-                              }else if(result.fabricId == null){
-                                newCutDialogCubit.changeMessage('کالیته یافت نشد.');
+                              } else if (result.fabricId == null) {
+                                newCutDialogCubit.changeMessage('بارکد یافت نشد.');
                                 ignoreButtonCubit.update(false);
-                              }else{
-                                // Navigator.of(context).pop();
-                                Cut cut = await Navigator.of(context).push(MaterialPageRoute(builder: (context)=>CutterPage(cutDetail: result,)));
-                                Navigator.of(context).pop(cut);
-
+                              } else {
+                                CutReturn cutReturn = await Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => CutterPage(
+                                      cutDetail: result,
+                                    ),
+                                  ),
+                                );
+                                Navigator.of(context).pop(cutReturn);
                               }
                             }
                           },

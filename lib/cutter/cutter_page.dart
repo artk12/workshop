@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workshop/bloc/ignoreButtonsBloc.dart';
+import 'package:workshop/bloc/stockpile/single_drop_down_bloc.dart';
 import 'package:workshop/cutter/calculate_cutter.dart';
 import 'package:workshop/module/cutter/cut.dart';
 import 'package:workshop/module/cutter/cut_detail.dart';
@@ -10,6 +11,9 @@ import 'package:workshop/request/query/insert.dart';
 import 'package:workshop/request/request.dart';
 import 'package:workshop/style/app_bar/my_appbar.dart';
 import 'package:workshop/style/component/default_textfield.dart';
+import 'package:workshop/style/component/drop_down_background.dart';
+import 'package:workshop/style/component/dropdownWithOutNullSafety.dart';
+import 'package:workshop/style/component/my_icon_button.dart';
 import 'package:workshop/style/theme/my_icons.dart';
 import 'package:workshop/style/theme/show_snackbar.dart';
 import 'package:workshop/style/theme/textstyle.dart';
@@ -18,6 +22,12 @@ class MyTextEditingController {
   final TextEditingController quantify;
   final TextEditingController surplus;
   MyTextEditingController({this.quantify, this.surplus});
+}
+
+class CutReturn{
+  Cut cut;
+  bool repeat;
+  CutReturn({this.cut,this.repeat});
 }
 
 class CutterPage extends StatelessWidget {
@@ -37,6 +47,7 @@ class CutterPage extends StatelessWidget {
     TextEditingController cutCode = new TextEditingController();
     TextEditingController totalGoods = new TextEditingController();
     TextEditingController description = new TextEditingController();
+    String des = cutDetail.projectDescription.isEmpty?"ندارد":cutDetail.projectDescription;
 
     Widget textWithUnderLine(String text) {
       return Container(
@@ -124,7 +135,22 @@ class CutterPage extends StatelessWidget {
     }
 
     Widget itemDetail(String title1, String title2, String title3,
-        String value1, String value2, String value3) {
+        String value1, String value2, String value3,{check = false}) {
+      List<String> styleCodes = [];
+      SingleDropDownItemCubit styleCodeCubit;
+      if(check){
+        if(value3[value3.length -1] != ","){
+          value3 = value3+',';
+        }
+        String total = value3;
+        while(total.isNotEmpty){
+          String res = total.substring(0,total.indexOf(',')+1);
+          total = total.replaceFirst(res, '');
+          styleCodes.add(res.replaceFirst(',',''));
+        }
+      styleCodeCubit = new SingleDropDownItemCubit(SingleDropDownItemState(value: styleCodes[0]));
+      }
+
       return Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -139,7 +165,37 @@ class CutterPage extends StatelessWidget {
                   space(15),
                   textWithUnderLine(title2 + " : " + value2),
                   space(15),
-                  textWithUnderLine(title3 + " : " + value3),
+                  !check?textWithUnderLine(title3 + " : " + value3):Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    height: 84,
+                    child: DropDownBackground(
+                      child: CustomDropdownButtonHideUnderline(
+                        child: BlocBuilder(
+                          cubit: styleCodeCubit,
+                          builder: (BuildContext context,
+                              SingleDropDownItemState state) =>
+                              CustomDropdownButton<String>(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                items: styleCodes.map((String value) {
+                                  return new CustomDropdownMenuItem<String>(
+                                    value: value,
+                                    child: new Text(
+                                      value,
+                                      style: TextStyle(
+                                          fontFamily: 'light',
+                                          color: Colors.white),
+                                    ),
+                                  );
+                                }).toList(),
+                                value: state.value,
+                                onChanged: (value) {
+                                  styleCodeCubit.changeItem(value);
+                                },
+                              ),
+                        ),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -162,6 +218,80 @@ class CutterPage extends StatelessWidget {
       }
     }
 
+    void insert({bool check = false})async{
+      ignoreButtonCubit.update(true);
+      MyShowSnackBar.showSnackBar(
+          context, 'کمی صبر کنید...');
+      String pieces = CalculateCutter.getPiecesJson(
+          textEditingControllers);
+      String insert = Insert.queryInsertCutterProject(
+          cutDetail.projectId,
+          cutDetail.fabricId,
+          realUsage.text,
+          usage.text,
+          height.text,
+          pieces,
+          totalGoods.text,
+          cutCode.text,
+          description.text);
+      String result =
+          await MyRequest.simpleQueryRequest(
+          'stockpile/runQuery.php', insert);
+      ignoreButtonCubit.update(false);
+      if (result.trim() == "OK") {
+        MyShowSnackBar.hideSnackBar(context);
+        DateTime dateTime = DateTime.now();
+        int year = dateTime.year;
+        int month = dateTime.month;
+        int day = dateTime.day;
+        CutReturn cutReturn = CutReturn(
+          repeat: check,
+          cut: Cut(
+            description:
+            description.text.toString(),
+            height: height.text.toString(),
+            id: '0',
+            cutCode: cutCode.text.toString(),
+            pieces: pieces,
+            realUsage: realUsage.text.toString(),
+            usage: usage.text.toString(),
+            totalGoods: totalGoods.text.toString(),
+            day: day.toString(),
+            month: month.toString(),
+            year: year.toString(),
+            project: Project(
+              id: cutDetail.projectId,
+              styleCode: cutDetail.styleCode,
+              size: cutDetail.size,
+              type: cutDetail.type,
+              roll: cutDetail.roll,
+              description:
+              cutDetail.projectDescription,
+              brand: cutDetail.brand,
+            ),
+            fabric: Fabric(
+                id: cutDetail.fabricId,
+                description:
+                cutDetail.fabricDescription,
+                color: cutDetail.color,
+                pieces: cutDetail.pieces,
+                metric: cutDetail.metric,
+                calite: cutDetail.calite,
+                manufacture: cutDetail.manufacture),
+          )
+        );
+        Navigator.pop(
+            context,
+            cutReturn);
+        // if(check){
+        //
+        // }
+      }else{
+        MyShowSnackBar.showSnackBar(
+            context, 'کمی صبر کنید...');
+      }
+    }
+
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -169,6 +299,9 @@ class CutterPage extends StatelessWidget {
             children: [
               MyAppbar(
                 title: "برش برای پروژه " + "#" + cutDetail.projectId,
+                leftWidget: [
+                  MyIconButton(icon: MyIcons.CANCEL,onPressed: (){Navigator.of(context).pop();},)
+                ],
               ),
               space(20),
               Row(
@@ -184,7 +317,7 @@ class CutterPage extends StatelessWidget {
                   ),
                   Expanded(
                     child: itemDetail('متراژ', 'رنگ', 'کداستایل',
-                        cutDetail.metric, cutDetail.color, cutDetail.styleCode),
+                        cutDetail.metric, cutDetail.color, cutDetail.styleCode,check: false),
                   ),
                 ],
               ),
@@ -199,7 +332,7 @@ class CutterPage extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  textWithUnderLine("توضیحات : " + "این توضیحات است."),
+                  textWithUnderLine("توضیحات : " + des),
                 ],
               ),
               space(20),
@@ -320,72 +453,33 @@ class CutterPage extends StatelessWidget {
                                 MyShowSnackBar.showSnackBar(
                                     context, 'لطفا تمامی فیلدهای را پر کنید.');
                               } else {
-                                ignoreButtonCubit.update(true);
-                                MyShowSnackBar.showSnackBar(
-                                    context, 'کمی صبر کنید...');
-                                String pieces = CalculateCutter.getPiecesJson(
-                                    textEditingControllers);
-                                String insert = Insert.queryInsertCutterProject(
-                                    cutDetail.projectId,
-                                    cutDetail.fabricId,
-                                    realUsage.text,
-                                    usage.text,
-                                    height.text,
-                                    pieces,
-                                    totalGoods.text,
-                                    cutCode.text,
-                                    description.text);
-                                String result =
-                                    await MyRequest.simpleQueryRequest(
-                                        'stockpile/runQuery.php', insert);
-                                ignoreButtonCubit.update(false);
-                                if (result.trim() == "OK") {
-                                  MyShowSnackBar.hideSnackBar(context);
-                                  DateTime dateTime = DateTime.now();
-                                  int year = dateTime.year;
-                                  int month = dateTime.month;
-                                  int day = dateTime.day;
-                                  Navigator.pop(
-                                      context,
-                                      Cut(
-                                        description:
-                                            description.text.toString(),
-                                        height: height.text.toString(),
-                                        id: '0',
-                                        cutCode: cutCode.text.toString(),
-                                        pieces: pieces,
-                                        realUsage: realUsage.text.toString(),
-                                        usage: usage.text.toString(),
-                                        totalGoods: totalGoods.text.toString(),
-                                        day: day.toString(),
-                                        month: month.toString(),
-                                        year: year.toString(),
-                                        project: Project(
-                                          id: cutDetail.projectId,
-                                          styleCode: cutDetail.styleCode,
-                                          size: cutDetail.size,
-                                          type: cutDetail.type,
-                                          roll: cutDetail.roll,
-                                          description:
-                                              cutDetail.projectDescription,
-                                          brand: cutDetail.brand,
-                                        ),
-                                        fabric: Fabric(
-                                            id: cutDetail.fabricId,
-                                            description:
-                                                cutDetail.fabricDescription,
-                                            color: cutDetail.color,
-                                            pieces: cutDetail.pieces,
-                                            metric: cutDetail.metric,
-                                            calite: cutDetail.calite,
-                                            manufacture: cutDetail.manufacture),
-                                      ));
-                                }
+                                insert();
                               }
                             },
                           ),
                         ),
                       ),
+                      SizedBox(height: 10,),
+                      TextButton(
+                        style: ButtonStyle(
+                          backgroundColor:
+                          MaterialStateProperty.resolveWith(
+                                (states) => Colors.blue.withOpacity(0.4),
+                          ),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            MyIcons.PLUS,
+                            style: MyTextStyle.iconStyle
+                                .copyWith(fontSize: 30),
+                          ),
+                        ),
+                        onPressed: () {
+                          insert(check: true);
+                        },
+                      ),
+                      SizedBox(height: 10,),
                       Expanded(
                         flex: 2,
                         child: Padding(

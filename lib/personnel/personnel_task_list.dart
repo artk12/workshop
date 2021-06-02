@@ -13,7 +13,7 @@ class MyTaskList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TaskItemProvider provider = Provider.of(context);
-    return provider.checks.isEmpty
+    return provider.checks == null
         ? Container(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,

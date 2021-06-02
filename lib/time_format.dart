@@ -1,5 +1,16 @@
 
 class TimeFormat{
+  
+  static String generateBarcode(){
+    DateTime dateTime = DateTime.now();
+    String year = dateTime.year.toString().substring(2);
+    String month = timeFormat(dateTime.month);
+    String day = timeFormat(dateTime.day);
+    String hour = timeFormat(dateTime.hour);
+    String minute = timeFormat(dateTime.minute);
+    String second = timeFormat(dateTime.second);
+    return "$year$month$day$hour$minute$second";
+  }
 
   static String timeFormat(int time){
     if(time < 10){

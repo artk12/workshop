@@ -41,58 +41,59 @@ class TaskItemProvider extends ChangeNotifier {
   Color color = Colors.green.withOpacity(0.1);
   DateTime now;
   set taskSetter(List<AssignPersonnel> tasks) {
-    if (this.tasks.isEmpty) {
-      this.tasks = tasks;
-      tasks.forEach((element) {
-        bool check = false;
-        if (element.play == '1') {
-          check = true;
-        }
-        checks.add(TaskItemProviderState(id: element.id, check: check));
-      });
-    } else if (isEquals(tasks) == false) {
-      this.tasks = tasks;
-      TaskItemProviderState current;
-      checks.forEach((element) {
-        if (element.cubit.state.plus != null) {
-          if (element.cubit.state.plus.inSeconds > 0 && element.check == true) {
-            current = element;
+    if(tasks != null){
+      if (this.tasks.isEmpty) {
+        this.tasks = tasks;
+        tasks.forEach((element) {
+          bool check = false;
+          if (element.play == '1') {
+            check = true;
           }
-        }
-      });
-      // int index = checks.indexWhere((item) => item.id == element.id);
-      checks.clear();
-      int counter = 0;
-      tasks.forEach((element) {
-
-        bool check = false;
-        if (element.play == '1') {
-          check = true;
-        }
-        if (current != null) {
-          if (current.id == element.id && element.play == '1') {
-            checks.add(current);
+          checks.add(TaskItemProviderState(id: element.id, check: check));
+        });
+      } else if (isEquals(tasks) == false) {
+        this.tasks = tasks;
+        TaskItemProviderState current;
+        checks.forEach((element) {
+          if (element.cubit.state.plus != null) {
+            if (element.cubit.state.plus.inSeconds > 0 &&
+                element.check == true) {
+              current = element;
+            }
+          }
+        });
+        // int index = checks.indexWhere((item) => item.id == element.id);
+        checks.clear();
+        int counter = 0;
+        tasks.forEach((element) {
+          bool check = false;
+          if (element.play == '1') {
+            check = true;
+          }
+          if (current != null) {
+            if (current.id == element.id && element.play == '1') {
+              checks.add(current);
+            } else {
+              checks.add(TaskItemProviderState(
+                id: element.id,
+                check: check,
+                isFirstTime: true,
+              ));
+            }
           } else {
             checks.add(TaskItemProviderState(
-              id: element.id,
-              check: check,
-              isFirstTime: true,
-            ));
+                id: element.id,
+                check: check,
+                isFirstTime: true,
+                index: counter));
           }
-        } else {
-          checks.add(TaskItemProviderState(
-            id: element.id,
-            check: check,
-            isFirstTime: true,
-            index: counter
-          ));
-        }
-        counter++;
-      });
-    } else if ((tasks.length != 0 && tasks.length < this.tasks.length)) {
-      checks.clear();
-      this.tasks.clear();
-      notifyListeners();
+          counter++;
+        });
+      } else if ((tasks.length != 0 && tasks.length < this.tasks.length)) {
+        checks.clear();
+        this.tasks.clear();
+        notifyListeners();
+      }
     }
   }
 

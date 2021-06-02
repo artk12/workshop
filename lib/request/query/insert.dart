@@ -16,9 +16,10 @@ class Insert {
     String metric,
     String color,
     String pieces,
+    String barcode,
     String description,
   ) {
-    return "INSERT INTO `fabric`(`manufacture`, `calite`, `metric`, `color`, `pieces`, `description`,`year`,`month`,`day`) VALUES ('$manufacture','$calite','$metric','$color','$pieces','$description','$year','$month','$day')";
+    return "INSERT INTO `fabric`(`manufacture`, `calite`, `metric`, `color`, `pieces`, `description`,`year`,`month`,`day`,`barcode`) VALUES ('$manufacture','$calite','$metric','$color','$pieces','$description','$year','$month','$day','$barcode')";
   }
 
   static String queryInsertInputToLog(
