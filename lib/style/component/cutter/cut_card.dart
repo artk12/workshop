@@ -6,19 +6,24 @@ class CutCard extends StatelessWidget {
   final double width;
   final double height;
   final Cut cut;
-  CutCard({this.width = 200,this.height,this.cut});
+
+  CutCard({this.width = 200, this.height, this.cut});
 
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     return GestureDetector(
-      onTap: (){
-        showDialog(context: context, builder: (context)=>CutterDetailPage(cutDetail: cut,),barrierColor: Colors.transparent);
+      onTap: () {
+        showDialog(
+            context: context,
+            builder: (context) => CutterDetailPage(
+                  cutDetail: cut,
+                ),
+            barrierColor: Colors.transparent);
       },
       child: Container(
         width: width,
         height: height,
-        // constraints: BoxConstraints(maxWidth: 200, minWidth: 150),
         margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
         padding: EdgeInsets.all(8),
         decoration: BoxDecoration(
@@ -34,9 +39,11 @@ class CutCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("کد پروژه : "+cut.project.id),
-                    SizedBox(height: 10,),
-                    Text("کالیته : "+cut.fabric.calite),
+                    Text("کد پروژه : " + cut.project.id),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text("کالیته : " + cut.fabric.calite),
                   ],
                 ),
               ),
@@ -48,8 +55,12 @@ class CutCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Text(cut.year+"/"+cut.month+"/"+cut.day),
-                    Text("#"+cut.cutCode,style: theme.textTheme.headline4,),
+                    Text(cut.year + "/" + cut.month + "/" + cut.day),
+                    Text(
+                      "#" + cut.cutCode,
+                      style: theme.textTheme.headline4,
+                      textDirection: TextDirection.ltr,
+                    ),
                   ],
                 ),
               ),

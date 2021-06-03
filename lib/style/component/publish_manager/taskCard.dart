@@ -25,9 +25,9 @@ class TaskCard extends StatelessWidget {
         }
       },
       child: Container(
-        height: 50,
+        // height: 100,
         constraints: BoxConstraints(maxWidth: 60),
-        margin: EdgeInsets.all(10),
+        // margin: EdgeInsets.all(10),
         padding: EdgeInsets.symmetric(vertical: 5,horizontal: 9),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
@@ -38,6 +38,7 @@ class TaskCard extends StatelessWidget {
           children: [
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Row(
                   children: [

@@ -19,20 +19,23 @@ class TaskAssignmentCard extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Text(
-                  cutCode,
-                  style: theme.textTheme.headline6,
-                  textAlign: TextAlign.end,
-                ),
-                Text(
-                  "#",
-                  style: theme.textTheme.headline6,
-                  textAlign: TextAlign.end,
-                ),
-              ],
+            Directionality(
+              textDirection: TextDirection.ltr,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    "#",
+                    style: theme.textTheme.headline6,
+                    textAlign: TextAlign.end,
+                  ),
+                  Text(
+                    cutCode,
+                    style: theme.textTheme.headline6,
+                    textAlign: TextAlign.end,
+                  ),
+                ],
+              ),
             ),
             SizedBox(
               height: 5,

@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workshop/bloc/general_manager/new_project_size_bloc.dart';
 import 'package:workshop/bloc/general_manager/style_code_bloc.dart';
 import 'package:workshop/bloc/ignoreButtonsBloc.dart';
 import 'package:workshop/bloc/refresh_provider.dart';
+import 'package:workshop/bloc/stockpile/single_drop_down_bloc.dart';
 import 'package:workshop/module/general_manager/project.dart';
 import 'package:workshop/module/general_manager/styleCode.dart';
 import 'package:workshop/request/query/insert.dart';
@@ -12,6 +15,8 @@ import 'package:workshop/style/app_bar/my_appbar.dart';
 import 'package:workshop/style/component/background_widget.dart';
 import 'package:workshop/style/component/default_textfield.dart';
 import 'package:workshop/style/component/dialog_bg.dart';
+import 'package:workshop/style/component/drop_down_background.dart';
+import 'package:workshop/style/component/dropdownWithOutNullSafety.dart';
 import 'package:workshop/style/theme/my_icons.dart';
 import 'package:workshop/style/theme/show_snackbar.dart';
 import 'package:workshop/style/theme/textstyle.dart';
@@ -21,7 +26,7 @@ class NewProject extends StatelessWidget {
   final List<StyleCode> styleCodes;
   final RefreshProvider refreshProvider;
 
-  NewProject({this.projects, this.refreshProvider,this.styleCodes});
+  NewProject({this.projects, this.refreshProvider, this.styleCodes});
 
   @override
   Widget build(BuildContext context) {
@@ -32,12 +37,14 @@ class NewProject extends StatelessWidget {
     Widget space(double height) => SizedBox(height: height);
     IgnoreButtonCubit ignoreButtonCubit =
         IgnoreButtonCubit(IgnoreButtonState(ignore: false));
-    NewProjectSizeCubit cubit = new NewProjectSizeCubit(NewProjectSizeState());
+    NewProjectSizeCubit cubit =
+        new NewProjectSizeCubit(NewProjectSizeState(list: []));
     ThemeData theme = Theme.of(context);
 
     List<StyleCodeNames> codes = [];
     styleCodes.forEach((element) {
-      codes.add(StyleCodeNames(name: element.name,shortName: element.shortName, check: false));
+      codes.add(StyleCodeNames(
+          name: element.name, shortName: element.shortName, check: false));
     });
     StyleCodeCubit styleCodeCubit =
         new StyleCodeCubit(StyleCodeState(styleChecks: codes));
@@ -58,24 +65,130 @@ class NewProject extends StatelessWidget {
     //   ),);
     // }
 
-    Widget addSize(NewProjectSizeCubit cubit) => GestureDetector(
-          onTap: () {
-            cubit.add();
-          },
-          child: Container(
-            margin: EdgeInsets.all(7),
-            child: BackgroundWidget(
-              height: 60,
-              width: 45,
-              child: Center(
-                child: Text(
-                  MyIcons.PLUS,
-                  style: MyTextStyle.iconStyle,
-                ),
+    Widget addSize(NewProjectSizeCubit cubit) {
+      TextEditingController textEditingController;
+      return GestureDetector(
+        // styleCodeCubit.state.styleChecks.forEach((element) { })
+        onTap: () {
+          textEditingController = new TextEditingController();
+          SingleDropDownItemCubit singleDropDownItemCubit;
+          List<StyleCodeNames> list = [];
+          try {
+            list = styleCodeCubit.state.styleChecks
+                .where((element) => element.check == true)
+                .toList();
+            singleDropDownItemCubit = new SingleDropDownItemCubit(
+                SingleDropDownItemState(value: list[0].name));
+          } catch (e) {}
+
+          if (list.isNotEmpty) {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return DialogBg(
+                  child: Container(
+                    padding: EdgeInsets.all(8),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          height: 84,
+                          child: DropDownBackground(
+                            child: BlocBuilder(
+                              cubit: singleDropDownItemCubit,
+                              builder:
+                                  (context, SingleDropDownItemState state) =>
+                                      CustomDropdownButtonHideUnderline(
+                                child: CustomDropdownButton<String>(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  items: styleCodeCubit.state.styleChecks
+                                      .where((element) => element.check)
+                                      .toList()
+                                      .map((StyleCodeNames value) {
+                                    return new CustomDropdownMenuItem<String>(
+                                      value: value.name,
+                                      child: new Text(
+                                        value.name,
+                                        style: TextStyle(
+                                            fontFamily: 'light',
+                                            color: Colors.white),
+                                      ),
+                                    );
+                                  }).toList(),
+                                  value: styleCodeCubit.state.styleChecks
+                                      .where((element) => element.check)
+                                      .toList()
+                                      .where((element) =>
+                                          element.name == state.value)
+                                      .first
+                                      .name,
+                                  onChanged: (value) {
+                                    singleDropDownItemCubit.changeItem(value);
+                                  },
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        DefaultTextField(
+                          textInputType: TextInputType.number,
+                          textEditingController: textEditingController,
+                          hint: "سایز",
+                          textAlign: TextAlign.center,
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            cubit.add(SizesAndStyle(
+                              key: cubit.state.list.isEmpty?0:cubit.state.list.last.key+1,
+                                size: textEditingController.text
+                                    .toString()
+                                    .trim(),
+                                style: singleDropDownItemCubit.state.value));
+                            Navigator.of(context).pop();
+                          },
+                          child: Text(
+                            "ثبت",
+                            style: theme.textTheme.headline2,
+                          ),
+                          style: ButtonStyle(
+                            foregroundColor: MaterialStateProperty.resolveWith(
+                              (states) => Colors.green.withOpacity(0.4),
+                            ),
+                            backgroundColor: MaterialStateProperty.resolveWith(
+                              (states) => Colors.green.withOpacity(0.4),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            );
+          }
+        },
+        child: Container(
+          margin: EdgeInsets.all(7),
+          child: BackgroundWidget(
+            height: 80,
+            width: 80,
+            child: Center(
+              child: Text(
+                MyIcons.PLUS,
+                style: MyTextStyle.iconStyle,
               ),
             ),
           ),
-        );
+        ),
+      );
+    }
 
     return Scaffold(
       body: SafeArea(
@@ -161,14 +274,18 @@ class NewProject extends StatelessWidget {
                 builder: (BuildContext context, StyleCodeState state) {
                   String text = '';
                   state.styleChecks.forEach((element) {
-                    if(element.check){
-                      text += element.name+' ,';
+                    if (element.check) {
+                      text += element.name + ' ,';
                     }
                   });
-                  if(text.isNotEmpty){
-                    text = text.substring(0,text.length-1);
+                  if (text.isNotEmpty) {
+                    text = text.substring(0, text.length - 1);
                   }
-                  return Text(text,style: theme.textTheme.headline2,textDirection: TextDirection.ltr,);
+                  return Text(
+                    text,
+                    style: theme.textTheme.headline2,
+                    textDirection: TextDirection.ltr,
+                  );
                 },
               ),
               space(20),
@@ -178,12 +295,34 @@ class NewProject extends StatelessWidget {
                     Wrap(
                   crossAxisAlignment: WrapCrossAlignment.end,
                   children: List.generate(
-                      state.sizeWidgets == null
-                          ? 1
-                          : state.sizeWidgets.length + 1,
-                      (index) => index == 0
-                          ? addSize(cubit)
-                          : state.sizeWidgets[index - 1].widget),
+                    state.list == null ? 1 : state.list.length + 1,
+                    (index) => index == 0
+                        ? addSize(cubit)
+                        : GestureDetector(
+                          onTap: (){
+                            cubit.remove(state.list[index-1].key);
+                          },
+                          child: Container(
+                              margin: EdgeInsets.all(7),
+                              child: BackgroundWidget(
+                                height: 80,
+                                width: 80,
+                                child: Center(
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text(state.list[index - 1].size),
+                                      SizedBox(
+                                        height: 5,
+                                      ),
+                                      Text(state.list[index - 1].style),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                        ),
+                  ),
                 ),
               ),
               space(10),
@@ -233,19 +372,19 @@ class NewProject extends StatelessWidget {
                             ),
                             onPressed: () async {
                               if (orderController.text.isEmpty ||
-                                  brandController.text.isEmpty ) {
+                                  brandController.text.isEmpty) {
                                 MyShowSnackBar.showSnackBar(
                                     context, 'لطفا تمامی فیلدها را پر کنید.');
-                              } else if (cubit.state.sizeTexts == null) {
+                              } else if (cubit.state.list == null) {
                                 MyShowSnackBar.showSnackBar(
                                     context, 'لطفا سایزها را وارد کنید.');
-                              } else if (cubit.state.sizeTexts.length == 0) {
+                              } else if (cubit.state.list.length == 0) {
                                 MyShowSnackBar.showSnackBar(
                                     context, 'لطفا سایزها را وارد کنید.');
                               } else {
                                 String styleCode = '';
-                                styleCodeCubit.state.styleChecks.forEach((
-                                    element) {
+                                styleCodeCubit.state.styleChecks
+                                    .forEach((element) {
                                   if (element.check) {
                                     styleCode += element.name + ',';
                                   }
@@ -254,48 +393,52 @@ class NewProject extends StatelessWidget {
                                   MyShowSnackBar.showSnackBar(
                                       context, 'کد استایلی تعیین نشده است.');
                                 } else {
-                                    styleCode = styleCode.substring(0, styleCode.length - 1);
+                                  styleCode = styleCode.substring(
+                                      0, styleCode.length - 1);
                                   String order = orderController.text;
                                   String brand = brandController.text;
                                   String roll = rollController.text;
                                   // String styleCode = styleCodeController.text;
-                                  String description = descriptionController
-                                      .text;
+                                  String description =
+                                      descriptionController.text;
                                   String size = '';
-                                  cubit.state.sizeTexts.forEach((element) {
-                                    size +=
-                                        element.textEditingController.text +
-                                            ',';
+                                  List<Map<String,String>> list = [];
+                                  cubit.state.list.forEach((element) {
+                                    Map<String,String> map = {'styleCode':element.style,'size':element.size};
+                                    list.add(map);
                                   });
+                                  size = jsonEncode(list);
                                   ignoreButtonCubit.update(true);
-                                  size = size.substring(0, size.length - 1);
                                   String insertToProject =
-                                  Insert.queryInsertInProject(order, brand,
-                                      roll, styleCode, size, description);
+                                      Insert.queryInsertInProject(order, brand,
+                                          roll, styleCode, size, description);
                                   String insertToMessage =
-                                  Insert.queryInsertMessageNewProject(brand);
+                                      Insert.queryInsertMessageNewProject(
+                                          brand);
                                   MyShowSnackBar.showSnackBar(
                                       context, 'لطفا کمی منتظر بمانید.');
                                   String result =
-                                  await MyRequest.simple2QueryRequest(
+                                      await MyRequest.simple2QueryRequest(
                                     'general_manager/insertProject.php',
                                     insertToProject,
                                     insertToMessage,
                                   );
-                                  print(result);
+
                                   try {
                                     int id = int.tryParse(result.trim());
                                     if (id != null) {
                                       ignoreButtonCubit.update(false);
                                       MyShowSnackBar.hideSnackBar(context);
-                                      projects.insert(0,Project(
-                                          id: id.toString(),
-                                          description: description,
-                                          brand: brand,
-                                          roll: roll,
-                                          type: order,
-                                          size: size,
-                                          styleCode: styleCode));
+                                      projects.insert(
+                                          0,
+                                          Project(
+                                              id: id.toString(),
+                                              description: description,
+                                              brand: brand,
+                                              roll: roll,
+                                              type: order,
+                                              size: size,
+                                              styleCode: styleCode));
                                       refreshProvider.refresh();
                                       Navigator.of(context).pop();
                                     } else {

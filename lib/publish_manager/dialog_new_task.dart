@@ -78,10 +78,14 @@ class NewTaskDialog extends StatelessWidget {
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: DefaultTextField(
-                      label: 'کد برش',
-                      textInputType: TextInputType.number,
-                      textEditingController: cutCode,
+                    child: Directionality(
+                      textDirection: TextDirection.ltr,
+                      child: DefaultTextField(
+                        label: 'cut code',
+                        textInputType: TextInputType.number,
+                        textEditingController: cutCode,
+
+                      ),
                     ),
                   ),
                 ),

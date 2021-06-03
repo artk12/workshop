@@ -248,7 +248,7 @@ class CutterPage extends StatelessWidget {
           height.text,
           pieces,
           totalGoods.text,
-          cutCode.text,
+          cutCode.text+'-'+cutCodeStyle,
           description.text);
       String result =
           await MyRequest.simpleQueryRequest('stockpile/runQuery.php', insert);
@@ -265,7 +265,7 @@ class CutterPage extends StatelessWidget {
               description: description.text.toString(),
               height: height.text.toString(),
               id: '0',
-              cutCode: cutCode.text.toString(),
+              cutCode: cutCode.text.toString()+'-'+cutCodeStyle,
               pieces: pieces,
               realUsage: realUsage.text.toString(),
               usage: usage.text.toString(),
@@ -293,7 +293,8 @@ class CutterPage extends StatelessWidget {
             ));
         Navigator.pop(context, cutReturn);
       } else {
-        MyShowSnackBar.showSnackBar(context, 'کمی صبر کنید...');
+        print(result.trim());
+        MyShowSnackBar.showSnackBar(context, 'خطا در برقراری ارتباط..');
       }
     }
 
