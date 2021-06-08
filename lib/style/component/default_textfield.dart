@@ -1,6 +1,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:workshop/style/component/background_widget.dart';
 
 class DefaultTextField extends StatelessWidget {
@@ -38,6 +39,9 @@ class DefaultTextField extends StatelessWidget {
         initialValue: initText,
         // textAlign: TextAlign.start,
         keyboardType: textInputType,
+        inputFormatters: textInputType != TextInputType.number?null:<TextInputFormatter>[
+          FilteringTextInputFormatter.digitsOnly
+        ], // Only numbers can be entered
         decoration: InputDecoration(
             counter: new SizedBox(
               height: 0.0,

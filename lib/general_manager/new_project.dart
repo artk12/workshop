@@ -404,7 +404,8 @@ class NewProject extends StatelessWidget {
                                   String size = '';
                                   List<Map<String,String>> list = [];
                                   cubit.state.list.forEach((element) {
-                                    Map<String,String> map = {'styleCode':element.style,'size':element.size};
+                                    String short = styleCodes.firstWhere((item) => element.style == item.name).shortName;
+                                    Map<String,String> map = {'styleCode':element.style,'size':element.size,'shortCodeStyle':short};
                                     list.add(map);
                                   });
                                   size = jsonEncode(list);
@@ -423,7 +424,6 @@ class NewProject extends StatelessWidget {
                                     insertToProject,
                                     insertToMessage,
                                   );
-
                                   try {
                                     int id = int.tryParse(result.trim());
                                     if (id != null) {

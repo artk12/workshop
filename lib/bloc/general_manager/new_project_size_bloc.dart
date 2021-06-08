@@ -23,8 +23,9 @@ class NewProjectSizeState {
 class SizesAndStyle{
   String size;
   String style;
+  String shortStyleName;
   int key;
-  SizesAndStyle({this.size,this.style,this.key = 0});
+  SizesAndStyle({this.size,this.style,this.key = 0,this.shortStyleName});
 
   factory SizesAndStyle.fromJson(Map map){
     return SizesAndStyle(style: map['styleCode'],size: map['size']);

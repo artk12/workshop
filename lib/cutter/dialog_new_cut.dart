@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workshop/bloc/cutter/new_cut_dialog_bloc.dart';
 import 'package:workshop/bloc/ignoreButtonsBloc.dart';
+import 'package:workshop/cutter/cutter_landing.dart';
 import 'package:workshop/cutter/cutter_page.dart';
 import 'package:workshop/module/cutter/cut_detail.dart';
 import 'package:workshop/module/general_manager/styleCode.dart';
@@ -13,7 +14,10 @@ import 'package:workshop/style/theme/textstyle.dart';
 
 class NewCutDialog extends StatelessWidget {
   final List<StyleCode> styleCodes;
-  NewCutDialog({this.styleCodes});
+  final CutterCounter cutterCounter;
+  final String projectId;
+
+  NewCutDialog({this.projectId, this.styleCodes, this.cutterCounter});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +27,8 @@ class NewCutDialog extends StatelessWidget {
     NewCutDialogCubit newCutDialogCubit =
         new NewCutDialogCubit(NewCutDialogState());
     TextEditingController barcode = new TextEditingController();
-    TextEditingController projectCode = new TextEditingController();
+    TextEditingController projectCode =
+        new TextEditingController(text: projectId);
 
     return DialogBg(
       child: Padding(
@@ -45,13 +50,16 @@ class NewCutDialog extends StatelessWidget {
               children: [
                 Expanded(
                     child: DefaultTextField(
+                  textInputType: TextInputType.number,
                   hint: 'بارکد طاقه',
                   textEditingController: barcode,
                 )),
                 Expanded(
                     child: DefaultTextField(
+                  textInputType: TextInputType.number,
                   hint: 'کد پروژه',
                   textEditingController: projectCode,
+                  readOnly: projectId == null ? false : true,
                 ))
               ],
             ),
@@ -119,13 +127,18 @@ class NewCutDialog extends StatelessWidget {
                                 newCutDialogCubit
                                     .changeMessage('بارکد یافت نشد.');
                                 ignoreButtonCubit.update(false);
+                              } else if (result.rollComplete == result.roll) {
+                                newCutDialogCubit.changeMessage(
+                                    'برش طاقه برای این پروژه تکمیل شده است.');
+                                ignoreButtonCubit.update(false);
                               } else {
+                                cutterCounter.total = int.parse(result.roll);
                                 CutReturn cutReturn =
                                     await Navigator.of(context).push(
                                   MaterialPageRoute(
                                     builder: (context) => CutterPage(
                                       cutDetail: result,
-                                      styleCodes:styleCodes,
+                                      styleCodes: styleCodes,
                                     ),
                                   ),
                                 );

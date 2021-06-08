@@ -114,12 +114,16 @@ class MyRequest {
 
   static Future<CutDetail> getCutDetail(
       String barcode, String projectCode) async {
-    http.Response response = await http.post(
-        baseUrl + "cutter/getCutDetail.php",
-        body: {'id': projectCode, 'barcode': barcode});
-    if (response.body.trim() != "null") {
-      CutDetail cutDetail = CutDetail.formJson(jsonDecode(response.body));
-      return cutDetail;
+    try{
+      http.Response response = await http.post(
+          baseUrl + "cutter/getCutDetail.php",
+          body: {'id': projectCode, 'barcode': barcode});
+      if (response.body.trim() != "null") {
+        CutDetail cutDetail = CutDetail.formJson(jsonDecode(response.body));
+        return cutDetail;
+      }
+    }catch(e){
+      return null;
     }
     return null;
   }
@@ -214,6 +218,16 @@ class MyRequest {
     http.Response response = await http
         .post(baseUrl + url, body: {'query1': query1, 'query2': query2});
     return response.body;
+  }
+
+  static Future<String> insertCutRequest(String insert, String update,String pieces) async {
+    try{
+      http.Response response = await http
+          .post(baseUrl + 'cutter/insertCut.php', body: {'query1': insert, 'query2': update,'pieces':pieces});
+      return response.body;
+    }catch(e){
+      return null;
+    }
   }
 
   static Future<String> addNewItem(String newItemName, String newItemCategory,

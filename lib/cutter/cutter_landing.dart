@@ -16,6 +16,19 @@ import 'package:workshop/style/theme/my_icons.dart';
 
 import 'cutter_dashboard.dart';
 
+
+class CutterCounter{
+  int total = 0;
+  int current = -1;
+
+  set totalSetter(int total){
+    this.total = total;
+  }
+  set setCurrent(int current){
+    this.current = current;
+  }
+}
+
 class CutterLanding extends StatelessWidget {
   final SuperUser user;
 
@@ -30,6 +43,7 @@ class CutterLanding extends StatelessWidget {
     List<Message> messages = Provider.of<List<Message>>(context);
     List<Cut> cutList = Provider.of<List<Cut>>(context);
     List<StyleCode> styleCodes = Provider.of<List<StyleCode>>(context);
+    CutterCounter cutterCounter = new CutterCounter();
 
     // List<Cut> cuts = Provider.of<List<Cut>>(context);
 
@@ -65,14 +79,19 @@ class CutterLanding extends StatelessWidget {
                         icon: MyIcons.PLUS,
                         onPressed: () async {
                           // bool check = true;
+                          String projectId;
                           while (true) {
+                            // if(cutterCounter.current == cutterCounter.total){
+                            //   break;
+                            // }
                             CutReturn cutReturn = await showDialog(
                               context: context,
-                              builder: (context) => NewCutDialog(styleCodes:styleCodes),
+                              builder: (context) => NewCutDialog(projectId:projectId,cutterCounter:cutterCounter,styleCodes:styleCodes),
                             );
                             if (cutReturn != null) {
+                              //TODO:
                               cutList.insert(0, cutReturn.cut);
-                              // cutList.add(cutReturn.cut);
+                              projectId = cutReturn.cut.project.id;
                               refreshProvider.refresh();
                             }
                             if (cutReturn == null) {

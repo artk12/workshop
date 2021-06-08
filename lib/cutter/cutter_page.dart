@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:workshop/bloc/general_manager/new_project_size_bloc.dart';
 import 'package:workshop/bloc/ignoreButtonsBloc.dart';
 import 'package:workshop/bloc/stockpile/single_drop_down_bloc.dart';
 import 'package:workshop/cutter/calculate_cutter.dart';
@@ -9,8 +12,10 @@ import 'package:workshop/module/general_manager/project.dart';
 import 'package:workshop/module/general_manager/styleCode.dart';
 import 'package:workshop/module/stockpile/fabric.dart';
 import 'package:workshop/request/query/insert.dart';
+import 'package:workshop/request/query/update.dart';
 import 'package:workshop/request/request.dart';
 import 'package:workshop/style/app_bar/my_appbar.dart';
+import 'package:workshop/style/component/background_widget.dart';
 import 'package:workshop/style/component/default_textfield.dart';
 import 'package:workshop/style/component/drop_down_background.dart';
 import 'package:workshop/style/component/dropdownWithOutNullSafety.dart';
@@ -37,7 +42,7 @@ class CutterPage extends StatelessWidget {
   final CutDetail cutDetail;
   final List<StyleCode> styleCodes;
 
-  CutterPage({this.cutDetail,this.styleCodes});
+  CutterPage({this.cutDetail, this.styleCodes});
 
   @override
   Widget build(BuildContext context) {
@@ -49,19 +54,71 @@ class CutterPage extends StatelessWidget {
     TextEditingController realUsage = new TextEditingController();
     TextEditingController usage = new TextEditingController();
     TextEditingController height = new TextEditingController();
-    TextEditingController cutCode = new TextEditingController();
+    // TextEditingController cutCode = new TextEditingController();
     TextEditingController totalGoods = new TextEditingController();
     TextEditingController description = new TextEditingController();
-    String cutCodeStyle = '';
-    styleCodes.forEach((element) {
-      if(cutDetail.styleCode.contains(element.name)){
-        cutCodeStyle += element.shortName+'/';
-      }
-    });
-    cutCodeStyle = cutCodeStyle.substring(0,cutCodeStyle.length-1);
+
+    String style = cutDetail.styleCode + ',';
+    List<String> styleCodeList = [];
+    List<String> styleCodeShortList = [];
+
+    while (style.isNotEmpty) {
+      String s = style.substring(0, style.indexOf(','));
+      styleCodeList.add(s);
+      try {
+        String short =
+            styleCodes.firstWhere((element) => element.name == s).shortName;
+        styleCodeShortList.add(short);
+      } catch (e) {}
+      style = style.substring(s.length + 1);
+    }
+
+    // for(int i = 0 ; i < styleCodes.length;i++){
+    //   if(styleCodes[i].)
+    // }
+    // String cutCodeStyle = '';
+    // print(styleCodes)
+    // print(styleCodes.length);
+    // styleCodes.forEach((element) {
+    //   print(element.shortName);
+    // });
+
+    // styleCodes.forEach((element) {
+    //   if (cutDetail.styleCode.contains(element.name)) {
+    //     cutCodeStyle += element.shortName + '/';
+    //   }
+    // });
+    // cutCodeStyle = cutCodeStyle.substring(0, cutCodeStyle.length - 1);
     String des = cutDetail.projectDescription.isEmpty
         ? "ندارد"
         : cutDetail.projectDescription;
+
+    final json = jsonDecode(cutDetail.size).cast<Map<String, dynamic>>();
+    List<SizesAndStyle> list = json
+        .map<SizesAndStyle>((json) => SizesAndStyle.fromJson(json))
+        .toList();
+    List<Widget> sizes = [];
+    list.forEach((element) {
+      sizes.add(Container(
+        margin: EdgeInsets.all(7),
+        child: BackgroundWidget(
+          height: 80,
+          width: 80,
+          child: Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(element.size),
+                SizedBox(
+                  height: 5,
+                ),
+                Text(element.style),
+              ],
+            ),
+          ),
+        ),
+      ));
+    });
 
     Widget textWithUnderLine(String text) {
       return Container(
@@ -239,7 +296,21 @@ class CutterPage extends StatelessWidget {
     void insert({bool check = false}) async {
       ignoreButtonCubit.update(true);
       MyShowSnackBar.showSnackBar(context, 'کمی صبر کنید...');
-      String pieces = CalculateCutter.getPiecesJson(textEditingControllers);
+      List<CutCode> cutCodesList = CalculateCutter.getCutCodeList(
+          textEditingControllers,
+          styleCodeShortList,
+          cutDetail.projectId,
+          (int.parse(cutDetail.rollComplete) + 1).toString());
+      String cutCodesJson = CalculateCutter.getCutCodeListJson(
+          textEditingControllers,
+          styleCodeShortList,
+          cutDetail.projectId,
+          (int.parse(cutDetail.rollComplete) + 1).toString());
+      String pieces = CalculateCutter.getPiecesJson(
+          textEditingControllers,
+          styleCodeShortList,
+          cutDetail.projectId,
+          (int.parse(cutDetail.rollComplete) + 1).toString());
       String insert = Insert.queryInsertCutterProject(
           cutDetail.projectId,
           cutDetail.fabricId,
@@ -248,52 +319,61 @@ class CutterPage extends StatelessWidget {
           height.text,
           pieces,
           totalGoods.text,
-          cutCode.text+'-'+cutCodeStyle,
+          cutCodesJson,
           description.text);
-      String result =
-          await MyRequest.simpleQueryRequest('stockpile/runQuery.php', insert);
+      String update = Update.updateCutterCounter(
+          int.parse(cutDetail.rollComplete) + 1, cutDetail.projectId);
+      String result = await MyRequest.insertCutRequest(insert, update, pieces);
+
       ignoreButtonCubit.update(false);
-      if (result.trim() == "OK") {
+      if (result.trim().contains("OK")) {
         MyShowSnackBar.hideSnackBar(context);
         DateTime dateTime = DateTime.now();
         int year = dateTime.year;
         int month = dateTime.month;
         int day = dateTime.day;
-        CutReturn cutReturn = CutReturn(
-            repeat: check,
-            cut: Cut(
-              description: description.text.toString(),
-              height: height.text.toString(),
-              id: '0',
-              cutCode: cutCode.text.toString()+'-'+cutCodeStyle,
-              pieces: pieces,
-              realUsage: realUsage.text.toString(),
-              usage: usage.text.toString(),
-              totalGoods: totalGoods.text.toString(),
-              day: day.toString(),
-              month: month.toString(),
-              year: year.toString(),
-              project: Project(
-                id: cutDetail.projectId,
-                styleCode: cutDetail.styleCode,
-                size: cutDetail.size,
-                type: cutDetail.type,
-                roll: cutDetail.roll,
-                description: cutDetail.projectDescription,
-                brand: cutDetail.brand,
-              ),
-              fabric: Fabric(
-                  id: cutDetail.fabricId,
-                  description: cutDetail.fabricDescription,
-                  color: cutDetail.color,
-                  pieces: cutDetail.pieces,
-                  metric: cutDetail.metric,
-                  calite: cutDetail.calite,
-                  manufacture: cutDetail.manufacture),
-            ));
+
+        // List<Cut> cutters = [];
+        // for (int i = 0; i < int.parse(cutDetail.pieces); i++) {
+        //   for (int j = 0; j < sizes.length; j++) {
+        Cut cut = Cut(
+          description: description.text.toString(),
+          height: height.text.toString(),
+          id: '0',
+          // cutCode: cutCode.text.toString()+'-'+cutCodeStyle,
+          cutCode: cutCodesList,
+          pieces: pieces,
+          realUsage: realUsage.text.toString(),
+          usage: usage.text.toString(),
+          totalGoods: totalGoods.text.toString(),
+          day: day.toString(),
+          month: month.toString(),
+          year: year.toString(),
+          project: Project(
+            id: cutDetail.projectId,
+            styleCode: cutDetail.styleCode,
+            size: cutDetail.size,
+            type: cutDetail.type,
+            roll: cutDetail.roll,
+            description: cutDetail.projectDescription,
+            brand: cutDetail.brand,
+          ),
+          fabric: Fabric(
+              id: cutDetail.fabricId,
+              description: cutDetail.fabricDescription,
+              color: cutDetail.color,
+              pieces: cutDetail.pieces,
+              metric: cutDetail.metric,
+              calite: cutDetail.calite,
+              manufacture: cutDetail.manufacture),
+        );
+        //     cutters.add(cut);
+        //   }
+        // }
+        CutReturn cutReturn = CutReturn(repeat: check, cut: cut);
         Navigator.pop(context, cutReturn);
       } else {
-        print(result.trim());
+        // print(result.trim());
         MyShowSnackBar.showSnackBar(context, 'خطا در برقراری ارتباط..');
       }
     }
@@ -334,11 +414,12 @@ class CutterPage extends StatelessWidget {
                 ],
               ),
               space(30),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  textWithUnderLine("سایز : " + cutDetail.size),
-                ],
+              Wrap(
+                children: sizes,
+                // mainAxisAlignment: MainAxisAlignment.center,
+                // children: [
+                //   textWithUnderLine("سایز : " + cutDetail.size),
+                // ],
               ),
               space(20),
               Row(
@@ -396,17 +477,20 @@ class CutterPage extends StatelessWidget {
               Row(
                 children: [
                   Expanded(
-                    child: DefaultTextField(
-                        label: "کد برش",
-                        textInputType: TextInputType.number,
-                        textEditingController: cutCode),
+                    flex: 1,
+                    child: Container(),
                   ),
                   Expanded(
+                    flex:2,
                     child: DefaultTextField(
                       label: "جمع کل کار",
                       textInputType: TextInputType.number,
                       textEditingController: totalGoods,
                     ),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: Container(),
                   ),
                 ],
               ),
@@ -415,6 +499,11 @@ class CutterPage extends StatelessWidget {
                   maxLine: 2,
                   label: "توضیحات",
                   textEditingController: description),
+              space(10),
+              Text("طاقه : " +
+                  (int.parse(cutDetail.rollComplete) + 1).toString() +
+                  " از " +
+                  cutDetail.roll),
               space(20),
               BlocBuilder(
                 cubit: ignoreButtonCubit,
@@ -460,36 +549,19 @@ class CutterPage extends StatelessWidget {
                               } else if (realUsage.text.isEmpty ||
                                   usage.text.isEmpty ||
                                   height.text.isEmpty ||
-                                  cutCode.text.isEmpty ||
                                   totalGoods.text.isEmpty) {
                                 MyShowSnackBar.showSnackBar(
                                     context, 'لطفا تمامی فیلدهای را پر کنید.');
                               } else {
-                                insert();
+                                bool check = int.parse(cutDetail.roll) ==
+                                        (int.parse(cutDetail.rollComplete) + 1)
+                                    ? false
+                                    : true;
+                                insert(check: check);
                               }
                             },
                           ),
                         ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      TextButton(
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.resolveWith(
-                            (states) => Colors.blue.withOpacity(0.4),
-                          ),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            MyIcons.PLUS,
-                            style: MyTextStyle.iconStyle.copyWith(fontSize: 30),
-                          ),
-                        ),
-                        onPressed: () {
-                          insert(check: true);
-                        },
                       ),
                       SizedBox(
                         height: 10,

@@ -11,15 +11,16 @@ class CutCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ThemeData theme = Theme.of(context);
+    // ThemeData theme = Theme.of(context);
     return GestureDetector(
       onTap: () {
         showDialog(
-            context: context,
-            builder: (context) => CutterDetailPage(
-                  cutDetail: cut,
-                ),
-            barrierColor: Colors.transparent);
+          context: context,
+          builder: (context) => CutterDetailPage(
+            cutDetail: cut,
+          ),
+          barrierColor: Colors.black38,
+        );
       },
       child: Container(
         width: width,
@@ -56,11 +57,12 @@ class CutCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(cut.year + "/" + cut.month + "/" + cut.day),
-                    Text(
-                      "#" + cut.cutCode,
-                      style: theme.textTheme.headline4,
-                      textDirection: TextDirection.ltr,
-                    ),
+                    //TODO : Cut code
+                    // Text(
+                    //   "#" + 'cut.cutCode',
+                    //   style: theme.textTheme.headline4,
+                    //   textDirection: TextDirection.ltr,
+                    // ),
                   ],
                 ),
               ),

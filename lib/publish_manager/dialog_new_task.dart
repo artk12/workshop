@@ -84,7 +84,6 @@ class NewTaskDialog extends StatelessWidget {
                         label: 'cut code',
                         textInputType: TextInputType.number,
                         textEditingController: cutCode,
-
                       ),
                     ),
                   ),
@@ -167,13 +166,18 @@ class NewTaskDialog extends StatelessWidget {
                                   .round();
                               List<AssignmentTask> list = [];
                               for (int i = 0; i < sizes.length; i++) {
-                                list.add(AssignmentTask(
+                                //TODO : Cut code
+                                list.add(
+                                  AssignmentTask(
                                     x,
                                     task.internTime,
                                     task.amateurTime,
                                     task.expertTime,
                                     task.name,
-                                    cut.cutCode + "-" + sizes[i].toString()));
+                                    'cutCode'
+                                    // cut.cutCode + "-" + sizes[i].toString(),
+                                  ),
+                                );
                               }
                               Navigator.of(context).pop(list);
                             } catch (e) {

@@ -42,4 +42,8 @@ class Update {
   static String updatePassPersonnel(String id, String pass) {
     return "UPDATE `user` SET `pass`='$pass' WHERE `ID`='$id'";
   }
+
+  static String updateCutterCounter(int counter,String id){
+    return "UPDATE `project` SET `roll_complete`='$counter' WHERE `ID`='$id'";
+  }
 }

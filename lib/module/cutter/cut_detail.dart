@@ -14,23 +14,26 @@ class CutDetail {
   final String fabricDescription;
   final String log;
   final String size;
+  final String rollComplete;
 
-  CutDetail(
-      {this.type,
-      this.log,
-      this.brand,
-      this.styleCode,
-      this.roll,
-      this.color,
-      this.metric,
-      this.fabricId,
-      this.calite,
-      this.pieces,
-      this.manufacture,
-      this.fabricDescription,
-      this.projectDescription,
-      this.projectId,
-      this.size});
+  CutDetail({
+    this.type,
+    this.log,
+    this.brand,
+    this.styleCode,
+    this.roll,
+    this.color,
+    this.metric,
+    this.fabricId,
+    this.calite,
+    this.pieces,
+    this.manufacture,
+    this.fabricDescription,
+    this.projectDescription,
+    this.projectId,
+    this.size,
+    this.rollComplete,
+  });
 
   factory CutDetail.formJson(Map map) {
     return CutDetail(
@@ -47,6 +50,7 @@ class CutDetail {
       metric: map['metric'],
       color: map['color'],
       pieces: map['pieces'],
+      rollComplete: map['roll_complete'],
       fabricDescription: map['fabric_description'],
     );
   }

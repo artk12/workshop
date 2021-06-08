@@ -5,7 +5,7 @@ import 'package:workshop/module/stockpile/fabric.dart';
 
 class Cut {
   final String id;
-  final String cutCode;
+  final List<CutCode> cutCode;
   final String year;
   final String month;
   final String day;
@@ -45,9 +45,28 @@ class Cut {
         year: map['year'],
         realUsage: map['real_usage'],
         totalGoods: map['total_goods'],
-        cutCode: map['cut_code'],
+        cutCode: CutCode().getCutCodeFromJson(map['cut_code']),
         usage: map['all_usage'],
         fabric: Fabric.fromJson(jsonDecode(map['fabric'])),
         project: Project.fromJson(jsonDecode(map['project'])));
+  }
+}
+
+class CutCode {
+  String cutCode;
+
+  CutCode({this.cutCode});
+
+  CutCode fromJson(Map map) {
+    return CutCode(
+      cutCode: map['cutCode'],
+    );
+  }
+
+  List<CutCode> getCutCodeFromJson(String val) {
+    final json = jsonDecode(val).cast<Map<String, dynamic>>();
+    List<CutCode> items =
+        json.map<CutCode>((json) => fromJson(json)).toList();
+    return items;
   }
 }
