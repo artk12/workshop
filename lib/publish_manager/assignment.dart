@@ -6,9 +6,12 @@ import 'package:workshop/bloc/publishManager/assign_personnel.dart';
 import 'package:workshop/bloc/publishManager/assign_task.dart';
 import 'package:workshop/module/cutter/cut.dart';
 import 'package:workshop/module/publish_manager/personnel.dart';
+import 'package:workshop/module/publish_manager/pieces.dart';
+import 'package:workshop/module/publish_manager/step1_holder.dart';
 import 'package:workshop/module/publish_manager/task.dart';
 import 'package:workshop/provider/publish_manager_pages_controller.dart';
-import 'package:workshop/publish_manager/dialog_new_task.dart';
+import 'package:workshop/publish_manager/dialog_new_task_step1.dart';
+import 'package:workshop/publish_manager/dialog_new_task_step2.dart';
 import 'package:workshop/request/request.dart';
 import 'package:workshop/style/component/default_button.dart';
 import 'package:workshop/style/component/publish_manager/personnel_assignment.dart';
@@ -109,15 +112,24 @@ class AssignmentPage extends StatelessWidget {
                 DefaultButton(
                   title: 'فعالیت جدید',
                   onPressed: () async {
-                    List<AssignmentTask> t = await showDialog(
+                    //TODO : Cut code
+                    StepOneHolder r = await showDialog(
                       context: context,
-                      builder: (context) => NewTaskDialog(
+                      builder: (context) => NewTaskDialogStep1(
                         cuts: cuts,
                         tasks: tasks,
                       ),
                     );
-                    if (t != null) {
-                      assignTaskCubit.addTask(t);
+                    if (r != null) {
+                      List<AssignmentTask> t = await showDialog(
+                        context: context,
+                        builder: (context) => NewTaskDialogStep2(
+                          stepOneHolder: r,
+                        ),
+                      );
+                      if (t != null) {
+                        assignTaskCubit.addTask(t);
+                      }
                     }
                   },
                 ),
@@ -133,8 +145,8 @@ class AssignmentPage extends StatelessWidget {
                 BlocBuilder(
                   cubit: assignTaskCubit,
                   builder: (BuildContext context, AssignTaskState state) {
-                    print(state.assignTaskUpdate.length);
                     return Expanded(
+                      flex: 2,
                       child: ListView.builder(
                         itemBuilder: (context, index) => Draggable(
                             data: state.assignTaskUpdate[index],
@@ -154,6 +166,7 @@ class AssignmentPage extends StatelessWidget {
                   },
                 ),
                 Expanded(
+                  flex: 3,
                   child: BlocBuilder(
                     cubit: assignPersonnelCubit,
                     builder:

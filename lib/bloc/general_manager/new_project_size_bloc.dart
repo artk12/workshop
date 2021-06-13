@@ -28,6 +28,6 @@ class SizesAndStyle{
   SizesAndStyle({this.size,this.style,this.key = 0,this.shortStyleName});
 
   factory SizesAndStyle.fromJson(Map map){
-    return SizesAndStyle(style: map['styleCode'],size: map['size']);
+    return SizesAndStyle(style: map['styleCode'],size: map['size'],shortStyleName: map['shortCodeStyle']);
   }
 }

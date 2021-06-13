@@ -1,3 +1,7 @@
+import 'dart:convert';
+
+import 'package:workshop/bloc/general_manager/new_project_size_bloc.dart';
+
 class Project {
   final String id;
   final String type;
@@ -6,6 +10,7 @@ class Project {
   final String styleCode;
   final String size;
   final String description;
+  final List<SizesAndStyle> sizeAndStyle;
 
   Project(
       {this.description,
@@ -14,7 +19,16 @@ class Project {
       this.type,
       this.roll,
       this.brand,
-      this.id});
+      this.id,
+      this.sizeAndStyle});
+
+  static List<SizesAndStyle> getSizeAndStyleAsList(String size){
+    final json = jsonDecode(size).cast<Map<String, dynamic>>();
+    List<SizesAndStyle> list = json
+        .map<SizesAndStyle>((json) => SizesAndStyle.fromJson(json))
+        .toList();
+    return list;
+  }
 
   factory Project.fromJson(Map map) {
     return Project(
@@ -25,6 +39,7 @@ class Project {
       styleCode: map['style_code'],
       size: map['size'],
       description: map['description'],
+      sizeAndStyle: getSizeAndStyleAsList(map['size']),
     );
   }
 }

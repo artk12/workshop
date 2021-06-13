@@ -47,15 +47,12 @@ class SplitPages extends StatelessWidget {
             providers: [
               FutureProvider(create: (_) => MyList().getPersonnelList()),
               FutureProvider(create: (_) => MyList().getTaskList()),
-              FutureProvider(
-                create: (_) => MyList().getCutList(),
-              ),
+              FutureProvider(create: (_) => MyList().getCutList()),
               FutureProvider(create: (_) => MyList().getPersonnelMessages()),
               FutureProvider(create: (_) => MyList().getScoreList()),
               FutureProvider(create: (_) => MyList().getWarningList()),
               FutureProvider(create: (_) => MyList().getAbsentList()),
-              ChangeNotifierProvider.value(
-                  value: PublishManagerPageController()),
+              ChangeNotifierProvider.value(value: PublishManagerPageController()),
             ],
             child: PublishManager(user: s),
           ),

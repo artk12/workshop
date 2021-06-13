@@ -37,6 +37,14 @@ class MyRequest {
     }
   }
 
+  static Future<String> getPieces(String projectId) async{
+    http.Response response = await http.post(baseUrl+'publish_manager/getPieces.php',body: {
+      'project':projectId
+    });
+    return response.body;
+
+  }
+
   static Future<UserScore> getUserScore(String id) async {
     http.Response response = await http
         .post(baseUrl + "stockpile/getResult.php", body: {

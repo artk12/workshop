@@ -89,7 +89,6 @@ class CutterLanding extends StatelessWidget {
                               builder: (context) => NewCutDialog(projectId:projectId,cutterCounter:cutterCounter,styleCodes:styleCodes),
                             );
                             if (cutReturn != null) {
-                              //TODO:
                               cutList.insert(0, cutReturn.cut);
                               projectId = cutReturn.cut.project.id;
                               refreshProvider.refresh();
@@ -104,20 +103,23 @@ class CutterLanding extends StatelessWidget {
                       ),
                     ],
                   ),
-                  Expanded(
-                    child: PageView(
-                      scrollDirection: Axis.horizontal,
-                      controller: pageController,
-                      physics: NeverScrollableScrollPhysics(),
-                      children: [
-                        CutterDashboard(
-                          messages: messages,
-                          pageController: pageController,
-                          cutList: cutList,
-                        ),
-                        CutPage(
-                            pageController: pageController, cutList: cutList),
-                      ],
+                  ChangeNotifierProvider.value(
+                    value: refreshProvider,
+                    child: Expanded(
+                      child: PageView(
+                        scrollDirection: Axis.horizontal,
+                        controller: pageController,
+                        physics: NeverScrollableScrollPhysics(),
+                        children: [
+                          CutterDashboard(
+                            messages: messages,
+                            pageController: pageController,
+                            cutList: cutList,
+                          ),
+                          CutPage(
+                              pageController: pageController, cutList: cutList),
+                        ],
+                      ),
                     ),
                   )
                 ],

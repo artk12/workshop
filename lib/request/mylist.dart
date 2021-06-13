@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:workshop/bloc/publishManager/timer_controller.dart';
+import 'package:workshop/cutter/cutter_detail_page.dart';
 import 'package:workshop/module/cutter/cut.dart';
 import 'package:workshop/module/general_manager/project.dart';
 import 'package:workshop/module/general_manager/styleCode.dart';
@@ -9,8 +10,10 @@ import 'package:workshop/module/publish_manager/assign_personnel.dart';
 import 'package:workshop/module/publish_manager/assignment_log.dart';
 import 'package:workshop/module/publish_manager/personnel.dart';
 import 'package:workshop/module/publish_manager/personnel_assign.dart';
+import 'package:workshop/module/publish_manager/pieces.dart';
 import 'package:workshop/module/publish_manager/score.dart';
 import 'package:workshop/module/publish_manager/task.dart';
+import 'package:workshop/module/publish_manager/task_project_pieces.dart';
 import 'package:workshop/module/publish_manager/warning.dart';
 import 'package:workshop/module/stockpile/fabric.dart';
 import 'package:workshop/module/stockpile/fabric_log.dart';
@@ -133,6 +136,20 @@ class MyList {
     List<FabricLog> items =
         json.map<FabricLog>((json) => FabricLog.fromJson(json)).toList();
     return items;
+  }
+
+  Future<TaskPiecesProject> getPieces(String project)async{
+    String body = await MyRequest.getPieces(project);
+    if(body == null){
+      return null;
+    }else if (body == 'not found'){
+      return TaskPiecesProject(pieces: []);
+    }else{
+      final json = jsonDecode(body);
+      Project p = Project.fromJson(json['project']);
+      List<Pieces> items = json['pieces'].map<Pieces>((json)=>Pieces.fromJson(json)).toList();
+      return TaskPiecesProject(pieces: items,project: p);
+    }
   }
 
   Future<List<ItemLog>> getItemLogs() async {

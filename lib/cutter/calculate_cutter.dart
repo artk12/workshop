@@ -73,10 +73,10 @@ class CalculateCutter {
     return jsonEncode(maps);
   }
 
-  static List<Pieces> getPiecesFromJson(String body) {
+  static List<PiecesLayer> getPiecesFromJson(String body) {
     final json = jsonDecode(body).cast<Map<String, dynamic>>();
-    List<Pieces> items =
-        json.map<Pieces>((json) => Pieces.fromJson(json)).toList();
+    List<PiecesLayer> items =
+        json.map<PiecesLayer>((json) => PiecesLayer.fromJson(json)).toList();
     return items;
   }
 }

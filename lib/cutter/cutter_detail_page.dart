@@ -11,14 +11,14 @@ import 'package:workshop/style/component/stockpile/dialog_background_blur.dart';
 
 import 'cutter_page.dart';
 
-class Pieces {
+class PiecesLayer {
   final String layer;
   final String surplus;
 
-  Pieces({this.surplus, this.layer});
+  PiecesLayer({this.surplus, this.layer});
 
-  factory Pieces.fromJson(Map map) {
-    return Pieces(
+  factory PiecesLayer.fromJson(Map map) {
+    return PiecesLayer(
       layer: map['layer'],
       surplus: map['surplus'],
     );
@@ -33,7 +33,7 @@ class CutterDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     int pieces = int.parse(cutDetail.fabric.pieces);
-    List<Pieces> piecesList =
+    List<PiecesLayer> piecesList =
         CalculateCutter.getPiecesFromJson(cutDetail.pieces);
     Widget space(double height) => SizedBox(height: height);
     TextEditingController realUsage =
