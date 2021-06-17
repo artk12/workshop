@@ -25,6 +25,7 @@ class PublishManagerLanding extends StatelessWidget {
   final List<Personnel> personnel;
   final TimerControllerProvider timerControllerProvider;
   final PersonnelLogProvider personnelLogProvider;
+  final List<TaskFolder> taskFolder;
 
   PublishManagerLanding({
     this.tasks,
@@ -34,6 +35,7 @@ class PublishManagerLanding extends StatelessWidget {
     this.staff,
     this.personnelLogProvider,
     this.timerControllerProvider,
+    this.taskFolder
   });
 
   @override

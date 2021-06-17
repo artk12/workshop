@@ -106,8 +106,9 @@ class NewTaskDialogStep2 extends StatelessWidget {
                                 .where((element) =>
                                     element.shortStyleName == shortStyleCode)
                                 .toList();
-                            int x =
-                                (int.parse(item.layer) / sizes.length).round();
+                            // int x =
+                            //     (int.parse(item.layer) / sizes.length).round();
+                            int x = (int.parse(item.layer));
                             sizes.forEach((element) {
                               assignmentTaskList.add(AssignmentTask(
                                 x,

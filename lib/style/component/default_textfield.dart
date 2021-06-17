@@ -17,9 +17,10 @@ class DefaultTextField extends StatelessWidget {
   final TextAlign textAlign;
   final bool readOnly;
   final String initText;
+  final FocusScopeNode node;
   final Function(String) onChange;
-  DefaultTextField({this.textAlign = TextAlign.start,this.maxLength,this.label, this.maxLine = 1,this.textInputType = TextInputType.text
-    ,this.textEditingController,this.width,this.hint,this.height,this.padding = const EdgeInsets.all(8),this.readOnly = false,this.initText,this.onChange});
+  DefaultTextField({this.textAlign = TextAlign.start,this.maxLength,this.label, this.maxLine = 1,this.textInputType = TextInputType.text,this.node,
+    this.textEditingController,this.width,this.hint,this.height,this.padding = const EdgeInsets.all(8),this.readOnly = false,this.initText,this.onChange});
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +31,7 @@ class DefaultTextField extends StatelessWidget {
       padding: padding,
       child: TextFormField(
         onChanged: onChange,
+        focusNode: node,
         readOnly: readOnly,
         maxLength: maxLength,
         controller: textEditingController,

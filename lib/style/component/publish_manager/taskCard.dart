@@ -26,6 +26,7 @@ class TaskCard extends StatelessWidget {
       },
       child: Container(
         // height: 100,
+        margin: EdgeInsets.symmetric(vertical: 8,horizontal: 6),
         constraints: BoxConstraints(maxWidth: 60),
         // margin: EdgeInsets.all(10),
         padding: EdgeInsets.symmetric(vertical: 5,horizontal: 9),
@@ -33,36 +34,40 @@ class TaskCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(5),
           color: Colors.white12
         ),
-        child: Row(
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               mainAxisSize: MainAxisSize.min,
               children: [
+                Text(task.name,style: theme.textTheme.headline4,),
+                SizedBox(height: 10,),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Text("حرفه ای : ",style: theme.textTheme.headline6,),
-                    Text(task.expertTime,style: theme.textTheme.headline4,),
+                    Text("حرفه ای : " + task.expertTime,style: theme.textTheme.headline6,),
+                    Text("تازه کار : " + task.amateurTime,style: theme.textTheme.headline6,),
+                    Text("کار آموز : " + task.internTime,style: theme.textTheme.headline6,),
+
                   ],
                 ),
                 SizedBox(height: 5,),
-                Row(
-                  children: [
-                    Text("تازه کار : ",style: theme.textTheme.headline6,),
-                    Text(task.amateurTime,style: theme.textTheme.headline4,),
-                  ],
-                ),
-                SizedBox(height: 5,),
-                Row(
-                  children: [
-                    Text("کارآموز : ",style: theme.textTheme.headline6,),
-                    Text(task.internTime,style: theme.textTheme.headline4,),
-                  ],
-                ),
+                // Row(
+                //   children: [
+                //     Text("تازه کار : ",style: theme.textTheme.headline6,),
+                //     Text(task.amateurTime,style: theme.textTheme.headline4,),
+                //   ],
+                // ),
+                // SizedBox(height: 5,),
+                // Row(
+                //   children: [
+                //     Text("کارآموز : ",style: theme.textTheme.headline6,),
+                //     Text(task.internTime,style: theme.textTheme.headline4,),
+                //   ],
+                // ),
               ],
             ),
-            Text(task.name,style: theme.textTheme.headline4,),
           ],
         ),
       ),

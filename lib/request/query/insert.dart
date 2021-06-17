@@ -74,8 +74,11 @@ class Insert {
   }
 
   static String queryInsertTask(
-      String name, String expertTime, String amateurTime, String internTime) {
-    return "INSERT INTO `task`(`name`, `expert_time`, `amateur_time`, `intern_time`) VALUES ('$name','$expertTime','$amateurTime','$internTime')";
+      String name, String expertTime, String amateurTime, String internTime,String groupId) {
+    return "INSERT INTO `task`(`name`, `expert_time`, `amateur_time`, `intern_time`,`group_id`) VALUES ('$name','$expertTime','$amateurTime','$internTime','$groupId')";
+  }
+  static String queryInsertNewFolderTask(String name){
+    return "INSERT INTO `task_group`(`name`) VALUES ('$name')";
   }
 
 // static String queryInputToFabricLog(String fabricId,int year,int month,int day){

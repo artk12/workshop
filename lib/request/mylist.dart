@@ -222,6 +222,14 @@ class MyList {
     return items;
   }
 
+  Future<List<TaskFolder>> getTaskFolderList() async {
+    String body = await MyRequest.simpleQueryRequest(
+        'stockpile/getResult.php', GetData.getTaskFolder);
+    final json = jsonDecode(body).cast<Map<String, dynamic>>();
+    List<TaskFolder> items = json.map<TaskFolder>((json) => TaskFolder.fromJson(json)).toList();
+    return items;
+  }
+
   // static Future<List<AssignPersonnel>> getRealAssignmentTask()async{
   //   List<AssignPersonnel> items = [];
   //   // int x = 0;

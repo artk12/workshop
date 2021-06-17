@@ -6,9 +6,10 @@ class Task {
   String expertTime;
   String amateurTime;
   String internTime;
+  String groupId;
 
   Task(
-      {this.name, this.id, this.amateurTime, this.expertTime, this.internTime});
+      {this.name, this.id, this.amateurTime, this.expertTime, this.internTime,this.groupId});
 
   factory Task.fromJson(Map map) {
     return Task(
@@ -17,9 +18,21 @@ class Task {
       amateurTime: map['amateur_time'],
       expertTime: map['expert_time'],
       internTime: map['intern_time'],
+      groupId: map['group_id']
     );
   }
 }
+
+class TaskFolder{
+  final String name;
+  final String id;
+  TaskFolder({this.name,this.id});
+
+  factory TaskFolder.fromJson(Map map){
+    return TaskFolder(id: map['ID'],name:map['name']);
+  }
+}
+
 
 class FakeAssignmentTask {
   int number;
@@ -66,9 +79,10 @@ class AssignmentTask {
   String expertTime;
   String amateurTime;
   String internTime;
+  String orgCutCode;
 
   AssignmentTask(int number, String internTime, String amateurTime,
-      String expertTime, String name, String cutCode) {
+      String expertTime, String name, String cutCode, {this.orgCutCode}) {
     this.number = number;
     this.name = name;
     this.expertTime = expertTime;

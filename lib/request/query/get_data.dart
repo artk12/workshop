@@ -23,6 +23,7 @@ class GetData {
   //--------------------------------------------publish manager
   static final String getAllUser = "SELECT * FROM `user`";
   static final String getAllTask = "SELECT * FROM `task`";
+  static final String getTaskFolder = "SELECT * FROM `task_group`";
 
   static get getTodayAssignments {
     return "SELECT * FROM `assignment`";

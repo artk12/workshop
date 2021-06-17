@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:workshop/bloc/refresh_provider.dart';
 import 'package:workshop/module/publish_manager/task.dart';
-import 'package:workshop/publish_manager/dialog_add_new_task.dart';
 import 'package:workshop/style/component/default_button.dart';
-import 'package:workshop/style/component/publish_manager/taskCard.dart';
+import 'package:workshop/style/component/publish_manager/taskFolderCard.dart';
+
+import 'dialog_add_new_folder_task.dart';
 
 class TasksPage extends StatelessWidget {
-  final RefreshProvider refreshProvider;
   final List<Task> tasks;
+  final List<TaskFolder> taskFolders;
 
-  TasksPage({this.tasks, this.refreshProvider});
+  TasksPage({this.tasks, this.taskFolders});
 
   @override
   Widget build(BuildContext context) {
+    RefreshProvider refreshProvider = Provider.of(context);
     var size = MediaQuery.of(context).size;
-
-    final double itemHeight = (size.height - kToolbarHeight - 24) / 6;
+    final double itemHeight = (size.height - kToolbarHeight - 24) / 5;
     final double itemWidth = size.width / 2;
 
     return Container(
@@ -26,15 +28,15 @@ class TasksPage extends StatelessWidget {
           Row(
             children: [
               DefaultButton(
-                title: 'فعالیت جدید',
+                title: 'پوشه جدید',
                 onPressed: () async {
-                  Task t = await showDialog(
+                  TaskFolder t = await showDialog(
                     context: context,
-                    builder: (context) => AddNewTask(),
+                    builder: (context) => AddNewFolderTask(),
                     barrierColor: Colors.black54,
                   );
                   if (t != null) {
-                    tasks.add(t);
+                    taskFolders.add(t);
                     refreshProvider.refresh();
                   }
                 },
@@ -48,12 +50,19 @@ class TasksPage extends StatelessWidget {
               controller: new ScrollController(keepScrollOffset: false),
               shrinkWrap: true,
               scrollDirection: Axis.vertical,
+              // padding: EdgeInsets.all(5),
               children: List.generate(
-                  tasks.length,
-                  (index) => TaskCard(
-                        task: tasks[index],
-                        refreshProvider: refreshProvider,
-                        tasks: tasks,
+                  taskFolders.length,
+                  (index) => Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ChangeNotifierProvider.value(
+                          value: refreshProvider,
+                          child: TaskFolderCard(
+                            taskFolder: taskFolders[index],
+                            tasksFolder: taskFolders,
+                            tasks: tasks,
+                          ),
+                        ),
                       )),
             ),
           )

@@ -31,6 +31,10 @@ class AssignTaskCubit extends Cubit<AssignTaskState> {
 
   void addTask(List<AssignmentTask> t) => calculateAddTask(t);
 
+  void clear(){
+    emit(AssignTaskState(assignTaskUpdate: []));
+  }
+
   void refresh() {
     emit(AssignTaskState(
         assignTaskUpdate: FakeAssignmentTask.toOriginal(assignTask)));

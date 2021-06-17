@@ -35,6 +35,7 @@ class PublishManager extends StatelessWidget {
   Widget build(BuildContext context) {
     GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
     List<Task> tasks = Provider.of<List<Task>>(context);
+    List<TaskFolder> tasksFolder = Provider.of<List<TaskFolder>>(context);
     List<Cut> cuts = Provider.of<List<Cut>>(context);
     List<Personnel> personnel = Provider.of<List<Personnel>>(context);
     List<UserScore> userScores = Provider.of<List<UserScore>>(context);
@@ -66,7 +67,7 @@ class PublishManager extends StatelessWidget {
             personnel == null ||
             absents == null ||
             userScores == null ||
-            userWarning == null
+            userWarning == null || tasksFolder == null
         ? LoadingPage()
         : Scaffold(
             key: scaffoldKey,
@@ -136,6 +137,7 @@ class PublishManager extends StatelessWidget {
                           //TODO : Cut code
                             cuts: cuts,
                             tasks: tasks,
+                            taskFolders: tasksFolder,
                             personnel: personnel,
                             assignPersonnelCubit:
                                 streamPageController.assignPersonnelCubit,
@@ -143,9 +145,12 @@ class PublishManager extends StatelessWidget {
                                 streamPageController.assignTaskCubit,
                             pageController: pageController,
                             streamPageController: streamPageController),
-                        TasksPage(
-                          tasks: tasks,
-                          refreshProvider: refreshProvider,
+                        ChangeNotifierProvider.value(
+                          value: refreshProvider,
+                          child: TasksPage(
+                            tasks: tasks,
+                            taskFolders:tasksFolder
+                          ),
                         ),
                       ],
                     ),

@@ -10,18 +10,11 @@ import 'package:workshop/style/component/dialog_bg.dart';
 import 'package:workshop/style/theme/my_icons.dart';
 import 'package:workshop/style/theme/textstyle.dart';
 
-class AddNewTask extends StatelessWidget {
-  final String groupId;
-
-  AddNewTask({this.groupId});
-
+class AddNewFolderTask extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     TextEditingController itemName = new TextEditingController();
-    TextEditingController expert = new TextEditingController();
-    TextEditingController amateur = new TextEditingController();
-    TextEditingController intern = new TextEditingController();
     IgnoreButtonCubit ignoreButtonCubit =
         IgnoreButtonCubit(IgnoreButtonState(ignore: false));
     DialogMessageCubit messageCubit =
@@ -35,47 +28,19 @@ class AddNewTask extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                "اضافه فعالیت",
+                "پوشه جدید",
                 style: theme.textTheme.headline3,
               ),
               SizedBox(height: 10),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: DefaultTextField(
-                  hint: 'اسم فعالیت',
+                  hint: 'اسم پوشه',
                   textInputType: TextInputType.text,
                   textEditingController: itemName,
                 ),
               ),
               SizedBox(height: 10),
-              Row(
-                children: [
-                  Expanded(
-                    child: DefaultTextField(
-                      hint: 'حرفه ای',
-                      textInputType: TextInputType.number,
-                      textEditingController: expert,
-                    ),
-                  ),
-                  Expanded(
-                    child: DefaultTextField(
-                      hint: 'تازه کار',
-                      textInputType: TextInputType.number,
-                      textEditingController: amateur,
-                    ),
-                  ),
-                  Expanded(
-                    child: DefaultTextField(
-                      hint: 'کارآموز',
-                      textInputType: TextInputType.number,
-                      textEditingController: intern,
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 10,
-              ),
               BlocBuilder(
                   cubit: messageCubit,
                   builder: (BuildContext context, DialogMessageState state) =>
@@ -119,31 +84,19 @@ class AddNewTask extends StatelessWidget {
                               ),
                             ),
                             onPressed: () async {
-                              if (itemName.text.isEmpty ||
-                                  expert.text.isEmpty ||
-                                  intern.text.isEmpty ||
-                                  amateur.text.isEmpty) {
+                              if (itemName.text.isEmpty) {
                                 messageCubit.changeMessage(
-                                    "لطفا تمامی فیلدها را پر کنید...");
+                                    "لطفا نام پوشه را انتخاب کنید.");
                               } else {
                                 messageCubit.changeMessage("کمی صبر کنید...");
                                 ignoreButtonCubit.update(true);
-                                String query = Insert.queryInsertTask(
-                                    itemName.text,
-                                    expert.text,
-                                    amateur.text,
-                                    intern.text,
-                                    groupId);
+                                String query = Insert.queryInsertNewFolderTask(itemName.text.trim(),);
                                 String res = await MyRequest.simpleQueryRequest(
                                     'runQueryId.php', query);
                                 if (int.tryParse(res) != null) {
-                                  Task t = Task(
+                                  TaskFolder t = TaskFolder(
                                       id: res,
-                                      internTime: intern.text,
-                                      expertTime: expert.text,
-                                      amateurTime: amateur.text,
-                                      name: itemName.text,
-                                      groupId: groupId);
+                                      name: itemName.text);
                                   Navigator.pop(context, t);
                                 } else {
                                   ignoreButtonCubit.update(false);

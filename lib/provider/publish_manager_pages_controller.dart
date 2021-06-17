@@ -11,7 +11,8 @@ const String LOG = "LOG";
 
 class PublishManagerPageController extends ChangeNotifier {
   String page = DASHBOARD;
-  int pageView = 0;
+  //TODO THIS
+  int pageView = 2;
   AssignTaskCubit assignTaskCubit =
       AssignTaskCubit(AssignTaskState(assignTaskUpdate: []));
   AssignPersonnelCubit assignPersonnelCubit =
