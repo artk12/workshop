@@ -146,10 +146,9 @@ class AssignmentPage extends StatelessWidget {
                           ),
                         ),
                       );
-                      if(t != null){
+                      if (t != null) {
                         assignTaskCubit.addTask(t);
                       }
-
                     },
                   ),
                 ],
@@ -166,45 +165,56 @@ class AssignmentPage extends StatelessWidget {
                     builder: (BuildContext context, AssignTaskState state) {
                       List<String> titles = [];
                       state.assignTaskUpdate.forEach((element) {
-                        String c = element.cutCode.substring(0,element.cutCode.lastIndexOf('-'));
-                        if(!titles.contains(c)){
+                        String c = element.cutCode
+                            .substring(0, element.cutCode.lastIndexOf('-'));
+                        if (!titles.contains(c)) {
                           titles.add(c);
                         }
                       });
                       List<DragTaskGroup> myList = [];
                       titles.forEach((element) {
-                        myList.add(
-                          DragTaskGroup(
+                        myList.add(DragTaskGroup(
                             title: element,
                             tasks: state.assignTaskUpdate.where((item) {
-                              String c = item.cutCode.substring(0,item.cutCode.lastIndexOf('-'));
+                              String c = item.cutCode
+                                  .substring(0, item.cutCode.lastIndexOf('-'));
                               return c == element;
-                            }).toList()
-                          )
-                        );
+                            }).toList()));
                       });
                       // print(titles.length);
                       return Expanded(
                         flex: 2,
-                        child: myList.length == 0 ?Container() :ListView(
-                          children: List.generate(myList.length, (i) => ExpansionTile(
-                            title: Text(myList[i].title,style: Theme.of(context).textTheme.headline6,),
-                            trailing: SizedBox.shrink(),
-                            children: List.generate(myList[i].tasks.length, (j) => Draggable(
-                                data: myList[i].tasks[j],
-                                feedback: TaskAssignmentCard(
-                                  isDragging: true,
-                                  name: myList[i].tasks[j].name,
-                                  cutCode: myList[i].tasks[j].cutCode,
+                        child: myList.length == 0
+                            ? Container()
+                            : ListView(
+                                children: List.generate(
+                                  myList.length,
+                                  (i) => ExpansionTile(
+                                    title: Text(
+                                      myList[i].title,
+                                      style:
+                                          Theme.of(context).textTheme.headline6,
+                                    ),
+                                    trailing: SizedBox.shrink(),
+                                    children: List.generate(
+                                      myList[i].tasks.length,
+                                      (j) => Draggable(
+                                        data: myList[i].tasks[j],
+                                        feedback: TaskAssignmentCard(
+                                          isDragging: true,
+                                          name: myList[i].tasks[j].name,
+                                          cutCode: myList[i].tasks[j].cutCode,
+                                        ),
+                                        child: TaskAssignmentCard(
+                                          name: myList[i].tasks[j].name,
+                                          cutCode: myList[i].tasks[j].cutCode,
+                                          number: myList[i].tasks[j].number,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
                                 ),
-                                child: TaskAssignmentCard(
-                                  name: myList[i].tasks[j].name,
-                                  cutCode: myList[i].tasks[j].cutCode,
-                                  number: myList[i].tasks[j].number,
-                                ))),
-
-                          ),),
-                        ),
+                              ),
                       );
                     },
                   ),
@@ -252,10 +262,12 @@ class AssignmentPage extends StatelessWidget {
     );
   }
 }
-class DragTaskGroup{
+
+class DragTaskGroup {
   final String title;
   final List<AssignmentTask> tasks;
-  DragTaskGroup({this.tasks,this.title});
+
+  DragTaskGroup({this.tasks, this.title});
 }
 // itemBuilder: (context, index) => Draggable(
 //     data: state.assignTaskUpdate[index],

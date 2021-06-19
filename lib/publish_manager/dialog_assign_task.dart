@@ -92,6 +92,40 @@ class AssignTaskDialog extends StatelessWidget {
               SizedBox(
                 height: 20,
               ),
+              Container(
+                padding: EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Colors.white24,
+                  ),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: TextButton(
+                  onPressed: () {
+                    quantity = alignmentTask.number;
+                    tpu = Duration(seconds: quantity * time);
+                    int second = tpu.inSeconds;
+                    String name = alignmentTask.name;
+                    int number = quantity;
+                    Navigator.pop(
+                      context,
+                      AssignTaskPersonnel(
+                          name: name,
+                          number: number,
+                          personnel: personnel,
+                          time: second,
+                          cutCode: alignmentTask.cutCode),
+                    );
+                  },
+                  child: Text(
+                    "جابه جایی سریع",
+                    style: theme.textTheme.headline3,
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
               Row(
                 children: [
                   Expanded(
@@ -154,9 +188,6 @@ class AssignTaskDialog extends StatelessWidget {
               SizedBox(
                 height: 10,
               ),
-              SizedBox(
-                height: 10,
-              ),
               BlocBuilder(
                 cubit: ignoreButtonCubit,
                 builder: (BuildContext context, IgnoreButtonState state) =>
@@ -206,13 +237,14 @@ class AssignTaskDialog extends StatelessWidget {
                                 String name = alignmentTask.name;
                                 int number = quantity;
                                 Navigator.pop(
-                                    context,
-                                    AssignTaskPersonnel(
-                                        name: name,
-                                        number: number,
-                                        personnel: personnel,
-                                        time: time,
-                                        cutCode: alignmentTask.cutCode));
+                                  context,
+                                  AssignTaskPersonnel(
+                                      name: name,
+                                      number: number,
+                                      personnel: personnel,
+                                      time: time,
+                                      cutCode: alignmentTask.cutCode),
+                                );
                               }
                             },
                           ),
