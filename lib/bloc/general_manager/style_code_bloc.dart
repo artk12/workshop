@@ -9,7 +9,7 @@ class StyleCodeCubit extends Cubit<StyleCodeState>{
     List<StyleCodeNames> list = [];
     state.styleChecks.forEach((element) {
       bool t = element.check;
-      if(element.name == name){
+      if(element.shortName == name){
         t = check;
       }
       list.add(StyleCodeNames(check: t,name: element.name,shortName: element.shortName));

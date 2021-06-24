@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:workshop/cutter/calculate_cutter.dart';
 import 'package:workshop/cutter/cutter_detail_page.dart';
 import 'package:workshop/module/cutter/cut.dart';
 
@@ -11,7 +12,18 @@ class CutCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // ThemeData theme = Theme.of(context);
+
+    int totalPieces = 0;
+    List
+    <PiecesLayer> piecesList = CalculateCutter.getPiecesFromJson(cut.pieces);
+    try{
+      piecesList.forEach((element) {
+        totalPieces += int.parse(element.layer);
+      });
+    }catch(e){}
+
+
+
     return GestureDetector(
       onTap: () {
         showDialog(
@@ -19,7 +31,6 @@ class CutCard extends StatelessWidget {
           builder: (context) => CutterDetailPage(
             cutDetail: cut,
           ),
-          barrierColor: Colors.black38,
         );
       },
       child: Container(
@@ -31,40 +42,37 @@ class CutCard extends StatelessWidget {
           color: Colors.black.withOpacity(0.3),
           borderRadius: BorderRadius.circular(10),
         ),
-        child: Row(
+        child: Column(
           children: [
-            Expanded(
-              child: Container(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("کد پروژه : " + cut.project.id),
-                    SizedBox(
-                      height: 10,
+            Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    padding: EdgeInsets.all(10),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        // Text(cut.year + "/" + cut.month + "/" + cut.day),
+                        Text(totalPieces.toString()+" لایه")
+                      ],
                     ),
-                    Text("کالیته : " + cut.fabric.calite),
-                  ],
+                  ),
                 ),
-              ),
+              ],
             ),
-            Expanded(
-              child: Container(
-                padding: EdgeInsets.all(10),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Text(cut.year + "/" + cut.month + "/" + cut.day),
-                    //TODO : Cut code
-                    // Text(
-                    //   "#" + 'cut.cutCode',
-                    //   style: theme.textTheme.headline4,
-                    //   textDirection: TextDirection.ltr,
-                    // ),
-                  ],
-                ),
+            Container(
+              width: width,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("کد پروژه : " + cut.project.id,style: Theme.of(context).textTheme.headline3,),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text("بارکد : " + cut.fabric.barCode,style: Theme.of(context).textTheme.headline2,),
+                ],
               ),
             ),
           ],

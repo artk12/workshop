@@ -1,7 +1,5 @@
 import 'dart:convert';
-
 import 'package:workshop/bloc/publishManager/timer_controller.dart';
-import 'package:workshop/cutter/cutter_detail_page.dart';
 import 'package:workshop/module/cutter/cut.dart';
 import 'package:workshop/module/general_manager/project.dart';
 import 'package:workshop/module/general_manager/styleCode.dart';
@@ -200,6 +198,7 @@ class MyList {
   Future<List<Cut>> getCutList() async {
     String body =
         await MyRequest.simpleQueryRequest('cutter/getCutList.php', '');
+
     final json = jsonDecode(body).cast<Map<String, dynamic>>();
     List<Cut> items = json.map<Cut>((json) => Cut.fromJson(json)).toList();
     return items;

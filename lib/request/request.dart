@@ -37,12 +37,11 @@ class MyRequest {
     }
   }
 
-  static Future<String> getPieces(String projectId) async{
-    http.Response response = await http.post(baseUrl+'publish_manager/getPieces.php',body: {
-      'project':projectId
-    });
+  static Future<String> getPieces(String projectId) async {
+    http.Response response = await http.post(
+        baseUrl + 'publish_manager/getPieces.php',
+        body: {'project': projectId});
     return response.body;
-
   }
 
   static Future<UserScore> getUserScore(String id) async {
@@ -122,7 +121,7 @@ class MyRequest {
 
   static Future<CutDetail> getCutDetail(
       String barcode, String projectCode) async {
-    try{
+    try {
       http.Response response = await http.post(
           baseUrl + "cutter/getCutDetail.php",
           body: {'id': projectCode, 'barcode': barcode});
@@ -130,7 +129,7 @@ class MyRequest {
         CutDetail cutDetail = CutDetail.formJson(jsonDecode(response.body));
         return cutDetail;
       }
-    }catch(e){
+    } catch (e) {
       return null;
     }
     return null;
@@ -228,12 +227,19 @@ class MyRequest {
     return response.body;
   }
 
-  static Future<String> insertCutRequest(String insert, String update,String pieces) async {
-    try{
-      http.Response response = await http
-          .post(baseUrl + 'cutter/insertCut.php', body: {'query1': insert, 'query2': update,'pieces':pieces});
+  static Future<String> insertCutRequest(
+      String insert, String update, String pieces, String fabricId) async {
+    try {
+      http.Response response = await http.post(baseUrl + 'cutter/insertCut.php',
+          body: {
+            'query1': insert,
+            'query2': update,
+            'pieces': pieces,
+            'fabricId': fabricId
+          });
+      print(response.body);
       return response.body;
-    }catch(e){
+    } catch (e) {
       return null;
     }
   }

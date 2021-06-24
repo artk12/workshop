@@ -130,7 +130,7 @@ class AddFabricItem extends StatelessWidget {
                 builder: (BuildContext context, DialogMessageState state) =>
                     Text(
                   state.message,
-                  style: theme.textTheme.headline2,
+                  style: theme.textTheme.headline1.copyWith(fontSize:28),
                 ),
               ),
               SizedBox(
@@ -198,9 +198,9 @@ class AddFabricItem extends StatelessWidget {
                               String barcode = messageCubit.state.message;
 
                               if (manufacture.isEmpty ||
-                                  calite.isEmpty ||
+                                  // calite.isEmpty ||
                                   metric.isEmpty ||
-                                  color.isEmpty ||
+                                  // color.isEmpty ||
                                   pieces.isEmpty) {
                                 MyShowSnackBar.showSnackBar(
                                     context, "لطفا تمامی فیلدها را پر کنید.");

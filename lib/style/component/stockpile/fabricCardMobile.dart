@@ -41,13 +41,13 @@ class FabricCardMobile extends StatelessWidget {
                 borderRadius: BorderRadius.circular(5),
               ),
               width: double.maxFinite,
-              height: 130,
+              height: 160,
             ),
             Align(
               alignment: Alignment.topCenter,
               child: Container(
                 width: double.maxFinite,
-                height: 130,
+                height: 150,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -64,6 +64,8 @@ class FabricCardMobile extends StatelessWidget {
                       ],
                     ),
                     space(6),
+                    Text(fabric.barCode,style: theme.textTheme.headline1,),
+                    space(6),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -74,7 +76,7 @@ class FabricCardMobile extends StatelessWidget {
                           decoration: BoxDecoration(
                               border:Border(bottom: BorderSide(color: Colors.white.withOpacity(0.4),width: 1.5))
                           ),
-                          child: Text(
+                          child: fabric.calite.isEmpty? Text("فاقد کالیته",):Text(
                             fabric.calite,
                             style: theme.textTheme.headline1,
                           ),
@@ -92,7 +94,7 @@ class FabricCardMobile extends StatelessWidget {
                             fabric.pieces+' تکه ',
                             style: theme.textTheme.headline1,
                           ),
-                          Text(
+                          fabric.color.isEmpty? Text("فاقد رنگ",):Text(
                             fabric.color,
                             style: theme.textTheme.headline1,
                           ),

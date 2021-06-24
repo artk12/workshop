@@ -35,17 +35,17 @@ class NewProject extends StatelessWidget {
     TextEditingController rollController = new TextEditingController();
     TextEditingController descriptionController = new TextEditingController();
     Widget space(double height) => SizedBox(height: height);
-    IgnoreButtonCubit ignoreButtonCubit =
-        IgnoreButtonCubit(IgnoreButtonState(ignore: false));
-    NewProjectSizeCubit cubit =
-        new NewProjectSizeCubit(NewProjectSizeState(list: []));
+    IgnoreButtonCubit ignoreButtonCubit = IgnoreButtonCubit(IgnoreButtonState(ignore: false));
+    NewProjectSizeCubit cubit = new NewProjectSizeCubit(NewProjectSizeState(list: []));
     ThemeData theme = Theme.of(context);
 
     List<StyleCodeNames> codes = [];
+    styleCodes.sort((a,b)=>int.parse(a.shortName).compareTo(int.parse(b.shortName)));
     styleCodes.forEach((element) {
       codes.add(StyleCodeNames(
           name: element.name, shortName: element.shortName, check: false));
     });
+    // codes.sort((a,b)=>int.parse(b).compareTo(other))
     StyleCodeCubit styleCodeCubit =
         new StyleCodeCubit(StyleCodeState(styleChecks: codes));
 
@@ -135,7 +135,7 @@ class NewProject extends StatelessWidget {
                           height: 10,
                         ),
                         DefaultTextField(
-                          textInputType: TextInputType.number,
+                          // textInputType: TextInputType.number,
                           textEditingController: textEditingController,
                           hint: "سایز",
                           textAlign: TextAlign.center,
@@ -247,12 +247,12 @@ class NewProject extends StatelessWidget {
                                       itemCount: styleCodes.length,
                                       itemBuilder: (BuildContext c, int i) {
                                         return CheckboxListTile(
-                                          title: Text(styleCodes[i].name,
+                                          title: Text(styleCodes[i].name+'( '+styleCodes[i].shortName+' )',
                                               style: theme.textTheme.headline4),
                                           value: state.styleChecks[i].check,
                                           onChanged: (check) {
                                             styleCodeCubit.changeStyleCodeCheck(
-                                                styleCodes[i].name, check);
+                                                styleCodes[i].shortName, check);
                                           },
                                           controlAffinity:
                                               ListTileControlAffinity.leading,

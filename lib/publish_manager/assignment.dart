@@ -3,13 +3,16 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
+import 'package:workshop/bloc/general_manager/new_project_size_bloc.dart';
 import 'package:workshop/bloc/publishManager/assign_personnel.dart';
 import 'package:workshop/bloc/publishManager/assign_task.dart';
+import 'package:workshop/bloc/publishManager/groupTaskAssign.dart';
 import 'package:workshop/module/cutter/cut.dart';
 import 'package:workshop/module/publish_manager/personnel.dart';
 import 'package:workshop/module/publish_manager/task.dart';
 import 'package:workshop/provider/new_task_page_provider.dart';
 import 'package:workshop/provider/publish_manager_pages_controller.dart';
+import 'package:workshop/publish_manager/dialog_assign_group_task.dart';
 import 'package:workshop/publish_manager/new_tasks_page.dart';
 import 'package:workshop/request/request.dart';
 import 'package:workshop/style/component/default_button.dart';
@@ -42,8 +45,8 @@ class AssignmentPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     GlobalKey scaffoldKey = new GlobalKey<ScaffoldState>();
-    // WidgetsBinding.instance
-    //     .addPostFrameCallback((_) => showDialog(context: context, builder: (context)=>AssignTaskDialog(),barrierColor: Colors.transparent));
+    GroupTaskAssignCubit groupTaskAssignCubit =
+        new GroupTaskAssignCubit(GroupTaskAssignState(list: []));
 
     return Scaffold(
       key: scaffoldKey,
@@ -88,13 +91,20 @@ class AssignmentPage extends StatelessWidget {
                           mapList.add(map);
                         });
                         MyShowSnackBar.showSnackBar(context, "کمی صبر کنید...");
-                        await MyRequest.insertAssignRequest(
+                        String res = await MyRequest.insertAssignRequest(
                             jsonEncode(mapList));
-                        MyShowSnackBar.hideSnackBar(context);
-                        streamPageController.pageView = 0;
-                        pageController.animateToPage(0,
-                            duration: Duration(milliseconds: 500),
-                            curve: Curves.easeIn);
+                        if (res == 'not ok') {
+                          MyShowSnackBar.showSnackBar(
+                              context, "خطا در برقراری ارتباط");
+                        } else {
+                          assignTaskCubit.clear();
+                          assignPersonnelCubit.refresh();
+                          MyShowSnackBar.hideSnackBar(context);
+                          streamPageController.pageView = 0;
+                          pageController.animateToPage(0,
+                              duration: Duration(milliseconds: 500),
+                              curve: Curves.easeIn);
+                        }
                       }
                     },
                   ),
@@ -104,6 +114,7 @@ class AssignmentPage extends StatelessWidget {
                     onPressed: () async {
                       streamPageController.pageView = 0;
                       assignTaskCubit.clear();
+                      assignPersonnelCubit.refresh();
                       pageController.animateToPage(0,
                           duration: Duration(milliseconds: 200),
                           curve: Curves.easeIn);
@@ -119,20 +130,6 @@ class AssignmentPage extends StatelessWidget {
                   DefaultButton(
                     title: 'فعالیت جدید',
                     onPressed: () async {
-                      //TODO : Cut code
-                      //StepOneHolder r = await
-                      // List<AssignmentTask> t = await showDialog(
-                      //   context: context,
-                      //   builder: (context) => NewTaskDialogStep1(
-                      //     cuts: cuts,
-                      //     tasks: tasks,
-                      //     dialogContext: context,
-                      //   ),
-                      // );
-                      //   if (t != null) {
-                      //     assignTaskCubit.addTask(t);
-                      //   }
-                      // }
                       List<AssignmentTask> t = await Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -147,11 +144,81 @@ class AssignmentPage extends StatelessWidget {
                         ),
                       );
                       if (t != null) {
+                        List<NameAndSize> namesAndSizes = [];
+                        t.forEach(
+                          (element) {
+                            String size = element.cutCode.substring(
+                                element.cutCode.lastIndexOf('-') + 1);
+                            try {
+                              namesAndSizes
+                                  .firstWhere((item) =>
+                                      item.name == element.name &&
+                                      item.size == size)
+                                  .cutCodeAndLayer
+                                  .add(CutCodeAndLayer(
+                                      cutCode: element.cutCode,
+                                      layer: element.number));
+                            } catch (e) {
+                              namesAndSizes.add(
+                                NameAndSize(
+                                  size: size,
+                                  name: element.name,
+                                  cutCodeAndLayer: [
+                                    CutCodeAndLayer(
+                                        cutCode: element.cutCode,
+                                        layer: element.number,
+                                        expertTime: element.expertTime,
+                                        amateurTime: element.amateurTime,
+                                        internTime: element.internTime)
+                                  ],
+                                ),
+                              );
+                            }
+                          },
+                        );
+                        groupTaskAssignCubit.update(namesAndSizes);
+                        // namesAndSizes.forEach((element) {
+                        //   print(
+                        //       "name is ${element.name} , size is ${element.size}");
+                        //   element.cutCodeAndLayer.forEach((element) {
+                        //     print(
+                        //         "   cutCode: ${element.cutCode} , number : ${element.layer}");
+                        //   });
+                        // });
                         assignTaskCubit.addTask(t);
                       }
                     },
                   ),
                 ],
+              ),
+            ),
+            Container(
+              height: 80,
+              child: BlocBuilder(
+                cubit: groupTaskAssignCubit,
+                builder: (BuildContext context, GroupTaskAssignState s) =>
+                    ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                        itemCount: s.list.length,
+                        itemBuilder: (BuildContext c, int index) {
+                          return Draggable(
+                            data: s.list[index],
+                            feedback: TaskAssignmentCard(
+                              isDragging: true,
+                              name: s.list[index].name,
+                              cutCode: s.list[index].size,
+                            ),
+                            child: Container(
+                              padding: EdgeInsets.symmetric(horizontal: 8),
+                              margin: EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.white24),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Center(child: Text(" تمام "+s.list[index].name +" سایز "+s.list[index].size)),
+                            ),
+                          );
+                        }),
               ),
             ),
             SizedBox(
@@ -236,17 +303,25 @@ class AssignmentPage extends StatelessWidget {
                                     element.personnel == personnel[index])
                                 .toList(),
                           ),
-                          onAccept: (AssignmentTask data) async {
-                            AssignTaskPersonnel a = await showDialog(
-                                context: context,
-                                builder: (context) => AssignTaskDialog(
-                                    alignmentTask: data,
-                                    personnel: personnel[index]));
-                            if (a != null) {
-                              assignPersonnelCubit.update(a);
-                              assignTaskCubit.updateTask(
-                                  a.cutCode, a.number, a.name);
+                          onAccept: (dynamic data) async {
+                            if(data is AssignmentTask){
+                              AssignTaskPersonnel a = await showDialog(
+                                  context: context,
+                                  builder: (context) => AssignTaskDialog(
+                                      alignmentTask: data,
+                                      personnel: personnel[index]));
+                              if (a != null) {
+                                assignPersonnelCubit.update(a);
+                                assignTaskCubit.updateTask(
+                                    a.cutCode, a.number, a.name);
+                              }
+                            }else if (data is NameAndSize){
+                              bool check = await showDialog(context: context, builder: (BuildContext c)=>AssignGroupTaskDialog(nameAndSize: data,));
+                              if(check != null ){
+                                print(check);
+                              }
                             }
+
                           },
                         ),
                         itemCount: personnel.length,
@@ -268,6 +343,29 @@ class DragTaskGroup {
   final List<AssignmentTask> tasks;
 
   DragTaskGroup({this.tasks, this.title});
+}
+
+class NameAndSize {
+  String name;
+  String size;
+  List<CutCodeAndLayer> cutCodeAndLayer;
+
+  NameAndSize({this.name, this.size, this.cutCodeAndLayer});
+}
+
+class CutCodeAndLayer {
+  String cutCode;
+  int layer;
+  String amateurTime;
+  String internTime;
+  String expertTime;
+
+  CutCodeAndLayer(
+      {this.cutCode,
+      this.layer,
+      this.amateurTime,
+      this.internTime,
+      this.expertTime});
 }
 // itemBuilder: (context, index) => Draggable(
 //     data: state.assignTaskUpdate[index],

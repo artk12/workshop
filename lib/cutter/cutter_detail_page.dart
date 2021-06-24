@@ -7,6 +7,7 @@ import 'package:workshop/module/cutter/cut.dart';
 import 'package:workshop/style/app_bar/my_appbar.dart';
 import 'package:workshop/style/component/background_widget.dart';
 import 'package:workshop/style/component/default_textfield.dart';
+import 'package:workshop/style/component/dialog_bg.dart';
 import 'package:workshop/style/component/stockpile/dialog_background_blur.dart';
 
 import 'cutter_page.dart';
@@ -203,7 +204,7 @@ class CutterDetailPage extends StatelessWidget {
       }
     }
 
-    return BlurDialogBg(
+    return DialogBg(
       child: SingleChildScrollView(
         child: Column(
           children: [

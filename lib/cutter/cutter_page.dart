@@ -41,8 +41,9 @@ class CutReturn {
 class CutterPage extends StatelessWidget {
   final CutDetail cutDetail;
   final List<StyleCode> styleCodes;
+  final String barCode;
 
-  CutterPage({this.cutDetail, this.styleCodes});
+  CutterPage({this.cutDetail, this.styleCodes, this.barCode});
 
   @override
   Widget build(BuildContext context) {
@@ -72,23 +73,6 @@ class CutterPage extends StatelessWidget {
       } catch (e) {}
       style = style.substring(s.length + 1);
     }
-
-    // for(int i = 0 ; i < styleCodes.length;i++){
-    //   if(styleCodes[i].)
-    // }
-    // String cutCodeStyle = '';
-    // print(styleCodes)
-    // print(styleCodes.length);
-    // styleCodes.forEach((element) {
-    //   print(element.shortName);
-    // });
-
-    // styleCodes.forEach((element) {
-    //   if (cutDetail.styleCode.contains(element.name)) {
-    //     cutCodeStyle += element.shortName + '/';
-    //   }
-    // });
-    // cutCodeStyle = cutCodeStyle.substring(0, cutCodeStyle.length - 1);
     String des = cutDetail.projectDescription.isEmpty
         ? "ندارد"
         : cutDetail.projectDescription;
@@ -323,24 +307,21 @@ class CutterPage extends StatelessWidget {
           description.text);
       String update = Update.updateCutterCounter(
           int.parse(cutDetail.rollComplete) + 1, cutDetail.projectId);
-      String result = await MyRequest.insertCutRequest(insert, update, pieces);
+      String result = await MyRequest.insertCutRequest(
+          insert, update, pieces, cutDetail.fabricId);
 
       ignoreButtonCubit.update(false);
+
       if (result.trim().contains("OK")) {
         MyShowSnackBar.hideSnackBar(context);
         DateTime dateTime = DateTime.now();
         int year = dateTime.year;
         int month = dateTime.month;
         int day = dateTime.day;
-
-        // List<Cut> cutters = [];
-        // for (int i = 0; i < int.parse(cutDetail.pieces); i++) {
-        //   for (int j = 0; j < sizes.length; j++) {
         Cut cut = Cut(
           description: description.text.toString(),
           height: height.text.toString(),
           id: '0',
-          // cutCode: cutCode.text.toString()+'-'+cutCodeStyle,
           cutCode: cutCodesList,
           pieces: pieces,
           realUsage: realUsage.text.toString(),
@@ -365,15 +346,12 @@ class CutterPage extends StatelessWidget {
               pieces: cutDetail.pieces,
               metric: cutDetail.metric,
               calite: cutDetail.calite,
+              barCode: barCode,
               manufacture: cutDetail.manufacture),
         );
-        //     cutters.add(cut);
-        //   }
-        // }
         CutReturn cutReturn = CutReturn(repeat: check, cut: cut);
         Navigator.pop(context, cutReturn);
       } else {
-        // print(result.trim());
         MyShowSnackBar.showSnackBar(context, 'خطا در برقراری ارتباط..');
       }
     }
@@ -481,7 +459,7 @@ class CutterPage extends StatelessWidget {
                     child: Container(),
                   ),
                   Expanded(
-                    flex:2,
+                    flex: 2,
                     child: DefaultTextField(
                       label: "جمع کل کار",
                       textInputType: TextInputType.number,

@@ -1,27 +1,94 @@
 import 'package:flutter/material.dart';
 import 'package:workshop/module/cutter/cut.dart';
+import 'package:workshop/module/general_manager/project.dart';
+import 'package:workshop/style/app_bar/my_appbar.dart';
 import 'package:workshop/style/component/cutter/cut_card.dart';
+import 'package:workshop/style/component/my_icon_button.dart';
+import 'package:workshop/style/theme/my_icons.dart';
 
 class CutPage extends StatelessWidget {
-  final PageController pageController;
+  final Project project;
   final List<Cut> cutList;
-
-  CutPage({this.pageController, this.cutList});
+  CutPage({this.project,this.cutList});
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        pageController.animateToPage(0,
-            curve: Curves.easeIn, duration: Duration(milliseconds: 200));
-        return false;
-      },
-      child: ListView.builder(
-        itemCount: cutList.length,
-        itemBuilder: (context, index) => CutCard(
-          width: double.maxFinite,
-          height: 100,
-          cut: cutList[index],
+    ThemeData theme = Theme.of(context);
+    List<Cut> projectCutList = [];
+    int totalGoods = 0;
+    int totalRealUsage = 0;
+    double averageRealUsage = 0;
+    try{
+      projectCutList = cutList.where((element) => element.project.id == project.id).toList();
+      projectCutList.forEach((element) {
+        totalRealUsage += int.parse(element.realUsage);
+        totalGoods += int.parse(element.totalGoods);
+      });
+      averageRealUsage = totalRealUsage / projectCutList.length;
+
+    }catch(e){}
+    String totalUse = 'ندارد';
+    try{
+      totalUse = projectCutList.first.usage;
+    }catch(e){}
+
+
+    return Scaffold(
+      bottomSheet: Container(
+        height: 80,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Text("مصرف کل : "+totalUse,style: theme.textTheme.headline4,),
+                Text("تعداد برشها : "+projectCutList.length.toString(),style: theme.textTheme.headline4,)
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Text("مصرف واقعی کل : "+averageRealUsage.toStringAsFixed(2),style: theme.textTheme.headline4,),
+                Text("جمع کل کار : "+totalGoods.toString(),style: theme.textTheme.headline4,),
+              ],
+            ),
+
+          ],
+        ),
+      ),
+      body: SafeArea(
+        child: Container(
+          margin: EdgeInsets.only(bottom: 81),
+          child: Column(
+            children: [
+              MyAppbar(
+                title: 'برش های پروژه ' + project.id,
+                leftWidget: [
+                  RotatedBox(
+                    quarterTurns: 3,
+                    child: MyIconButton(
+                      icon: MyIcons.ARROW_UP,
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 10,),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: projectCutList.length,
+                  itemBuilder: (context, index) => CutCard(
+                    width: double.maxFinite,
+                    height: 110,
+                    cut: projectCutList[index],
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

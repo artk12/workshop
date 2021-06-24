@@ -12,17 +12,15 @@ class Cutter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // return CutterPage();
-    return MultiProvider(
-      providers: [
-        FutureProvider(create: (_) => MyList().getCutterMessages()),
-        FutureProvider(create: (_) => MyList().getCutList()),
-        FutureProvider(
-          create: (_) => MyList.getAllStyleCode(),
-        )
-      ],
-      child: ChangeNotifierProvider.value(
-        value: RefreshProvider(),
+    return ChangeNotifierProvider.value(
+      value: RefreshProvider(),
+      child: MultiProvider(
+        providers: [
+          FutureProvider(create: (_) => MyList().getCutterMessages()),
+          FutureProvider(create: (_) => MyList().getCutList()),
+          FutureProvider(create: (_) => MyList.getAllStyleCode(),
+          )
+        ],
         child: CutterLanding(user: user),
       ),
     );

@@ -9,8 +9,7 @@ class TaskFolderCard extends StatelessWidget {
   final List<TaskFolder> tasksFolder;
   final List<Task> tasks;
 
-  TaskFolderCard(
-      {this.taskFolder,this.tasksFolder, this.tasks});
+  TaskFolderCard({this.taskFolder, this.tasksFolder, this.tasks});
 
   @override
   Widget build(BuildContext context) {
@@ -20,29 +19,25 @@ class TaskFolderCard extends StatelessWidget {
       onTap: () {
         List<Task> list = [];
         tasks.forEach((element) {
-          if(element.groupId == taskFolder.id){
+          if (element.groupId == taskFolder.id) {
             list.add(element);
           }
         });
-        print('list len : ${list.length} and total is ${tasks.length}');
         Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (BuildContext c) => ChangeNotifierProvider.value(
-                  value: refreshProvider,
-                  child: TaskFolderPage(
-                        taskFolder: taskFolder,
-                        tasks: tasks,
-                        // tasks: tasks
-                        //     .where((element) => element.groupId == taskFolder.id)
-                        //     .toList(),
-                      ),
-                )));
+          context,
+          MaterialPageRoute(
+            builder: (BuildContext c) => ChangeNotifierProvider.value(
+              value: refreshProvider,
+              child: TaskFolderPage(
+                taskFolder: taskFolder,
+                tasks: tasks,
+              ),
+            ),
+          ),
+        );
       },
       child: Container(
-        // height: 100,
         constraints: BoxConstraints(maxWidth: 60),
-        // margin: EdgeInsets.all(10),
         padding: EdgeInsets.symmetric(vertical: 5, horizontal: 9),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5), color: Colors.white12),

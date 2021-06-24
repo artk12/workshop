@@ -52,6 +52,7 @@ class CutDetail {
       pieces: map['pieces'],
       rollComplete: map['roll_complete'],
       fabricDescription: map['fabric_description'],
+      log: map['log']
     );
   }
 }

@@ -127,9 +127,13 @@ class NewCutDialog extends StatelessWidget {
                                 newCutDialogCubit
                                     .changeMessage('بارکد یافت نشد.');
                                 ignoreButtonCubit.update(false);
-                              } else if (result.rollComplete == result.roll) {
+                              } else if (int.parse(result.rollComplete) >= int.parse(result.roll)) {
                                 newCutDialogCubit.changeMessage(
                                     'برش طاقه برای این پروژه تکمیل شده است.');
+                                ignoreButtonCubit.update(false);
+                              }else if(result.log == '0'){
+                                newCutDialogCubit
+                                    .changeMessage('این طاقه قبلا استفاده شده است');
                                 ignoreButtonCubit.update(false);
                               } else {
                                 cutterCounter.total = int.parse(result.roll);
@@ -139,6 +143,7 @@ class NewCutDialog extends StatelessWidget {
                                     builder: (context) => CutterPage(
                                       cutDetail: result,
                                       styleCodes: styleCodes,
+                                      barCode: barcode.text,
                                     ),
                                   ),
                                 );
