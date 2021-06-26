@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:workshop/module/publish_manager/task.dart';
 import 'package:workshop/publish_manager/assignment.dart';
 import 'package:workshop/style/component/dialog_bg.dart';
 import 'package:workshop/style/theme/my_icons.dart';
@@ -6,8 +7,9 @@ import 'package:workshop/style/theme/textstyle.dart';
 
 class AssignGroupTaskDialog extends StatelessWidget {
   final NameAndSize nameAndSize;
+  final List<AssignmentTask> assignTasks;
 
-  AssignGroupTaskDialog({this.nameAndSize});
+  AssignGroupTaskDialog({this.nameAndSize, this.assignTasks});
 
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
@@ -39,7 +41,14 @@ class AssignGroupTaskDialog extends StatelessWidget {
                             Text("کد برش : " +
                                 nameAndSize.cutCodeAndLayer[index].cutCode),
                             Text("مقدار : " +
-                                nameAndSize.cutCodeAndLayer[index].layer.toString()),
+                                assignTasks
+                                    .firstWhere((item) =>
+                                        nameAndSize.cutCodeAndLayer[index]
+                                                .cutCode ==
+                                            item.cutCode &&
+                                        item.name == nameAndSize.name)
+                                    .number
+                                    .toString()),
                             //" مقدار : " +
                             //                                 nameAndSize.cutCodeAndLayer[index].layer
                           ],

@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
-import 'package:workshop/bloc/general_manager/new_project_size_bloc.dart';
 import 'package:workshop/bloc/publishManager/assign_personnel.dart';
 import 'package:workshop/bloc/publishManager/assign_task.dart';
 import 'package:workshop/bloc/publishManager/groupTaskAssign.dart';
@@ -157,7 +156,10 @@ class AssignmentPage extends StatelessWidget {
                                   .cutCodeAndLayer
                                   .add(CutCodeAndLayer(
                                       cutCode: element.cutCode,
-                                      layer: element.number));
+                                      // layer: element.number,
+                                      expertTime: element.expertTime,
+                                      amateurTime: element.amateurTime,
+                                      internTime: element.internTime));
                             } catch (e) {
                               namesAndSizes.add(
                                 NameAndSize(
@@ -166,7 +168,7 @@ class AssignmentPage extends StatelessWidget {
                                   cutCodeAndLayer: [
                                     CutCodeAndLayer(
                                         cutCode: element.cutCode,
-                                        layer: element.number,
+                                        // layer: element.number,
                                         expertTime: element.expertTime,
                                         amateurTime: element.amateurTime,
                                         internTime: element.internTime)
@@ -198,7 +200,7 @@ class AssignmentPage extends StatelessWidget {
                 cubit: groupTaskAssignCubit,
                 builder: (BuildContext context, GroupTaskAssignState s) =>
                     ListView.builder(
-                      scrollDirection: Axis.horizontal,
+                        scrollDirection: Axis.horizontal,
                         itemCount: s.list.length,
                         itemBuilder: (BuildContext c, int index) {
                           return Draggable(
@@ -215,7 +217,11 @@ class AssignmentPage extends StatelessWidget {
                                 border: Border.all(color: Colors.white24),
                                 borderRadius: BorderRadius.circular(10),
                               ),
-                              child: Center(child: Text(" تمام "+s.list[index].name +" سایز "+s.list[index].size)),
+                              child: Center(
+                                  child: Text(" تمام " +
+                                      s.list[index].name +
+                                      " سایز " +
+                                      s.list[index].size)),
                             ),
                           );
                         }),
@@ -304,7 +310,7 @@ class AssignmentPage extends StatelessWidget {
                                 .toList(),
                           ),
                           onAccept: (dynamic data) async {
-                            if(data is AssignmentTask){
+                            if (data is AssignmentTask) {
                               AssignTaskPersonnel a = await showDialog(
                                   context: context,
                                   builder: (context) => AssignTaskDialog(
@@ -315,13 +321,52 @@ class AssignmentPage extends StatelessWidget {
                                 assignTaskCubit.updateTask(
                                     a.cutCode, a.number, a.name);
                               }
-                            }else if (data is NameAndSize){
-                              bool check = await showDialog(context: context, builder: (BuildContext c)=>AssignGroupTaskDialog(nameAndSize: data,));
-                              if(check != null ){
-                                print(check);
+                            } else if (data is NameAndSize) {
+                              bool check = await showDialog(
+                                  context: context,
+                                  builder: (BuildContext c) =>
+                                      AssignGroupTaskDialog(
+                                        assignTasks: assignTaskCubit
+                                            .state.assignTaskUpdate,
+                                        nameAndSize: data,
+                                      ));
+                              if (check != null) {
+                                int time = 0;
+                                Personnel p = personnel[index];
+                                data.cutCodeAndLayer.forEach(
+                                  (element) {
+                                    if (p.level == "کارآموز") {
+                                      time = int.parse(element.internTime);
+                                    } else if (p.level == "تازه کار") {
+                                      time = int.parse(element.amateurTime);
+                                    } else if (p.level == "حرفه ای") {
+                                      time = int.parse(element.expertTime);
+                                    }
+                                    int quantity = assignTaskCubit
+                                        .state.assignTaskUpdate
+                                        .firstWhere((item) =>
+                                            element.cutCode == item.cutCode &&
+                                            item.name == data.name)
+                                        .number;
+                                    Duration tpu =
+                                        Duration(seconds: quantity * time);
+                                    int second = tpu.inSeconds;
+                                    AssignTaskPersonnel a =
+                                        new AssignTaskPersonnel(
+                                            cutCode: element.cutCode,
+                                            name: data.name,
+                                            personnel: personnel[index],
+                                            number: quantity,
+                                            time: second);
+                                    if (quantity > 0) {
+                                      assignPersonnelCubit.update(a);
+                                      assignTaskCubit.updateTask(
+                                          a.cutCode, a.number, a.name);
+                                    }
+                                  },
+                                );
                               }
                             }
-
                           },
                         ),
                         itemCount: personnel.length,
@@ -355,14 +400,15 @@ class NameAndSize {
 
 class CutCodeAndLayer {
   String cutCode;
-  int layer;
+
+  // int layer;
   String amateurTime;
   String internTime;
   String expertTime;
 
   CutCodeAndLayer(
       {this.cutCode,
-      this.layer,
+      // this.layer,
       this.amateurTime,
       this.internTime,
       this.expertTime});
