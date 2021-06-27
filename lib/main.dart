@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:workshop/my_shared_preferences.dart';
 import 'package:workshop/sign/sign_in.dart';
 import 'package:workshop/stock/import_to_stock/update_item.dart';
 import 'package:workshop/stock/import_to_stock/add_fabric_item.dart';
@@ -28,7 +30,13 @@ class MyApp extends StatelessWidget {
         // '/': (context) => StockHomePage(),
       },
       theme: light,
-      home:SignIn()
+      home:MultiProvider(
+        providers: [
+          // FutureProvider(create:(c)=> MySharedPreferences().getPass()),
+          FutureProvider(create:(c)=> MySharedPreferences().getUserAndPass()),
+        ],
+        child: SignIn(),
+      )
       // home: MultiProvider(
       //   providers: [
       //     FutureProvider(create:(_)=>MyRequest.getNormalUserDetail('3450101010','123456'),),

@@ -1,12 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:workshop/bloc/refresh_provider.dart';
+import 'package:workshop/main.dart';
 import 'package:workshop/module/stockpile/fabric.dart';
 import 'package:workshop/module/stockpile/fabric_log.dart';
 import 'package:workshop/module/stockpile/item.dart';
 import 'package:workshop/module/stockpile/item_log.dart';
 import 'package:workshop/module/stockpile/message.dart';
 import 'package:workshop/module/stockpile/user.dart';
+import 'package:workshop/my_shared_preferences.dart';
 import 'package:workshop/request/request.dart';
 import 'package:workshop/stock/export_from_stock/export_from_stock.dart';
 import 'package:workshop/stock/landing/stock_dashboard_page.dart';
@@ -112,6 +114,19 @@ class StockLandingPage extends StatelessWidget {
                       pageController.animateToPage(1,
                           duration: Duration(milliseconds: 250),
                           curve: Curves.easeIn);
+                    },
+                  ),
+                  ListTile(
+                    title: Text('خروج', style: theme.textTheme.headline2),
+                    onTap: () async{
+                      MySharedPreferences().clean();
+                      _scaffoldKey.currentState.openEndDrawer();
+                      await Future.delayed(Duration(milliseconds: 250));
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                          builder: (context) => MyApp(),
+                        ),
+                      );
                     },
                   ),
                 ],

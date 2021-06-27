@@ -3,7 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workshop/bloc/dialog_message.dart';
 import 'package:workshop/bloc/ignoreButtonsBloc.dart';
 import 'package:workshop/bloc/personnel/score_cubit.dart';
+import 'package:workshop/main.dart';
 import 'package:workshop/module/stockpile/user.dart';
+import 'package:workshop/my_shared_preferences.dart';
 import 'package:workshop/request/query/update.dart';
 import 'package:workshop/request/request.dart';
 import 'package:workshop/style/component/default_textfield.dart';
@@ -245,8 +247,15 @@ class PersonnelDrawer extends StatelessWidget {
             ),
             ListTile(
               title: Text('خروج', style: theme.textTheme.headline2),
-              onTap: () {
+              onTap: () async{
+                MySharedPreferences().clean();
                 scaffoldKey.currentState.openEndDrawer();
+                await Future.delayed(Duration(milliseconds: 250));
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (context) => MyApp(),
+                  ),
+                );
               },
             ),
           ],

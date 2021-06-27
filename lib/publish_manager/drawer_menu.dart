@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:workshop/main.dart';
 import 'package:workshop/module/stockpile/message.dart';
 import 'package:workshop/module/stockpile/user.dart';
+import 'package:workshop/my_shared_preferences.dart';
 import 'package:workshop/provider/publish_manager_pages_controller.dart';
 import 'package:workshop/request/request.dart';
+import 'package:workshop/sign/sign_in.dart';
 
 class DrawerMenu extends StatelessWidget {
   final SuperUser user;
@@ -130,6 +133,19 @@ class DrawerMenu extends StatelessWidget {
               pageController.animateToPage(3,
                   duration: Duration(milliseconds: 250), curve: Curves.easeIn);
               // showDialog(barrierColor: Colors.black12,context: context, builder: (context)=>DialogMessage(messages: messages,));
+            },
+          ),
+          ListTile(
+            title: Text('خروج', style: theme.textTheme.headline2),
+            onTap: () async{
+              MySharedPreferences().clean();
+              scaffoldKey.currentState.openEndDrawer();
+              await Future.delayed(Duration(milliseconds: 250));
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (context) => MyApp(),
+                ),
+              );
             },
           ),
         ],

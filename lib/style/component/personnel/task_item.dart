@@ -246,10 +246,13 @@ class _TaskItemState extends State<TaskItem> {
                 children: [
                   Container(
                     width: double.maxFinite,
-                    child: Text(
-                      '#' + widget.assignPersonnel.cutCode,
-                      style: theme.textTheme.headline6,
-                      textAlign: TextAlign.end,
+                    child: Directionality(
+                      textDirection: TextDirection.ltr,
+                      child: Text(
+                        '#' + widget.assignPersonnel.cutCode,
+                        style: theme.textTheme.headline6,
+                        textAlign: TextAlign.start,
+                      ),
                     ),
                   ),
                   Expanded(

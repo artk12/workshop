@@ -200,31 +200,33 @@ class AssignmentPage extends StatelessWidget {
                 cubit: groupTaskAssignCubit,
                 builder: (BuildContext context, GroupTaskAssignState s) =>
                     ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: s.list.length,
-                        itemBuilder: (BuildContext c, int index) {
-                          return Draggable(
-                            data: s.list[index],
-                            feedback: TaskAssignmentCard(
-                              isDragging: true,
-                              name: s.list[index].name,
-                              cutCode: s.list[index].size,
-                            ),
-                            child: Container(
-                              padding: EdgeInsets.symmetric(horizontal: 8),
-                              margin: EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                border: Border.all(color: Colors.white24),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Center(
-                                  child: Text(" تمام " +
-                                      s.list[index].name +
-                                      " سایز " +
-                                      s.list[index].size)),
-                            ),
-                          );
-                        }),
+                  scrollDirection: Axis.horizontal,
+                  itemCount: s.list.length,
+                  itemBuilder: (BuildContext c, int index) {
+                    return Draggable(
+                      data: s.list[index],
+                      feedback: TaskAssignmentCard(
+                        isDragging: true,
+                        name: s.list[index].name,
+                        cutCode: s.list[index].size,
+                      ),
+                      child: Container(
+                        padding: EdgeInsets.symmetric(horizontal: 8),
+                        margin: EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.white24),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Center(
+                          child: Text(" تمام " +
+                              s.list[index].name +
+                              " سایز " +
+                              s.list[index].size),
+                        ),
+                      ),
+                    );
+                  },
+                ),
               ),
             ),
             SizedBox(

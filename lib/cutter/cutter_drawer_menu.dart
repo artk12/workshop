@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:workshop/main.dart';
 import 'package:workshop/module/stockpile/user.dart';
 import 'package:workshop/request/request.dart';
+import '../my_shared_preferences.dart';
 
 class CutterDrawerMenu extends StatelessWidget {
   final SuperUser user;
@@ -65,6 +67,19 @@ class CutterDrawerMenu extends StatelessWidget {
               scaffoldKey.currentState.openEndDrawer();
               pageController.animateToPage(1,
                   duration: Duration(milliseconds: 250), curve: Curves.easeIn);
+            },
+          ),
+          ListTile(
+            title: Text('خروج', style: theme.textTheme.headline2),
+            onTap: () async{
+              MySharedPreferences().clean();
+              scaffoldKey.currentState.openEndDrawer();
+              await Future.delayed(Duration(milliseconds: 250));
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (context) => MyApp(),
+                ),
+              );
             },
           ),
         ],

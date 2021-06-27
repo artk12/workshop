@@ -33,6 +33,7 @@ dependencies:
   flutter_bloc:
   shamsi_date:
   numberpicker:
+  shared_preferences:
 
 dev_dependencies:
   flutter_test:
