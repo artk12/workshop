@@ -100,7 +100,7 @@ class StockPage extends StatelessWidget {
           child: Column(
             children: [
               Container(
-                color: Colors.black.withOpacity(0.3),
+                color: Colors.black.withOpacity(0.1),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15.0),
                   child: Row(
@@ -115,8 +115,8 @@ class StockPage extends StatelessWidget {
                             onChanged: onChange,
                             decoration: InputDecoration(
                               hintText: 'جستجو...',
-                              hintStyle: theme.textTheme.bodyText1.copyWith(
-                                  color: Colors.white.withOpacity(0.5)),
+                              // hintStyle: theme.textTheme.bodyText1.copyWith(
+                              //     color: Colors.white.withOpacity(0.5)),
                               enabledBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(
                                     color: Colors.black.withOpacity(0.2),
@@ -124,24 +124,24 @@ class StockPage extends StatelessWidget {
                               ),
                               focusedBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(
-                                    color: Colors.white.withOpacity(0.2),
+                                    color: Colors.black.withOpacity(0.6),
                                     width: 2.5),
                               ),
                               border: UnderlineInputBorder(
                                 borderSide:
-                                    BorderSide(color: Colors.white, width: 1),
+                                    BorderSide(color: Colors.black, width: 1),
                               ),
                             ),
                           ),
                         ),
                       ),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 3.0),
                         height: 40,
-                        width: 150,
+                        width: 100,
                         child: Container(
                           decoration: BoxDecoration(
-                            color: Color(0xff3b4354),
+                            color:Colors.black.withOpacity(0.1),
                             borderRadius: BorderRadius.circular(5),
                           ),
                           child: BlocBuilder(
@@ -192,7 +192,7 @@ class StockPage extends StatelessWidget {
                                       (states) => Color(0xff5e3443))),
                           child: Text(
                             MyIcons.ALERT,
-                            style: MyTextStyle.iconStyle.copyWith(fontSize: 25),
+                            style: MyTextStyle.iconStyle.copyWith(fontSize: 25,color: Colors.white),
                           ),
                           onPressed: () {
                             stockCategoryCubit.warningFilter(allItems, device);

@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:workshop/module/stockpile/fabric.dart';
 import 'package:workshop/module/stockpile/fabric_log.dart';
 import 'package:workshop/stock/calculate_stock.dart';
-import 'package:workshop/style/component/stockpile/dialog_background_blur.dart';
-import 'package:workshop/style/component/stockpile/fabric_log_card.dart';
+import 'package:workshop/style/component/dialog_bg.dart';
 
 class FabricLogDialog extends StatelessWidget {
   final List<FabricLog> fabricLogs;
@@ -18,13 +17,14 @@ class FabricLogDialog extends StatelessWidget {
     Widget space(double height) => SizedBox(height: height);
 
     CalculateStock.sortFabric(fabrics);
-    List<FabricLogHolder> fabricLogHolder = FabricToFabricLogHolder(
-            fabricLogs: fabricLogs, fabric: fabric, fabrics: fabrics)
-        .convert();
+    // List<FabricLogHolder> fabricLogHolder = FabricToFabricLogHolder(
+    //         fabricLogs: fabricLogs, fabric: fabric, fabrics: fabrics)
+    //     .convert();
 
-    return BlurDialogBg(
+    return DialogBg(
       maxWidth: 400,
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           space(5),
           Padding(
@@ -36,12 +36,6 @@ class FabricLogDialog extends StatelessWidget {
                 Row(
                   children: [
                     Text("توضیحات", style: theme.textTheme.headline2),
-                    Container(
-                      margin: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 10),
-                      child: Text(fabric.calite + " # ",
-                          style: theme.textTheme.bodyText1),
-                    ),
                   ],
                 ),
                 space(5),
@@ -64,14 +58,14 @@ class FabricLogDialog extends StatelessWidget {
                     bottom: BorderSide(
                         width: 2, color: Colors.white.withOpacity(0.1)))),
           ),
-          space(5),
-          Expanded(
-              child: ListView.builder(
-            itemCount: fabricLogHolder.length,
-            itemBuilder: (context, index) => FabricLogCard(
-              fabricHolder: fabricLogHolder[index],
-            ),
-          ))
+          // space(5),
+          // Expanded(
+          //     child: ListView.builder(
+          //   itemCount: fabricLogHolder.length,
+          //   itemBuilder: (context, index) => FabricLogCard(
+          //     fabricHolder: fabricLogHolder[index],
+          //   ),
+          // ))
         ],
       ),
     );

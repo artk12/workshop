@@ -67,7 +67,7 @@ class FabricLogCard extends StatelessWidget {
                             input,
                             style:
                                 theme.textTheme.bodyText1.copyWith(fontSize: 14),
-                          )
+                          ),
                         ],
                       ),
                       Row(

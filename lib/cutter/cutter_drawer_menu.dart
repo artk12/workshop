@@ -16,7 +16,7 @@ class CutterDrawerMenu extends StatelessWidget {
     ThemeData theme = Theme.of(context);
 
     return Container(
-      color: Colors.black,
+      color: Color(0xFFECECEC),
       width: 200,
       child: ListView(
         padding: EdgeInsets.zero,

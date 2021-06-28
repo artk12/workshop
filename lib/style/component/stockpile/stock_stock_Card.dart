@@ -15,7 +15,7 @@ class StockCard extends StatelessWidget {
       padding: EdgeInsets.all(8),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15),
-          color: Colors.black.withOpacity(0.3)),
+          color: Colors.black.withOpacity(0.1)),
       margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

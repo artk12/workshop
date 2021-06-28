@@ -18,7 +18,7 @@ class ProjectCutPage extends StatelessWidget {
 
     cutList.forEach((element) {
       try{
-        Project p = projects.firstWhere((item) => item.id == element.project.id);
+        projects.firstWhere((item) => item.id == element.project.id);
       }catch(e){
         projects.add(element.project);
       }
@@ -52,8 +52,10 @@ class ProjectCutPage extends StatelessWidget {
               );
             },
             child: Container(
+              margin: EdgeInsets.all(8),
               decoration: BoxDecoration(
-                  color: Colors.white24,
+                  // color: Colors.black12,
+                border: Border.all(color: Colors.black),
                   borderRadius: BorderRadius.circular(10)),
               child: Center(
                 child: Text(

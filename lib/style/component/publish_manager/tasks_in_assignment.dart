@@ -19,12 +19,12 @@ class TaskInAssignment extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white12,
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: Colors.white54)
+        border: Border.all(color: Colors.black87),
       ),
       child: Column(
         children: [
           MyAppbar(title: taskFolder.name,),
-          Divider(height: 1,color: Colors.white30,),
+          Divider(height: 1,color: Colors.black26,),
           tasks.length == 0 ? Padding(
             padding: const EdgeInsets.all(8.0),
             child: Center(child:Text("فعالیتی برای این دسته یافت نشد.",style: theme.textTheme.headline6.copyWith(height: 2),)),

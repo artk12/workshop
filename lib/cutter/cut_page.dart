@@ -49,8 +49,8 @@ class CutPage extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Text("مصرف واقعی کل : "+averageRealUsage.toStringAsFixed(2),style: theme.textTheme.headline4,),
                 Text("جمع کل کار : "+totalGoods.toString(),style: theme.textTheme.headline4,),
+                Text("مصرف واقعی کل : "+averageRealUsage.toStringAsFixed(2),style: theme.textTheme.headline4,),
               ],
             ),
 

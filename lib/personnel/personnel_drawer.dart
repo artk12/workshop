@@ -35,7 +35,7 @@ class PersonnelDrawer extends StatelessWidget {
 
     return SafeArea(
       child: Container(
-        color: Colors.black,
+        color: Color(0xFFECECEC),
         width: 200,
         child: ListView(
           padding: EdgeInsets.zero,

@@ -39,7 +39,7 @@ class CutCard extends StatelessWidget {
         margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
         padding: EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: Colors.black.withOpacity(0.3),
+          color: Colors.black.withOpacity(0.1),
           borderRadius: BorderRadius.circular(10),
         ),
         child: Column(

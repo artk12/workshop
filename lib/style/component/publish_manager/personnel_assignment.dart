@@ -54,10 +54,10 @@ class PersonnelAssignmentCard extends StatelessWidget {
       allTaskDuration +=element.time;
     });
 
-
     return Container(
       margin: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
       decoration: BoxDecoration(
+        border: Border.all(color: Colors.black),
           borderRadius: BorderRadius.circular(10), color: Colors.white12),
       child: Column(
         mainAxisSize: MainAxisSize.min,

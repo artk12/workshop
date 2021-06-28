@@ -40,7 +40,7 @@ class TaskFolderCard extends StatelessWidget {
         constraints: BoxConstraints(maxWidth: 60),
         padding: EdgeInsets.symmetric(vertical: 5, horizontal: 9),
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(5), color: Colors.white12),
+            borderRadius: BorderRadius.circular(5), color: Colors.black12),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

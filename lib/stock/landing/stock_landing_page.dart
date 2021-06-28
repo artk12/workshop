@@ -59,7 +59,7 @@ class StockLandingPage extends StatelessWidget {
               messages == null
           ? Container()
           : Container(
-              color: Colors.black,
+              color: Color(0xFFECECEC),
               width: 200,
               child: ListView(
                 padding: EdgeInsets.zero,
@@ -118,7 +118,7 @@ class StockLandingPage extends StatelessWidget {
                   ),
                   ListTile(
                     title: Text('خروج', style: theme.textTheme.headline2),
-                    onTap: () async{
+                    onTap: () async {
                       MySharedPreferences().clean();
                       _scaffoldKey.currentState.openEndDrawer();
                       await Future.delayed(Duration(milliseconds: 250));

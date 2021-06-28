@@ -87,6 +87,7 @@ class TaskCard extends StatelessWidget {
         // margin: EdgeInsets.all(10),
         padding: EdgeInsets.symmetric(vertical: 5, horizontal: 9),
         decoration: BoxDecoration(
+          border: Border.all(color:Colors.black),
             borderRadius: BorderRadius.circular(5), color: Colors.white12),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

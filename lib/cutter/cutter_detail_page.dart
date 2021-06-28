@@ -8,8 +8,6 @@ import 'package:workshop/style/app_bar/my_appbar.dart';
 import 'package:workshop/style/component/background_widget.dart';
 import 'package:workshop/style/component/default_textfield.dart';
 import 'package:workshop/style/component/dialog_bg.dart';
-import 'package:workshop/style/component/stockpile/dialog_background_blur.dart';
-
 import 'cutter_page.dart';
 
 class PiecesLayer {
@@ -84,7 +82,7 @@ class CutterDetailPage extends StatelessWidget {
         padding: EdgeInsets.only(bottom: 5),
         decoration: BoxDecoration(
           border: Border(
-            bottom: BorderSide(color: Colors.white, width: 1),
+            bottom: BorderSide(color: Colors.black, width: 1),
           ),
         ),
       );

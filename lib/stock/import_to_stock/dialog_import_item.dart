@@ -41,6 +41,7 @@ class ImportItemDialog extends StatelessWidget {
             children: [
               Container(
                 width: 100,
+                color: Colors.black.withOpacity(0.1),
                 child: BlocBuilder(
                   cubit: dialogItemCubit,
                   builder: (context, SingleDropDownItemState state) =>

@@ -25,7 +25,7 @@ class BackgroundWidget extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.all(7),
         decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.2),
+          color: Colors.black.withOpacity(0.1),
           borderRadius: BorderRadius.circular(15),
         ),
         child: child,

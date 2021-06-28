@@ -96,7 +96,7 @@ class AssignTaskDialog extends StatelessWidget {
                 padding: EdgeInsets.all(8),
                 decoration: BoxDecoration(
                   border: Border.all(
-                    color: Colors.white24,
+                    color: Colors.black12,
                   ),
                   borderRadius: BorderRadius.circular(10),
                 ),

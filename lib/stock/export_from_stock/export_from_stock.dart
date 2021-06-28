@@ -12,7 +12,7 @@ import 'package:workshop/style/app_bar/my_appbar.dart';
 import 'package:workshop/style/component/default_textfield.dart';
 import 'package:workshop/style/component/drop_down_background.dart';
 import 'package:workshop/style/component/dropdownWithOutNullSafety.dart';
-import 'package:workshop/style/theme/my_icons.dart';
+import 'package:workshop/style/component/save_and_cancel_button.dart';
 import 'package:workshop/style/theme/show_snackbar.dart';
 import 'package:workshop/style/theme/textstyle.dart';
 
@@ -71,9 +71,7 @@ class ExportFromStock extends StatelessWidget {
                                   value: value,
                                   child: new Text(
                                     value,
-                                    style: TextStyle(
-                                        fontFamily: 'light',
-                                        color: Colors.white),
+                                    style: theme.textTheme.headline4,
                                   ),
                                 );
                               }).toList(),
@@ -125,7 +123,7 @@ class ExportFromStock extends StatelessWidget {
                                         return CustomDropdownMenuItem<String>(
                                           value: fabric.id,
                                           child: new Text(
-                                            fabric.calite,
+                                            fabric.barCode,
                                             style: theme.textTheme.headline6,
                                           ),
                                         );
@@ -279,141 +277,80 @@ class ExportFromStock extends StatelessWidget {
                 builder: (BuildContext context, IgnoreButtonState state) =>
                     IgnorePointer(
                   ignoring: state.ignore,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Expanded(
-                        child: Container(),
-                        flex: 1,
-                      ),
-                      Expanded(
-                        flex: 2,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: TextButton(
-                            style: ButtonStyle(
-                              foregroundColor:
-                                  MaterialStateProperty.resolveWith(
-                                (states) => Colors.green.withOpacity(0.4),
-                              ),
-                              backgroundColor:
-                                  MaterialStateProperty.resolveWith(
-                                (states) => Colors.green.withOpacity(0.4),
-                              ),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                MyIcons.CHECK,
-                                style: MyTextStyle.iconStyle
-                                    .copyWith(fontSize: 30),
-                              ),
-                            ),
-                            onPressed: () async {
-                              if (exportFromStockPileCubit.state.itemSelected ==
-                                  'item') {
-                                if (exportFromStockPileCubit.state.item ==
-                                    null) {
-                                  MyShowSnackBar.showSnackBar(
-                                      context, 'کالایی انتخاب نشده است.');
-                                } else {
-                                  int inventory = int.parse(
-                                      exportFromStockPileCubit
-                                          .state.item.quantifierOne);
-                                  int amountInt = int.parse(amount.text);
-                                  if (amountInt > inventory) {
-                                    MyShowSnackBar.showSnackBar(context,
-                                        'مقدار ورودی شما بیشتر از موجودی انبار است.');
-                                  } else {
-                                    ignoreButtonCubit.update(true);
-                                    MyShowSnackBar.showSnackBar(
-                                        context, "کمی صبرکنید...");
-                                    String insert =
-                                        Insert.queryInsertOutputToLog(
-                                            exportFromStockPileCubit
-                                                .state.item.id,
-                                            amount.text,
-                                            person.text,
-                                            description.text);
-                                    String update =
-                                        Update.queryUpdateStockQuantifier(
-                                            exportFromStockPileCubit
-                                                .state.item.id,
-                                            (inventory - amountInt).toString());
-                                    String body =
-                                        await MyRequest.simple2QueryRequest(
-                                            'stockpile/run2Query.php',
-                                            insert,
-                                            update);
-                                    if (body.trim() == "OK") {
-                                      ignoreButtonCubit.update(false);
-                                      MyShowSnackBar.hideSnackBar(context);
-                                      Navigator.pop(context);
-                                    }
-                                  }
-                                }
-                              } else {
-                                if (exportFromStockPileCubit.state.fabric ==
-                                    null) {
-                                  MyShowSnackBar.showSnackBar(
-                                      context, 'کالیته ای انتخاب نشده است.');
-                                } else {
-                                  MyShowSnackBar.showSnackBar(
-                                      context, "کمی صبرکنید...");
-                                  ignoreButtonCubit.update(true);
-                                  Fabric fabric =
-                                      exportFromStockPileCubit.state.fabric;
-                                  String insert = Insert.queryExportToFabricLog(
-                                      fabric.id, description.text, person.text);
-                                  String update =
-                                      Update.queryUpdateLogInFabricTable(
-                                          fabric.id, '0');
-                                  String body =
-                                      await MyRequest.simple2QueryRequest(
-                                          'stockpile/run2Query.php',
-                                          insert,
-                                          update);
-                                  if (body == "OK") {
-                                    ignoreButtonCubit.update(false);
-                                    MyShowSnackBar.hideSnackBar(context);
-                                    Navigator.pop(context);
-                                  }
-                                }
-                              }
-                            },
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        flex: 2,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: TextButton(
-                            style: ButtonStyle(
-                              backgroundColor:
-                                  MaterialStateProperty.resolveWith(
-                                (states) => Colors.red.withOpacity(0.4),
-                              ),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                MyIcons.CANCEL,
-                                style: MyTextStyle.iconStyle
-                                    .copyWith(fontSize: 30),
-                              ),
-                            ),
-                            onPressed: () {
+                  child: SaveAndCancelButton(
+                    cancelButton: (){Navigator.of(context).pop();},
+                    saveButton: () async {
+                      if (exportFromStockPileCubit.state.itemSelected ==
+                          'item') {
+                        if (exportFromStockPileCubit.state.item ==
+                            null) {
+                          MyShowSnackBar.showSnackBar(
+                              context, 'کالایی انتخاب نشده است.');
+                        } else {
+                          int inventory = int.parse(
+                              exportFromStockPileCubit
+                                  .state.item.quantifierOne);
+                          int amountInt = int.parse(amount.text);
+                          if (amountInt > inventory) {
+                            MyShowSnackBar.showSnackBar(context,
+                                'مقدار ورودی شما بیشتر از موجودی انبار است.');
+                          } else {
+                            ignoreButtonCubit.update(true);
+                            MyShowSnackBar.showSnackBar(
+                                context, "کمی صبرکنید...");
+                            String insert =
+                            Insert.queryInsertOutputToLog(
+                                exportFromStockPileCubit
+                                    .state.item.id,
+                                amount.text,
+                                person.text,
+                                description.text);
+                            String update =
+                            Update.queryUpdateStockQuantifier(
+                                exportFromStockPileCubit
+                                    .state.item.id,
+                                (inventory - amountInt).toString());
+                            String body =
+                            await MyRequest.simple2QueryRequest(
+                                'stockpile/run2Query.php',
+                                insert,
+                                update);
+                            if (body.trim() == "OK") {
+                              ignoreButtonCubit.update(false);
+                              MyShowSnackBar.hideSnackBar(context);
                               Navigator.pop(context);
-                            },
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: Container(),
-                        flex: 1,
-                      ),
-                    ],
+                            }
+                          }
+                        }
+                      } else {
+                        if (exportFromStockPileCubit.state.fabric ==
+                            null) {
+                          MyShowSnackBar.showSnackBar(
+                              context, 'کالیته ای انتخاب نشده است.');
+                        } else {
+                          MyShowSnackBar.showSnackBar(
+                              context, "کمی صبرکنید...");
+                          ignoreButtonCubit.update(true);
+                          Fabric fabric =
+                              exportFromStockPileCubit.state.fabric;
+                          String insert = Insert.queryExportToFabricLog(
+                              fabric.id, description.text, person.text);
+                          String update =
+                          Update.queryUpdateLogInFabricTable(
+                              fabric.id, '0');
+                          String body =
+                          await MyRequest.simple2QueryRequest(
+                              'stockpile/run2Query.php',
+                              insert,
+                              update);
+                          if (body == "OK") {
+                            ignoreButtonCubit.update(false);
+                            MyShowSnackBar.hideSnackBar(context);
+                            Navigator.pop(context);
+                          }
+                        }
+                      }
+                    },
                   ),
                 ),
               ),

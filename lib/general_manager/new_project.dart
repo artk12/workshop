@@ -17,6 +17,7 @@ import 'package:workshop/style/component/default_textfield.dart';
 import 'package:workshop/style/component/dialog_bg.dart';
 import 'package:workshop/style/component/drop_down_background.dart';
 import 'package:workshop/style/component/dropdownWithOutNullSafety.dart';
+import 'package:workshop/style/component/save_and_cancel_button.dart';
 import 'package:workshop/style/theme/my_icons.dart';
 import 'package:workshop/style/theme/show_snackbar.dart';
 import 'package:workshop/style/theme/textstyle.dart';
@@ -110,9 +111,7 @@ class NewProject extends StatelessWidget {
                                       value: value.name,
                                       child: new Text(
                                         value.name,
-                                        style: TextStyle(
-                                            fontFamily: 'light',
-                                            color: Colors.white),
+                                        style: theme.textTheme.headline2
                                       ),
                                     );
                                   }).toList(),
@@ -309,6 +308,7 @@ class NewProject extends StatelessWidget {
                                 width: 80,
                                 child: Center(
                                   child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       Text(state.list[index - 1].size),
@@ -340,155 +340,96 @@ class NewProject extends StatelessWidget {
                 builder: (BuildContext context, IgnoreButtonState state) =>
                     IgnorePointer(
                   ignoring: state.ignore,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Expanded(
-                        child: Container(),
-                        flex: 1,
-                      ),
-                      Expanded(
-                        flex: 2,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: TextButton(
-                            style: ButtonStyle(
-                              foregroundColor:
-                                  MaterialStateProperty.resolveWith(
-                                (states) => Colors.green.withOpacity(0.4),
-                              ),
-                              backgroundColor:
-                                  MaterialStateProperty.resolveWith(
-                                (states) => Colors.green.withOpacity(0.4),
-                              ),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                MyIcons.CHECK,
-                                style: MyTextStyle.iconStyle
-                                    .copyWith(fontSize: 30),
-                              ),
-                            ),
-                            onPressed: () async {
-                              if (orderController.text.isEmpty ||
-                                  brandController.text.isEmpty) {
-                                MyShowSnackBar.showSnackBar(
-                                    context, 'لطفا تمامی فیلدها را پر کنید.');
-                              } else if (cubit.state.list == null) {
-                                MyShowSnackBar.showSnackBar(
-                                    context, 'لطفا سایزها را وارد کنید.');
-                              } else if (cubit.state.list.length == 0) {
-                                MyShowSnackBar.showSnackBar(
-                                    context, 'لطفا سایزها را وارد کنید.');
-                              } else {
-                                String styleCode = '';
-                                styleCodeCubit.state.styleChecks
-                                    .forEach((element) {
-                                  if (element.check) {
-                                    styleCode += element.name + ',';
-                                  }
-                                });
-                                if (styleCode.isEmpty) {
-                                  MyShowSnackBar.showSnackBar(
-                                      context, 'کد استایلی تعیین نشده است.');
-                                } else {
-                                  styleCode = styleCode.substring(
-                                      0, styleCode.length - 1);
-                                  String order = orderController.text;
-                                  String brand = brandController.text;
-                                  String roll = rollController.text;
-                                  // String styleCode = styleCodeController.text;
-                                  String description =
-                                      descriptionController.text;
-                                  String size = '';
-                                  List<Map<String,String>> list = [];
-                                  cubit.state.list.forEach((element) {
-                                    String short = styleCodes.firstWhere((item) => element.style == item.name).shortName;
-                                    Map<String,String> map = {'styleCode':element.style,'size':element.size,'shortCodeStyle':short};
-                                    list.add(map);
-                                  });
-                                  size = jsonEncode(list);
-                                  ignoreButtonCubit.update(true);
-                                  String insertToProject =
-                                      Insert.queryInsertInProject(order, brand,
-                                          roll, styleCode, size, description);
-                                  String insertToMessage =
-                                      Insert.queryInsertMessageNewProject(
-                                          brand);
-                                  MyShowSnackBar.showSnackBar(
-                                      context, 'لطفا کمی منتظر بمانید.');
-                                  String result =
-                                      await MyRequest.simple2QueryRequest(
-                                    'general_manager/insertProject.php',
-                                    insertToProject,
-                                    insertToMessage,
-                                  );
-                                  try {
-                                    int id = int.tryParse(result.trim());
-                                    if (id != null) {
-                                      ignoreButtonCubit.update(false);
-                                      MyShowSnackBar.hideSnackBar(context);
-                                      projects.insert(
-                                          0,
-                                          Project(
-                                              id: id.toString(),
-                                              description: description,
-                                              brand: brand,
-                                              roll: roll,
-                                              type: order,
-                                              size: size,
-                                              styleCode: styleCode));
-                                      refreshProvider.refresh();
-                                      Navigator.of(context).pop();
-                                    } else {
-                                      ignoreButtonCubit.update(false);
-                                      MyShowSnackBar.hideSnackBar(context);
-                                      MyShowSnackBar.showSnackBar(context,
-                                          "خطا در برقراری ازتباط با اینترنت لطفا مجددا تلاش کنید.");
-                                    }
-                                  } catch (e) {
-                                    ignoreButtonCubit.update(false);
-                                    MyShowSnackBar.hideSnackBar(context);
-                                    MyShowSnackBar.showSnackBar(context,
-                                        "خطا در برقراری ازتباط با اینترنت لطفا مجددا تلاش کنید.");
-                                  }
-                                }
-                              }
-                            },
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        flex: 2,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: TextButton(
-                            style: ButtonStyle(
-                              backgroundColor:
-                                  MaterialStateProperty.resolveWith(
-                                (states) => Colors.red.withOpacity(0.4),
-                              ),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                MyIcons.CANCEL,
-                                style: MyTextStyle.iconStyle
-                                    .copyWith(fontSize: 30),
-                              ),
-                            ),
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: Container(),
-                        flex: 1,
-                      ),
-                    ],
+                  child: SaveAndCancelButton(
+                    saveButton: () async {
+                      if (orderController.text.isEmpty ||
+                          brandController.text.isEmpty) {
+                        MyShowSnackBar.showSnackBar(
+                            context, 'لطفا تمامی فیلدها را پر کنید.');
+                      } else if (cubit.state.list == null) {
+                        MyShowSnackBar.showSnackBar(
+                            context, 'لطفا سایزها را وارد کنید.');
+                      } else if (cubit.state.list.length == 0) {
+                        MyShowSnackBar.showSnackBar(
+                            context, 'لطفا سایزها را وارد کنید.');
+                      } else {
+                        String styleCode = '';
+                        styleCodeCubit.state.styleChecks
+                            .forEach((element) {
+                          if (element.check) {
+                            styleCode += element.name + ',';
+                          }
+                        });
+                        if (styleCode.isEmpty) {
+                          MyShowSnackBar.showSnackBar(
+                              context, 'کد استایلی تعیین نشده است.');
+                        } else {
+                          styleCode = styleCode.substring(
+                              0, styleCode.length - 1);
+                          String order = orderController.text;
+                          String brand = brandController.text;
+                          String roll = rollController.text;
+                          // String styleCode = styleCodeController.text;
+                          String description =
+                              descriptionController.text;
+                          String size = '';
+                          List<Map<String,String>> list = [];
+                          cubit.state.list.forEach((element) {
+                            String short = styleCodes.firstWhere((item) => element.style == item.name).shortName;
+                            Map<String,String> map = {'styleCode':element.style,'size':element.size,'shortCodeStyle':short};
+                            list.add(map);
+                          });
+                          size = jsonEncode(list);
+                          ignoreButtonCubit.update(true);
+                          String insertToProject =
+                          Insert.queryInsertInProject(order, brand,
+                              roll, styleCode, size, description);
+                          String insertToMessage =
+                          Insert.queryInsertMessageNewProject(
+                              brand);
+                          MyShowSnackBar.showSnackBar(
+                              context, 'لطفا کمی منتظر بمانید.');
+                          String result =
+                          await MyRequest.simple2QueryRequest(
+                            'general_manager/insertProject.php',
+                            insertToProject,
+                            insertToMessage,
+                          );
+                          try {
+                            int id = int.tryParse(result.trim());
+                            if (id != null) {
+                              ignoreButtonCubit.update(false);
+                              MyShowSnackBar.hideSnackBar(context);
+                              projects.insert(
+                                  0,
+                                  Project(
+                                      id: id.toString(),
+                                      description: description,
+                                      brand: brand,
+                                      roll: roll,
+                                      type: order,
+                                      size: size,
+                                      styleCode: styleCode));
+                              refreshProvider.refresh();
+                              Navigator.of(context).pop();
+                            } else {
+                              ignoreButtonCubit.update(false);
+                              MyShowSnackBar.hideSnackBar(context);
+                              MyShowSnackBar.showSnackBar(context,
+                                  "خطا در برقراری ازتباط با اینترنت لطفا مجددا تلاش کنید.");
+                            }
+                          } catch (e) {
+                            ignoreButtonCubit.update(false);
+                            MyShowSnackBar.hideSnackBar(context);
+                            MyShowSnackBar.showSnackBar(context,
+                                "خطا در برقراری ازتباط با اینترنت لطفا مجددا تلاش کنید.");
+                          }
+                        }
+                      }
+                    },
+                    cancelButton: () {
+                      Navigator.pop(context);
+                    },
                   ),
                 ),
               ),

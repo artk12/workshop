@@ -239,7 +239,7 @@ class _TaskItemState extends State<TaskItem> {
                         widget.provider.checks[indexProvider].id ==
                             widget.assignPersonnel.id
                     ? widget.provider.color
-                    : Colors.black.withOpacity(0.3),
+                    : Colors.black.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Column(

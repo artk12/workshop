@@ -123,7 +123,7 @@ class _PersonnelPageState extends State<PersonnelPage> {
         child: Column(
           children: [
             Container(
-              color: Colors.black.withOpacity(0.3),
+              color: Colors.black.withOpacity(0.1),
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15.0),
                 child: Row(
@@ -142,7 +142,7 @@ class _PersonnelPageState extends State<PersonnelPage> {
                             decoration: InputDecoration(
                               hintText: 'جستجو...',
                               hintStyle: theme.textTheme.bodyText1.copyWith(
-                                  color: Colors.white.withOpacity(0.5)),
+                                  color: Colors.black.withOpacity(0.5)),
                               enabledBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(
                                     color: Colors.black.withOpacity(0.2),
@@ -150,7 +150,7 @@ class _PersonnelPageState extends State<PersonnelPage> {
                               ),
                               focusedBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(
-                                    color: Colors.white.withOpacity(0.2),
+                                    color: Colors.black.withOpacity(0.2),
                                     width: 2.5),
                               ),
                               border: UnderlineInputBorder(
@@ -165,10 +165,10 @@ class _PersonnelPageState extends State<PersonnelPage> {
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 15.0),
                       height: 40,
-                      width: 150,
+                      width: 100,
                       child: Container(
                         decoration: BoxDecoration(
-                          color: Color(0xff3b4354),
+                          color: Color(0xffcdcdcd),
                           borderRadius: BorderRadius.circular(5),
                         ),
                         child: BlocBuilder(

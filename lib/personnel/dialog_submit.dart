@@ -4,6 +4,7 @@ import 'package:workshop/bloc/ignoreButtonsBloc.dart';
 import 'package:workshop/bloc/publishManager/timer_personnel.dart';
 import 'package:workshop/module/publish_manager/assign_personnel.dart';
 import 'package:workshop/style/component/dialog_bg.dart';
+import 'package:workshop/style/component/save_and_cancel_button.dart';
 import 'package:workshop/style/theme/my_icons.dart';
 import 'package:workshop/style/theme/textstyle.dart';
 
@@ -44,70 +45,12 @@ class SubmitDialog extends StatelessWidget {
               builder: (BuildContext context, IgnoreButtonState state) =>
                   IgnorePointer(
                 ignoring: state.ignore,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Expanded(
-                      child: Container(),
-                      flex: 1,
-                    ),
-                    Expanded(
-                      flex: 2,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: TextButton(
-                          style: ButtonStyle(
-                            foregroundColor: MaterialStateProperty.resolveWith(
-                              (states) => Colors.green.withOpacity(0.4),
-                            ),
-                            backgroundColor: MaterialStateProperty.resolveWith(
-                              (states) => Colors.green.withOpacity(0.4),
-                            ),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              MyIcons.CHECK,
-                              style:
-                                  MyTextStyle.iconStyle.copyWith(fontSize: 30),
-                            ),
-                          ),
-                          onPressed: () async {
-                            //TODO : USER DETAIL
-                            Navigator.of(context).pop("OK");
-                          },
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 2,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: TextButton(
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.resolveWith(
-                              (states) => Colors.red.withOpacity(0.4),
-                            ),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              MyIcons.CANCEL,
-                              style:
-                                  MyTextStyle.iconStyle.copyWith(fontSize: 30),
-                            ),
-                          ),
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: Container(),
-                      flex: 1,
-                    ),
-                  ],
+                child: SaveAndCancelButton(
+                  saveButton: () async {
+                    //TODO : USER DETAIL
+                    Navigator.of(context).pop("OK");
+                  },
+                  cancelButton: (){Navigator.of(context).pop();},
                 ),
               ),
             ),

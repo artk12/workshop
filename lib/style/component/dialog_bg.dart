@@ -17,7 +17,7 @@ class DialogBg extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(25),
-            color: Color(0xff37303d),
+            color: Color(0xfff3f3f3),
           ),
           child: child
         ),

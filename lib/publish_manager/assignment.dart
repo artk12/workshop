@@ -60,7 +60,7 @@ class AssignmentPage extends StatelessWidget {
                 children: [
                   DefaultButton(
                     title: 'ثبت',
-                    backgroundColor: Colors.green.withOpacity(0.4),
+                    backgroundColor: Colors.green,
                     onPressed: () async {
                       if (assignPersonnelCubit.state.assignments.length == 0) {
                         MyShowSnackBar.showSnackBar(context,
@@ -109,7 +109,7 @@ class AssignmentPage extends StatelessWidget {
                   ),
                   DefaultButton(
                     title: 'لغو',
-                    backgroundColor: Colors.red.withOpacity(0.4),
+                    backgroundColor: Color(0xff990000),
                     onPressed: () async {
                       streamPageController.pageView = 0;
                       assignTaskCubit.clear();
@@ -214,7 +214,7 @@ class AssignmentPage extends StatelessWidget {
                         padding: EdgeInsets.symmetric(horizontal: 8),
                         margin: EdgeInsets.all(8),
                         decoration: BoxDecoration(
-                          border: Border.all(color: Colors.white24),
+                          border: Border.all(color: Colors.black38),
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Center(

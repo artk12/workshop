@@ -47,7 +47,7 @@ class PersonnelCard extends StatelessWidget{
       width: double.maxFinite,
       padding: EdgeInsets.symmetric(vertical: 5),
       decoration: BoxDecoration(
-        color: Colors.white12,
+        color: Colors.black12,
         borderRadius: BorderRadius.circular(10)
       ),
       child: Column(

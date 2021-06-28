@@ -96,15 +96,15 @@ class _MonitoringMobilePageState extends State<MonitoringMobilePage> {
                         decoration: InputDecoration(
                           hintText: 'جستجو...',
                           hintStyle: theme.textTheme.bodyText1
-                              .copyWith(color: Colors.white.withOpacity(0.5)),
+                              .copyWith(color: Colors.black.withOpacity(0.5)),
                           enabledBorder: UnderlineInputBorder(
                             borderSide: BorderSide(
-                                color: Colors.white.withOpacity(0.2),
+                                color: Colors.black.withOpacity(0.2),
                                 width: 2.5),
                           ),
                           focusedBorder: UnderlineInputBorder(
                             borderSide: BorderSide(
-                                color: Colors.white.withOpacity(0.4),
+                                color: Colors.black.withOpacity(0.4),
                                 width: 2.5),
                           ),
                           border: UnderlineInputBorder(
@@ -120,7 +120,7 @@ class _MonitoringMobilePageState extends State<MonitoringMobilePage> {
                     child: TextButton(
                       style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.resolveWith(
-                              (states) => Colors.white24)),
+                              (states) => Colors.black12)),
                       child: Text(
                         MyIcons.PLAY,
                         style: MyTextStyle.iconStyle
@@ -136,7 +136,7 @@ class _MonitoringMobilePageState extends State<MonitoringMobilePage> {
                     child: TextButton(
                       style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.resolveWith(
-                              (states) => Colors.white24)),
+                              (states) => Colors.black12)),
                       child: Text(
                         MyIcons.PAUSE,
                         style: MyTextStyle.iconStyle
@@ -157,7 +157,7 @@ class _MonitoringMobilePageState extends State<MonitoringMobilePage> {
                       ),
                       child: Text(
                         MyIcons.ALERT,
-                        style: MyTextStyle.iconStyle.copyWith(fontSize: 28),
+                        style: MyTextStyle.iconStyle.copyWith(fontSize: 28,color: Colors.white),
                       ),
                       onPressed: () {
                         p.updateWarning(!p.warning);

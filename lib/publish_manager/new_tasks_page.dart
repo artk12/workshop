@@ -14,6 +14,7 @@ import 'package:workshop/provider/new_task_page_provider.dart';
 import 'package:workshop/request/mylist.dart';
 import 'package:workshop/style/component/default_textfield.dart';
 import 'package:workshop/style/component/publish_manager/tasks_in_assignment.dart';
+import 'package:workshop/style/component/save_and_cancel_button.dart';
 import 'package:workshop/style/theme/my_icons.dart';
 import 'package:workshop/style/theme/show_snackbar.dart';
 import 'package:workshop/style/theme/textstyle.dart';
@@ -53,124 +54,68 @@ class _NewTaskPageState extends State<NewTaskPage> {
 
     return Scaffold(
       bottomSheet: Container(
-        height: 60,
-        color: Colors.black38,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Expanded(
-              child: Container(),
-              flex: 1,
-            ),
-            Expanded(
-              flex: 2,
-              child: SizedBox(
-                height: 50,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: TextButton(
-                    style: ButtonStyle(
-                      foregroundColor:
-                      MaterialStateProperty.resolveWith(
-                            (states) => Colors.green.withOpacity(0.4),
-                      ),
-                      backgroundColor:
-                      MaterialStateProperty.resolveWith(
-                            (states) => Colors.green.withOpacity(0.4),
-                      ),
-                    ),
-                    child: Text(
-                      MyIcons.CHECK,
-                      style: MyTextStyle.iconStyle
-                          .copyWith(fontSize: 26),
-                    ),
-                    onPressed: () async {
-                      List<CutCodeCheck> checksList =
-                      cubit.getCutCodeChecks();
-                      List<Pieces> pieces = [];
-                      List<AssignmentTask> assignmentTaskList = [];
-                      List<Task> checksTask = [];
-                      provider.taskChecksAssign.forEach((element) {
-                        if(element.check){
-                          checksTask.add(element.task);
-                        }
-                      });
-                      checksList.forEach((item) {
-                        try {
-                          pieces.add(provider.p.pieces.firstWhere(
-                                  (element) => element.cutCode == item.cutCode));
-                        } catch (e) {}
-                      });
-                      if(pieces.isEmpty){
-                        MyShowSnackBar.showSnackBar(context, "کد برشی انتخاب نشده است.");
-                      }else if(checksTask.isEmpty){
-                        MyShowSnackBar.showSnackBar(context, "فعالیتی انتخاب نشده است.");
-                      }else{
-                        checksTask.forEach((task) {
-                          pieces.forEach((item) {
-                            String shortStyleCode = item.cutCode
-                                .substring(item.cutCode.lastIndexOf('-') + 1);
-                            try {
-                              List<SizesAndStyle> sizes = provider.p.project.sizeAndStyle
-                                  .where((element) =>
-                              element.shortStyleName == shortStyleCode)
-                                  .toList();
-                              // int x =
-                              //     (int.parse(item.layer) / sizes.length).round();
-                              int x = (int.parse(item.layer));
-                              sizes.forEach((element) {
-                                assignmentTaskList.add(AssignmentTask(
-                                  x,
-                                  task.internTime,
-                                  task.amateurTime,
-                                  task.expertTime,
-                                  task.name,
-                                  item.cutCode + "-" + element.size,
-                                ));
-                              });
-                            } catch (e) {
-                              print(e);
-                            }
-                          });
-                        });
-                        Navigator.of(context).pop(assignmentTaskList);
-                      }
-                    },
-                  ),
-                ),
-              ),
-            ),
-            Expanded(
-              flex: 2,
-              child: SizedBox(
-                height: 50,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: TextButton(
-                    style: ButtonStyle(
-                      backgroundColor:
-                      MaterialStateProperty.resolveWith(
-                            (states) => Colors.red.withOpacity(0.4),
-                      ),
-                    ),
-                    child: Text(
-                      MyIcons.CANCEL,
-                      style: MyTextStyle.iconStyle
-                          .copyWith(fontSize: 26),
-                    ),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                ),
-              ),
-            ),
-            Expanded(
-              child: Container(),
-              flex: 1,
-            ),
-          ],
-        )
+        height: 55,
+        padding: EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: Colors.black12,
+          borderRadius: BorderRadius.only(topRight: Radius.circular(10),topLeft: Radius.circular(10))
+        ),
+        child: SaveAndCancelButton(
+          fontSize: 20,
+          cancelButton: (){Navigator.of(context).pop();},
+          saveButton:  () async {
+            List<CutCodeCheck> checksList =
+            cubit.getCutCodeChecks();
+            List<Pieces> pieces = [];
+            List<AssignmentTask> assignmentTaskList = [];
+            List<Task> checksTask = [];
+            provider.taskChecksAssign.forEach((element) {
+              if(element.check){
+                checksTask.add(element.task);
+              }
+            });
+            checksList.forEach((item) {
+              try {
+                pieces.add(provider.p.pieces.firstWhere(
+                        (element) => element.cutCode == item.cutCode));
+              } catch (e) {}
+            });
+            if(pieces.isEmpty){
+              MyShowSnackBar.showSnackBar(context, "کد برشی انتخاب نشده است.");
+            }else if(checksTask.isEmpty){
+              MyShowSnackBar.showSnackBar(context, "فعالیتی انتخاب نشده است.");
+            }else{
+              checksTask.forEach((task) {
+                pieces.forEach((item) {
+                  String shortStyleCode = item.cutCode
+                      .substring(item.cutCode.lastIndexOf('-') + 1);
+                  try {
+                    List<SizesAndStyle> sizes = provider.p.project.sizeAndStyle
+                        .where((element) =>
+                    element.shortStyleName == shortStyleCode)
+                        .toList();
+                    // int x =
+                    //     (int.parse(item.layer) / sizes.length).round();
+                    int x = (int.parse(item.layer));
+                    sizes.forEach((element) {
+                      assignmentTaskList.add(AssignmentTask(
+                        x,
+                        task.internTime,
+                        task.amateurTime,
+                        task.expertTime,
+                        task.name,
+                        item.cutCode + "-" + element.size,
+                      ));
+                    });
+                  } catch (e) {
+                    print(e);
+                  }
+                });
+              });
+              Navigator.of(context).pop(assignmentTaskList);
+            }
+          },
+        ),
       ),
       // bottomNavigationBar: Container(color: Colors.green,),
       body: SafeArea(
@@ -217,7 +162,7 @@ class _NewTaskPageState extends State<NewTaskPage> {
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
                         border:
-                            Border.all(color: Colors.white.withOpacity(0.7))),
+                            Border.all(color: Colors.black.withOpacity(0.7))),
                     child: TextButton(
                       onPressed: () async {
                         dialogMessageCubit.changeMessage("لطفا صبر کنید...");

@@ -44,7 +44,7 @@ class ProjectCard extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(8),
       margin: EdgeInsets.all(8),
-      decoration: BoxDecoration(color: Colors.black12),
+      decoration: BoxDecoration(color: Colors.black12,borderRadius: BorderRadius.circular(10)),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [

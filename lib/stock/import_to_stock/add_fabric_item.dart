@@ -6,7 +6,7 @@ import 'package:workshop/request/query/insert.dart';
 import 'package:workshop/request/request.dart';
 import 'package:workshop/style/app_bar/my_appbar.dart';
 import 'package:workshop/style/component/default_textfield.dart';
-import 'package:workshop/style/theme/my_icons.dart';
+import 'package:workshop/style/component/save_and_cancel_button.dart';
 import 'package:workshop/style/theme/show_snackbar.dart';
 import 'package:workshop/style/theme/textstyle.dart';
 import 'package:workshop/time_format.dart';
@@ -158,110 +158,48 @@ class AddFabricItem extends StatelessWidget {
                 builder: (BuildContext context, IgnoreButtonState state) =>
                     IgnorePointer(
                   ignoring: state.ignore,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Expanded(
-                        child: Container(),
-                        flex: 1,
-                      ),
-                      Expanded(
-                        flex: 2,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: TextButton(
-                            style: ButtonStyle(
-                              foregroundColor:
-                                  MaterialStateProperty.resolveWith(
-                                (states) => Colors.green.withOpacity(0.4),
-                              ),
-                              backgroundColor:
-                                  MaterialStateProperty.resolveWith(
-                                (states) => Colors.green.withOpacity(0.4),
-                              ),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                MyIcons.CHECK,
-                                style: MyTextStyle.iconStyle
-                                    .copyWith(fontSize: 30),
-                              ),
-                            ),
-                            onPressed: () async {
-                              String manufacture = manufactureController.text;
-                              String calite = caliteController.text;
-                              String metric = metricController.text;
-                              String color = colorController.text;
-                              String pieces = piecesController.text;
-                              String description = descriptionController.text;
-                              String barcode = messageCubit.state.message;
+                  child:SaveAndCancelButton(
+                    cancelButton: (){Navigator.of(context).pop();},
+                    saveButton: () async {
+                      String manufacture = manufactureController.text;
+                      String calite = caliteController.text;
+                      String metric = metricController.text;
+                      String color = colorController.text;
+                      String pieces = piecesController.text;
+                      String description = descriptionController.text;
+                      String barcode = messageCubit.state.message;
 
-                              if (manufacture.isEmpty ||
-                                  // calite.isEmpty ||
-                                  metric.isEmpty ||
-                                  // color.isEmpty ||
-                                  pieces.isEmpty) {
-                                MyShowSnackBar.showSnackBar(
-                                    context, "لطفا تمامی فیلدها را پر کنید.");
-                              } else if (barcode.trim().isEmpty) {
-                                MyShowSnackBar.showSnackBar(
-                                    context, "بارکد تعیین نشده است.");
-                              } else {
-                                MyShowSnackBar.showSnackBar(
-                                    context, "کمی صبرکنید...");
-                                String insert =
-                                    Insert.queryInsertFabricToStockpile(
-                                        manufacture,
-                                        calite,
-                                        metric,
-                                        color,
-                                        pieces,
-                                        barcode,
-                                        description);
-                                String res = await MyRequest.simpleQueryRequest(
-                                    'stockpile/runQuery.php', insert);
-                                if (res.trim() == "OK") {
-                                  ignoreButtonCubit.update(false);
-                                  MyShowSnackBar.hideSnackBar(context);
-                                  Navigator.pop(context);
-                                }
-                              }
-                            },
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        flex: 2,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: TextButton(
-                              // color: Colors.red.withOpacity(0.4),
-                              // icon: Icons.close,
-                              style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.resolveWith(
-                                  (states) => Colors.red.withOpacity(0.4),
-                                ),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  MyIcons.CANCEL,
-                                  style: MyTextStyle.iconStyle
-                                      .copyWith(fontSize: 30),
-                                ),
-                              ),
-                              onPressed: () {
-                                Navigator.pop(context);
-                              }),
-                        ),
-                      ),
-                      Expanded(
-                        child: Container(),
-                        flex: 1,
-                      ),
-                    ],
+                      if (manufacture.isEmpty ||
+                          // calite.isEmpty ||
+                          metric.isEmpty ||
+                          // color.isEmpty ||
+                          pieces.isEmpty) {
+                        MyShowSnackBar.showSnackBar(
+                            context, "لطفا تمامی فیلدها را پر کنید.");
+                      } else if (barcode.trim().isEmpty) {
+                        MyShowSnackBar.showSnackBar(
+                            context, "بارکد تعیین نشده است.");
+                      } else {
+                        MyShowSnackBar.showSnackBar(
+                            context, "کمی صبرکنید...");
+                        String insert =
+                        Insert.queryInsertFabricToStockpile(
+                            manufacture,
+                            calite,
+                            metric,
+                            color,
+                            pieces,
+                            barcode,
+                            description);
+                        String res = await MyRequest.simpleQueryRequest(
+                            'stockpile/runQuery.php', insert);
+                        if (res.trim() == "OK") {
+                          ignoreButtonCubit.update(false);
+                          MyShowSnackBar.hideSnackBar(context);
+                          Navigator.pop(context);
+                        }
+                      }
+                    },
                   ),
                 ),
               ),

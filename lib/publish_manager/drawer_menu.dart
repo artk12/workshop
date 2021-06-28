@@ -5,7 +5,6 @@ import 'package:workshop/module/stockpile/user.dart';
 import 'package:workshop/my_shared_preferences.dart';
 import 'package:workshop/provider/publish_manager_pages_controller.dart';
 import 'package:workshop/request/request.dart';
-import 'package:workshop/sign/sign_in.dart';
 
 class DrawerMenu extends StatelessWidget {
   final SuperUser user;
@@ -28,7 +27,7 @@ class DrawerMenu extends StatelessWidget {
     ThemeData theme = Theme.of(context);
 
     return Container(
-      color: Colors.black,
+      color: Color(0xFFECECEC),
       width: 200,
       child: ListView(
         padding: EdgeInsets.zero,

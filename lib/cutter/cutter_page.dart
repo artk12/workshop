@@ -1,7 +1,7 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:workshop/bloc/dialog_message.dart';
 import 'package:workshop/bloc/general_manager/new_project_size_bloc.dart';
 import 'package:workshop/bloc/ignoreButtonsBloc.dart';
 import 'package:workshop/bloc/stockpile/single_drop_down_bloc.dart';
@@ -19,10 +19,8 @@ import 'package:workshop/style/component/background_widget.dart';
 import 'package:workshop/style/component/default_textfield.dart';
 import 'package:workshop/style/component/drop_down_background.dart';
 import 'package:workshop/style/component/dropdownWithOutNullSafety.dart';
-import 'package:workshop/style/component/my_icon_button.dart';
-import 'package:workshop/style/theme/my_icons.dart';
+import 'package:workshop/style/component/save_and_cancel_button.dart';
 import 'package:workshop/style/theme/show_snackbar.dart';
-import 'package:workshop/style/theme/textstyle.dart';
 
 class MyTextEditingController {
   final TextEditingController quantify;
@@ -55,9 +53,10 @@ class CutterPage extends StatelessWidget {
     TextEditingController realUsage = new TextEditingController();
     TextEditingController usage = new TextEditingController();
     TextEditingController height = new TextEditingController();
-    // TextEditingController cutCode = new TextEditingController();
     TextEditingController totalGoods = new TextEditingController();
     TextEditingController description = new TextEditingController();
+    DialogMessageCubit dialogMessageCubit = DialogMessageCubit(DialogMessageState(message: ''));
+
 
     String style = cutDetail.styleCode + ',';
     List<String> styleCodeList = [];
@@ -113,7 +112,7 @@ class CutterPage extends StatelessWidget {
         padding: EdgeInsets.only(bottom: 5),
         decoration: BoxDecoration(
           border: Border(
-            bottom: BorderSide(color: Colors.white, width: 1),
+            bottom: BorderSide(color: Colors.black, width: 1),
           ),
         ),
       );
@@ -363,14 +362,6 @@ class CutterPage extends StatelessWidget {
             children: [
               MyAppbar(
                 title: "برش برای پروژه " + "#" + cutDetail.projectId,
-                leftWidget: [
-                  MyIconButton(
-                    icon: MyIcons.CANCEL,
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  )
-                ],
               ),
               space(20),
               Row(
@@ -394,10 +385,6 @@ class CutterPage extends StatelessWidget {
               space(30),
               Wrap(
                 children: sizes,
-                // mainAxisAlignment: MainAxisAlignment.center,
-                // children: [
-                //   textWithUnderLine("سایز : " + cutDetail.size),
-                // ],
               ),
               space(20),
               Row(
@@ -411,9 +398,16 @@ class CutterPage extends StatelessWidget {
                 children: [
                   Expanded(
                     child: DefaultTextField(
-                      label: "مصرف واقعی",
-                      textEditingController: realUsage,
+                      label: "جمع کل کار",
                       textInputType: TextInputType.number,
+                      textEditingController: totalGoods,
+                      onChange: (String s){
+                        int x = int.parse(s);
+                        int metric = int.parse(cutDetail.metric);
+                        // dialogMessageCubit.changeMessage(((metric*100)/x).toString());
+                        // realUsage.text = new TextEditingController(text: .);
+                        realUsage.text = ((metric*100)/x).round().toString();
+                      },
                     ),
                   ),
                   Expanded(
@@ -460,10 +454,15 @@ class CutterPage extends StatelessWidget {
                   ),
                   Expanded(
                     flex: 2,
-                    child: DefaultTextField(
-                      label: "جمع کل کار",
-                      textInputType: TextInputType.number,
-                      textEditingController: totalGoods,
+                    child: BlocBuilder(
+                      cubit: dialogMessageCubit,
+                      builder:(BuildContext c , DialogMessageState s)=> DefaultTextField(
+                        label: "مصرف واقعی",
+                        textEditingController: realUsage,
+                        // initText: s.message,
+                        textInputType: TextInputType.number,
+                        readOnly: true,
+                      ),
                     ),
                   ),
                   Expanded(
@@ -488,92 +487,28 @@ class CutterPage extends StatelessWidget {
                 builder: (BuildContext context, IgnoreButtonState state) =>
                     IgnorePointer(
                   ignoring: state.ignore,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Expanded(
-                        child: Container(),
-                        flex: 1,
-                      ),
-                      Expanded(
-                        flex: 2,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: TextButton(
-                            style: ButtonStyle(
-                              foregroundColor:
-                                  MaterialStateProperty.resolveWith(
-                                (states) => Colors.green.withOpacity(0.4),
-                              ),
-                              backgroundColor:
-                                  MaterialStateProperty.resolveWith(
-                                (states) => Colors.green.withOpacity(0.4),
-                              ),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                MyIcons.CHECK,
-                                style: MyTextStyle.iconStyle
-                                    .copyWith(fontSize: 30),
-                              ),
-                            ),
-                            onPressed: () async {
-                              bool check = CalculateCutter.checkPiecesField(
-                                  textEditingControllers);
-                              if (!check) {
-                                MyShowSnackBar.showSnackBar(context,
-                                    'لطفا تمامی فیلدهای برش تکه را پر کنید.');
-                              } else if (realUsage.text.isEmpty ||
-                                  usage.text.isEmpty ||
-                                  height.text.isEmpty ||
-                                  totalGoods.text.isEmpty) {
-                                MyShowSnackBar.showSnackBar(
-                                    context, 'لطفا تمامی فیلدهای را پر کنید.');
-                              } else {
-                                bool check = int.parse(cutDetail.roll) ==
-                                        (int.parse(cutDetail.rollComplete) + 1)
-                                    ? false
-                                    : true;
-                                insert(check: check);
-                              }
-                            },
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Expanded(
-                        flex: 2,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: TextButton(
-                            style: ButtonStyle(
-                              backgroundColor:
-                                  MaterialStateProperty.resolveWith(
-                                (states) => Colors.red.withOpacity(0.4),
-                              ),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                MyIcons.CANCEL,
-                                style: MyTextStyle.iconStyle
-                                    .copyWith(fontSize: 30),
-                              ),
-                            ),
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: Container(),
-                        flex: 1,
-                      ),
-                    ],
+                  child: SaveAndCancelButton(
+                    cancelButton: (){Navigator.of(context).pop();},
+                    saveButton: () async {
+                      bool check = CalculateCutter.checkPiecesField(
+                          textEditingControllers);
+                      if (!check) {
+                        MyShowSnackBar.showSnackBar(context,
+                            'لطفا تمامی فیلدهای برش تکه را پر کنید.');
+                      } else if (realUsage.text.isEmpty ||
+                          usage.text.isEmpty ||
+                          height.text.isEmpty ||
+                          totalGoods.text.isEmpty) {
+                        MyShowSnackBar.showSnackBar(
+                            context, 'لطفا تمامی فیلدهای را پر کنید.');
+                      } else {
+                        bool check = int.parse(cutDetail.roll) ==
+                            (int.parse(cutDetail.rollComplete) + 1)
+                            ? false
+                            : true;
+                        insert(check: check);
+                      }
+                    },
                   ),
                 ),
               ),

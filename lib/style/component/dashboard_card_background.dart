@@ -19,7 +19,7 @@ class DashboardCardBackground extends StatelessWidget {
         ],
       ),
       child: Container(
-        color: Color(0xff4a4a4a).withOpacity(0.2),
+        color: Color(0xffb8b8b8).withOpacity(0.2),
           // decoration: BoxDecoration(
           //   boxShadow: [
               // BoxShadow(color: Colors.black.withOpacity(0.0),blurRadius: 3),

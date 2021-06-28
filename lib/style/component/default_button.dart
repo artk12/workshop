@@ -28,12 +28,12 @@ class DefaultButton extends StatelessWidget {
               borderRadius: BorderRadius.circular(5)),
           side: BorderSide(
             width: 1.0,
-            color: Colors.white.withOpacity(0.2),
+            color: Colors.black.withOpacity(0.2),
           ),
         ),
         child: Text(
           title,
-          style: Theme.of(context).textTheme.headline6,
+          style: Theme.of(context).textTheme.headline6.copyWith(color: backgroundColor == null?null:Colors.white),
         ),
       ),
     );

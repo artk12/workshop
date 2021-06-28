@@ -25,7 +25,7 @@ class FabricCardMobile extends StatelessWidget {
             fabric: fabric,
             fabricLogs: fabricLogs,
           ),
-          barrierColor: Colors.transparent,
+          // barrierColor: Colors.transparent,
         );
       },
       child: Container(
@@ -47,7 +47,7 @@ class FabricCardMobile extends StatelessWidget {
               alignment: Alignment.topCenter,
               child: Container(
                 width: double.maxFinite,
-                height: 150,
+                height: 155,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
