@@ -47,16 +47,21 @@ class TaskAssignmentCard extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                isDragging? Text(
+              name,
+              style: theme.textTheme.headline4,
+            ): Flexible(
+                  child: Text(
+                    name,
+                    style: theme.textTheme.headline4,
+                  ),
+                ),
                 isDragging
                     ? Container()
                     : Text(
                         "x$number",
                         style: theme.textTheme.headline4,
                       ),
-                Text(
-                  name,
-                  style: theme.textTheme.headline4,
-                ),
               ],
             ),
           )

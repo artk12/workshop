@@ -38,8 +38,8 @@ class AssignGroupTaskDialog extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            Text("کد برش : " +
-                                nameAndSize.cutCodeAndLayer[index].cutCode),
+                            Text("کد برش : " ),
+                            Text(nameAndSize.cutCodeAndLayer[index].cutCode,textDirection: TextDirection.ltr,),
                             Text("مقدار : " +
                                 assignTasks
                                     .firstWhere((item) =>

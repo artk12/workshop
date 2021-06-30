@@ -144,7 +144,8 @@ class PublishManager extends StatelessWidget {
                             assignTaskCubit:
                                 streamPageController.assignTaskCubit,
                             pageController: pageController,
-                            streamPageController: streamPageController),
+                            streamPageController: streamPageController,
+                        groupTaskAssignCubit: streamPageController.groupTaskAssignCubit,),
                         ChangeNotifierProvider.value(
                           value: refreshProvider,
                           child: TasksPage(

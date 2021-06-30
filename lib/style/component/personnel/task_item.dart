@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:workshop/bloc/personnel/score_cubit.dart';
@@ -40,9 +41,9 @@ class _TaskItemState extends State<TaskItem> {
   bool stopServer;
   bool stop = false;
   String connection = "مشکل در اتصال به اینترنت ! ";
+
   @override
   Widget build(BuildContext context) {
-
     ThemeData theme = Theme.of(context);
     int indexProvider =
         widget.provider.checks.indexWhere((element) => element.check == true);
@@ -244,17 +245,23 @@ class _TaskItemState extends State<TaskItem> {
               ),
               child: Column(
                 children: [
-                  Container(
-                    width: double.maxFinite,
-                    child: Directionality(
-                      textDirection: TextDirection.ltr,
-                      child: Text(
-                        '#' + widget.assignPersonnel.cutCode,
-                        style: theme.textTheme.headline6,
-                        textAlign: TextAlign.start,
-                      ),
-                    ),
-                  ),
+                  widget.assignPersonnel.cutCode.indexOf(',') != -1
+                      ? Container(
+                          width: double.maxFinite,
+                          child: Text(
+                            "دسته",
+                            textAlign: TextAlign.start,
+                          ),
+                        )
+                      : Container(
+                          width: double.maxFinite,
+                          child: Text(
+                            '#' + widget.assignPersonnel.cutCode,
+                            style: theme.textTheme.headline6,
+                            textAlign: TextAlign.start,
+                            textDirection: TextDirection.ltr,
+                          ),
+                        ),
                   Expanded(
                     child: Row(
                       children: [
@@ -289,7 +296,7 @@ class _TaskItemState extends State<TaskItem> {
                                     ),
                                     Text(
                                       'فعالیت : ' +
-                                          '${widget.index+widget.provider.removeIds.length}/${widget.total+widget.provider.removeIds.length}',
+                                          '${widget.index + widget.provider.removeIds.length}/${widget.total + widget.provider.removeIds.length}',
                                       style: theme.textTheme.headline5,
                                     ),
                                   ],
@@ -305,12 +312,17 @@ class _TaskItemState extends State<TaskItem> {
                               MyCircularProgress(
                                 cubit: widget.cubit,
                                 check: widget.provider.checks
-                                    .firstWhere((element) => element.id == widget.assignPersonnel.id).check,
+                                    .firstWhere((element) =>
+                                        element.id == widget.assignPersonnel.id)
+                                    .check,
                                 assignPersonnel: widget.assignPersonnel,
-                                stopServer: widget.assignPersonnel.play == "0" ? true : false,
+                                stopServer: widget.assignPersonnel.play == "0"
+                                    ? true
+                                    : false,
                                 index: widget.index,
                                 provider: widget.provider,
-                                playDateTime: widget.assignPersonnel.playDateTime,
+                                playDateTime:
+                                    widget.assignPersonnel.playDateTime,
                                 stop: stop,
                               ),
                             ],

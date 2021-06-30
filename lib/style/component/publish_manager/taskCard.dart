@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:workshop/bloc/refresh_provider.dart';
 import 'package:workshop/module/publish_manager/task.dart';
 import 'package:workshop/publish_manager/dialog_update_task.dart';
@@ -9,17 +10,18 @@ import 'package:workshop/style/theme/show_snackbar.dart';
 
 import '../default_button.dart';
 
+// ignore: must_be_immutable
 class TaskCard extends StatelessWidget {
   final Task task;
-  final RefreshProvider refreshProvider;
-  final List<Task> tasks;
+  // final RefreshProvider refreshProvider;
+  List<Task> tasks;
 
-  TaskCard({this.task, this.refreshProvider, this.tasks});
+  TaskCard({this.task, this.tasks});
 
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
-
+    RefreshProvider refreshProvider = Provider.of(context);
     return GestureDetector(
       onLongPress: ()async{
         bool check = await showDialog(
@@ -75,7 +77,10 @@ class TaskCard extends StatelessWidget {
         if (t != null) {
           int index = tasks.indexWhere((element) => element.id == t.id);
           if (index != -1) {
-            tasks[index] = t;
+            tasks.firstWhere((element) => element.id == t.id).expertTime = t.expertTime;
+            tasks.firstWhere((element) => element.id == t.id).internTime = t.internTime;
+            tasks.firstWhere((element) => element.id == t.id).amateurTime = t.amateurTime;
+            tasks.firstWhere((element) => element.id == t.id).name = t.name;
             refreshProvider.refresh();
           }
         }

@@ -16,32 +16,52 @@ class PersonnelAssignmentCard extends StatelessWidget {
     Widget taskItem(AssignTaskPersonnel a) {
       return Container(
         margin: EdgeInsets.only(bottom: 4),
-        child: Row(
+        padding: EdgeInsets.all(5),
+        decoration: BoxDecoration(
+          color: Colors.black.withOpacity(0.05),
+          borderRadius: BorderRadius.circular(5),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            Text(
-              a.cutCode,
-              style: theme.textTheme.headline6.copyWith(fontSize: 10),
+            a.cutCode.indexOf(',') != -1?Container():Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Flexible(
+                  child: Text(
+                    a.name,
+                    style: theme.textTheme.headline4,
+                  ),
+                ),
+                Text(
+                  a.cutCode,
+                  textDirection: TextDirection.ltr,
+                  style: theme.textTheme.headline6.copyWith(fontSize: 14),
+                ),
+              ],
             ),
-            SizedBox(
-              width: 5,
-            ),
-            Text(
+            a.cutCode.indexOf(',') == -1?Container():Text(
               a.name,
               style: theme.textTheme.headline4,
             ),
-            Expanded(
-              child: Container(),
-            ),
-            Text(
-              'x ${a.number}',
-              style: theme.textTheme.headline5,
-            ),
             SizedBox(
-              width: 5,
+              height: 5,
             ),
-            Text(
-              TimeFormat.timeFormatFromDuration(Duration(seconds: a.time)),
-              style: theme.textTheme.headline6,
+            // Expanded(
+            //   child: Container(),
+            // ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'x ${a.number}',
+                  style: theme.textTheme.headline5,
+                ),
+                Text(
+                  TimeFormat.timeFormatFromDuration(Duration(seconds: a.time)),
+                  style: theme.textTheme.headline6,
+                ),
+              ],
             ),
           ],
         ),

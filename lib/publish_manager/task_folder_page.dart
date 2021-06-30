@@ -39,7 +39,6 @@ class TaskFolderPage extends StatelessWidget {
                       Task t = await showDialog(
                         context: context,
                         builder: (context) => AddNewTask(groupId:taskFolder.id),
-                        barrierColor: Colors.black54,
                       );
                       if (t != null) {
                         tasks.add(t);
@@ -54,12 +53,15 @@ class TaskFolderPage extends StatelessWidget {
                   },))
                 ],
               ),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: list.length,
-                  itemBuilder: (BuildContext c, int index) {
-                    return TaskCard(refreshProvider: refreshProvider,task: list[index],tasks: tasks,);
-                  },
+              ChangeNotifierProvider.value(
+                value: refreshProvider,
+                child: Expanded(
+                  child: ListView.builder(
+                    itemCount: list.length,
+                    itemBuilder: (BuildContext c, int index) {
+                      return TaskCard(task: list[index],tasks: tasks,);
+                    },
+                  ),
                 ),
               ),
             ],

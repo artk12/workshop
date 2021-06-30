@@ -30,6 +30,7 @@ class AssignmentPage extends StatelessWidget {
   final AssignPersonnelCubit assignPersonnelCubit;
   final PageController pageController;
   final PublishManagerPageController streamPageController;
+  final GroupTaskAssignCubit groupTaskAssignCubit;
 
   AssignmentPage(
       {this.cuts,
@@ -39,16 +40,15 @@ class AssignmentPage extends StatelessWidget {
       this.assignTaskCubit,
       this.taskFolders,
       this.pageController,
+      this.groupTaskAssignCubit,
       this.streamPageController});
 
   @override
   Widget build(BuildContext context) {
-    GlobalKey scaffoldKey = new GlobalKey<ScaffoldState>();
-    GroupTaskAssignCubit groupTaskAssignCubit =
-        new GroupTaskAssignCubit(GroupTaskAssignState(list: []));
+    // GlobalKey scaffoldKey = new GlobalKey<ScaffoldState>();
 
     return Scaffold(
-      key: scaffoldKey,
+      // key: scaffoldKey,
       body: Container(
         height: double.maxFinite,
         margin: EdgeInsets.symmetric(horizontal: 7),
@@ -178,7 +178,6 @@ class AssignmentPage extends StatelessWidget {
                             }
                           },
                         );
-                        groupTaskAssignCubit.update(namesAndSizes);
                         // namesAndSizes.forEach((element) {
                         //   print(
                         //       "name is ${element.name} , size is ${element.size}");
@@ -188,6 +187,7 @@ class AssignmentPage extends StatelessWidget {
                         //   });
                         // });
                         assignTaskCubit.addTask(t);
+                        groupTaskAssignCubit.update(namesAndSizes);
                       }
                     },
                   ),
@@ -199,38 +199,66 @@ class AssignmentPage extends StatelessWidget {
               child: BlocBuilder(
                 cubit: groupTaskAssignCubit,
                 builder: (BuildContext context, GroupTaskAssignState s) =>
-                    ListView.builder(
+                    SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
-                  itemCount: s.list.length,
-                  itemBuilder: (BuildContext c, int index) {
-                    return Draggable(
-                      data: s.list[index],
-                      feedback: TaskAssignmentCard(
-                        isDragging: true,
-                        name: s.list[index].name,
-                        cutCode: s.list[index].size,
-                      ),
-                      child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 8),
-                        margin: EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.black38),
-                          borderRadius: BorderRadius.circular(10),
+                  child: Row(
+                    children: List.generate(
+                      s.list.length,
+                      (index) => Draggable(
+                        data: s.list[index],
+                        feedback: TaskAssignmentCard(
+                          isDragging: true,
+                          name: s.list[index].name,
+                          cutCode: s.list[index].size,
                         ),
-                        child: Center(
-                          child: Text(" تمام " +
-                              s.list[index].name +
-                              " سایز " +
-                              s.list[index].size),
+                        child: Container(
+                          height: double.maxFinite,
+                          padding: EdgeInsets.symmetric(horizontal: 8),
+                          margin: EdgeInsets.symmetric(vertical: 8,horizontal: 18),
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.black38),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                  s.list[index].name +
+                                  " سایز "),
+                              SizedBox(width: 5,),
+                              Text(s.list[index].size,textDirection: TextDirection.ltr,)
+                            ],
+                          ),
                         ),
                       ),
-                    );
-                  },
+                    ),
+                    // scrollDirection: Axis.horizontal,
+                    // itemCount: s.list.length,
+                    // itemBuilder: (BuildContext c, int index) {
+                    //   return Draggable(
+                    //     data: s.list[index],
+                    //     feedback: TaskAssignmentCard(
+                    //       isDragging: true,
+                    //       name: s.list[index].name,
+                    //       cutCode: s.list[index].size,
+                    //     ),
+                    //     child: Container(
+                    //       padding: EdgeInsets.symmetric(horizontal: 8),
+                    //       margin: EdgeInsets.all(8),
+                    //       decoration: BoxDecoration(
+                    //         border: Border.all(color: Colors.black38),
+                    //         borderRadius: BorderRadius.circular(10),
+                    //       ),
+                    //       child: Center(
+                    //         child: Text(" تمام " +
+                    //             s.list[index].name +
+                    //             " سایز " +
+                    //             s.list[index].size),
+                    //       ),
+                    //     ),
+                  ),
                 ),
               ),
-            ),
-            SizedBox(
-              height: 5,
             ),
             Expanded(
               child: Row(
@@ -335,6 +363,9 @@ class AssignmentPage extends StatelessWidget {
                               if (check != null) {
                                 int time = 0;
                                 Personnel p = personnel[index];
+                                Duration tpuTotal = Duration(seconds: 0);
+                                String allCutCode = '';
+                                int totalQuantity = 0;
                                 data.cutCodeAndLayer.forEach(
                                   (element) {
                                     if (p.level == "کارآموز") {
@@ -353,20 +384,26 @@ class AssignmentPage extends StatelessWidget {
                                     Duration tpu =
                                         Duration(seconds: quantity * time);
                                     int second = tpu.inSeconds;
-                                    AssignTaskPersonnel a =
-                                        new AssignTaskPersonnel(
-                                            cutCode: element.cutCode,
-                                            name: data.name,
-                                            personnel: personnel[index],
-                                            number: quantity,
-                                            time: second);
                                     if (quantity > 0) {
-                                      assignPersonnelCubit.update(a);
+                                      tpuTotal = Duration(
+                                          seconds: tpuTotal.inSeconds + second);
+                                      allCutCode += element.cutCode + ',';
+                                      totalQuantity += quantity;
                                       assignTaskCubit.updateTask(
-                                          a.cutCode, a.number, a.name);
+                                          element.cutCode, quantity, data.name);
                                     }
                                   },
                                 );
+                                AssignTaskPersonnel a = new AssignTaskPersonnel(
+                                    cutCode: allCutCode,
+                                    name: 'تمامی ' +
+                                        data.name +
+                                        ' سایز ' +
+                                        data.size,
+                                    personnel: personnel[index],
+                                    number: totalQuantity,
+                                    time: tpuTotal.inSeconds);
+                                assignPersonnelCubit.update(a);
                               }
                             }
                           },
