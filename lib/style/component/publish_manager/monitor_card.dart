@@ -123,15 +123,15 @@ class _MonitorCardState extends State<MonitorCard> {
         ),
         child: Column(
           children: [
-            Directionality(
-              textDirection: TextDirection.ltr,
-              child: Container(
-                width: double.maxFinite,
-                child: Text(
-                  '#' + cubit.startAssign.assignPersonnel.cutCode,
-                  style: theme.textTheme.headline6,
-                  textAlign: TextAlign.start,
-                ),
+            Container(
+              width: double.maxFinite,
+              child: cubit.startAssign.assignPersonnel.cutCode.contains(',')? Text('دسته',style: theme.textTheme.headline6,
+                textDirection: TextDirection.rtl,
+                textAlign: TextAlign.start,):Text(
+                '#' + cubit.startAssign.assignPersonnel.cutCode,
+                style: theme.textTheme.headline6,
+                textDirection: TextDirection.ltr,
+                textAlign: TextAlign.end,
               ),
             ),
             Expanded(

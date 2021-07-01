@@ -6,6 +6,7 @@ import 'package:workshop/bloc/personnel/score_cubit.dart';
 import 'package:workshop/bloc/publishManager/timer_personnel.dart';
 import 'package:workshop/module/publish_manager/assign_personnel.dart';
 import 'package:workshop/module/stockpile/user.dart';
+import 'package:workshop/personnel/dialog_start.dart';
 import 'package:workshop/personnel/dialog_submit.dart';
 import 'package:workshop/personnel/my_progress.dart';
 import 'package:workshop/provider/taskItemProvider.dart';
@@ -50,23 +51,29 @@ class _TaskItemState extends State<TaskItem> {
 
     return GestureDetector(
       onTap: () async {
+        print(indexProvider);
         if (indexProvider == -1) {
+          print("check");
           String id = widget.assignPersonnel.id;
           String personnelId = widget.assignPersonnel.personnelId;
           String cutCode = widget.assignPersonnel.cutCode;
           String taskName = widget.assignPersonnel.name;
           String startDateTime = DateTime.now().toString().substring(0, 19);
-          // MyShowSnackBar.showSnackBar(context, 'لطفا کمی صبر کنید...');
-          String res = await MyRequest.startTask(id, taskName, widget.user.name,
-              cutCode, personnelId, startDateTime);
-          if (res.trim() == "OK") {
-            await Future.delayed(Duration(milliseconds: 250));
-            setState(() {
-              stop = false;
-            });
-            await Future.delayed(Duration(milliseconds: 250));
-            ScaffoldMessenger.of(context).hideCurrentSnackBar();
-            widget.provider.update(true, widget.assignPersonnel.id);
+          String check = await showDialog(
+              context: context, builder: (BuildContext c) => StartTaskDialog());
+          if (check == "OK") {
+            MyShowSnackBar.showSnackBar(context, 'لطفا کمی صبر کنید...');
+            String res = await MyRequest.startTask(id, taskName,
+                widget.user.name, cutCode, personnelId, startDateTime);
+            if (res.trim() == "OK") {
+              await Future.delayed(Duration(milliseconds: 250));
+              setState(() {
+                stop = false;
+              });
+              await Future.delayed(Duration(milliseconds: 250));
+              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+              widget.provider.update(true, widget.assignPersonnel.id);
+            }
           } else {
             ScaffoldMessenger.of(context).hideCurrentSnackBar();
             // ScaffoldMessenger.of(context).showSnackBar(
@@ -174,7 +181,7 @@ class _TaskItemState extends State<TaskItem> {
                               child: Text(
                             connection,
                             style: theme.textTheme.bodyText1
-                                .copyWith(fontSize: 14),
+                                .copyWith(fontSize: 14, color: Colors.white),
                           )),
                           TextButton(
                             onPressed: () async {
@@ -207,8 +214,8 @@ class _TaskItemState extends State<TaskItem> {
                               padding: EdgeInsets.all(9),
                               child: Text(
                                 'امتحان مجدد',
-                                style: theme.textTheme.bodyText1
-                                    .copyWith(fontSize: 14),
+                                style: theme.textTheme.bodyText1.copyWith(
+                                    fontSize: 14, color: Colors.white),
                               ),
                             ),
                           ),

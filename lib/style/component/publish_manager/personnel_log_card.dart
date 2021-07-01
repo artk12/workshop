@@ -15,6 +15,11 @@ class PersonnelLogCard extends StatelessWidget {
     String done;
     Color color;
     if (a.log == "1") {
+      if(a.cutCode.contains(',')){
+        text = a.personnelName+ ' دسته فعالیت ' + a.taskName+ 'شروع کرد.';
+        cutCode = '';
+        color = Colors.green.withOpacity(0.1);
+      }else{
       text = a.personnelName +
           " فعالیت " +
           a.taskName +
@@ -22,14 +27,21 @@ class PersonnelLogCard extends StatelessWidget {
       cutCode = a.cutCode;
       done = " شروع کرد.";
       color = Colors.green.withOpacity(0.1);
+      }
     } else {
-      text = a.personnelName +
-          " فعالیت " +
-          a.taskName +
-          " با کد برش " ;
-      cutCode = a.cutCode;
-      done = " به اتمام رساند.";
-      color = Colors.red.withOpacity(0.1);
+      if(a.cutCode.contains(',')){
+        text = a.personnelName+ ' دسته فعالیت ' + a.taskName+ 'به اتمام رساند.';
+        cutCode = '';
+        color = Colors.red.withOpacity(0.1);
+      }else{
+        text = a.personnelName +
+            " فعالیت " +
+            a.taskName +
+            " با کد برش " ;
+        cutCode = a.cutCode;
+        done = " به اتمام رساند.";
+        color = Colors.red.withOpacity(0.1);
+      }
     }
 
     return Container(
