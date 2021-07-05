@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:workshop/main.dart';
 import 'package:workshop/module/stockpile/user.dart';
 import 'package:workshop/request/request.dart';
+
 import '../my_shared_preferences.dart';
 
 class CutterDrawerMenu extends StatelessWidget {
@@ -26,7 +27,7 @@ class CutterDrawerMenu extends StatelessWidget {
             height: 200,
             decoration: BoxDecoration(
               image: DecorationImage(
-                fit: BoxFit.contain,
+                fit: BoxFit.cover,
                 image: NetworkImage(MyRequest.baseUrl + '/' + user.profile),
               ),
             ),
@@ -36,22 +37,34 @@ class CutterDrawerMenu extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    user.side,
-                    style: theme.textTheme.headline2.copyWith(
-                      color: Colors.black.withOpacity(0.7),
-                      fontSize: 14,
-                      shadows: [Shadow(color: Colors.black, blurRadius: 3)],
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+                    decoration: BoxDecoration(
+                        color: Colors.white54,
+                        borderRadius: BorderRadius.circular(5)),
+                    child: Text(
+                      user.side,
+                      style: theme.textTheme.headline2.copyWith(
+                        color: Colors.black.withOpacity(0.9),
+                        fontSize: 15,
+                        shadows: [Shadow(color: Colors.black, blurRadius: 3)],
+                      ),
                     ),
                   ),
                   SizedBox(
                     height: 10,
                   ),
-                  Text(
-                    user.name,
-                    style: theme.textTheme.headline1.copyWith(
-                      color: Colors.black.withOpacity(0.7),
-                      fontSize: 14,
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+                    decoration: BoxDecoration(
+                        color: Colors.white54,
+                        borderRadius: BorderRadius.circular(5)),
+                    child: Text(
+                      user.name,
+                      style: theme.textTheme.headline1.copyWith(
+                        color: Colors.black.withOpacity(0.7),
+                        fontSize: 14,
+                      ),
                     ),
                   ),
                   SizedBox(
@@ -69,19 +82,32 @@ class CutterDrawerMenu extends StatelessWidget {
                   duration: Duration(milliseconds: 250), curve: Curves.easeIn);
             },
           ),
-          ListTile(
-            title: Text('خروج', style: theme.textTheme.headline2),
-            onTap: () async{
-              MySharedPreferences().clean();
-              scaffoldKey.currentState.openEndDrawer();
-              await Future.delayed(Duration(milliseconds: 250));
-              Navigator.of(context).pushReplacement(
-                MaterialPageRoute(
-                  builder: (context) => MyApp(),
+          user.side == 'مدیر کل'
+              ? ListTile(
+                  title: Text('بازگشت به مدیریت',
+                      style: theme.textTheme.headline2),
+                  onTap: () {
+                    scaffoldKey.currentState.openEndDrawer();
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                        builder: (context) => MyApp(),
+                      ),
+                    );
+                  },
+                )
+              : ListTile(
+                  title: Text('خروج', style: theme.textTheme.headline2),
+                  onTap: () async {
+                    MySharedPreferences().clean();
+                    scaffoldKey.currentState.openEndDrawer();
+                    await Future.delayed(Duration(milliseconds: 250));
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                        builder: (context) => MyApp(),
+                      ),
+                    );
+                  },
                 ),
-              );
-            },
-          ),
         ],
       ),
     );

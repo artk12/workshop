@@ -64,7 +64,7 @@ class GetData {
 
   //------------------------------------------general manage
   static String getAllProject =
-      "SELECT `ID`, `type`, `brand`, `roll`, `style_code`, `size`, `description` FROM `project` ORDER BY `ID` DESC";
+      "SELECT `ID`, `type`, `brand`, `roll`, `roll_complete`, `style_code`, `size`, `description` FROM `project` ORDER BY `ID` DESC";
 
   static String getAllStyleCode = "SELECT `ID`, `name`, `short_name` FROM `style_code` WHERE 1";
 // static final String getTodayAssignments = "SELECT * FROM `assignment` ";

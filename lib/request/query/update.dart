@@ -46,4 +46,8 @@ class Update {
   static String updateCutterCounter(int counter,String id){
     return "UPDATE `project` SET `roll_complete`='$counter' WHERE `ID`='$id'";
   }
+
+  static String updateRoll(String id,String roll){
+    return "UPDATE `project` SET `roll`='$roll' WHERE `ID`='$id'";
+  }
 }

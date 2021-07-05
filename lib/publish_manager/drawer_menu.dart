@@ -37,7 +37,7 @@ class DrawerMenu extends StatelessWidget {
             height: 200,
             decoration: BoxDecoration(
               image: DecorationImage(
-                fit: BoxFit.contain,
+                fit: BoxFit.cover,
                 image: NetworkImage(MyRequest.baseUrl + user.profile),
               ),
             ),
@@ -47,22 +47,34 @@ class DrawerMenu extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    user.side,
-                    style: theme.textTheme.headline2.copyWith(
-                      color: Colors.black.withOpacity(0.7),
-                      fontSize: 14,
-                      shadows: [Shadow(color: Colors.black, blurRadius: 3)],
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+                    decoration: BoxDecoration(
+                        color: Colors.white54,
+                        borderRadius: BorderRadius.circular(5)),
+                    child: Text(
+                      user.side,
+                      style: theme.textTheme.headline2.copyWith(
+                        color: Colors.black.withOpacity(0.9),
+                        fontSize: 15,
+                        shadows: [Shadow(color: Colors.black, blurRadius: 3)],
+                      ),
                     ),
                   ),
                   SizedBox(
                     height: 10,
                   ),
-                  Text(
-                    user.name,
-                    style: theme.textTheme.headline1.copyWith(
-                      color: Colors.black.withOpacity(0.7),
-                      fontSize: 14,
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+                    decoration: BoxDecoration(
+                        color: Colors.white54,
+                        borderRadius: BorderRadius.circular(5)),
+                    child: Text(
+                      user.name,
+                      style: theme.textTheme.headline1.copyWith(
+                        color: Colors.black.withOpacity(0.9),
+                        fontSize: 15,
+                      ),
                     ),
                   ),
                   SizedBox(
@@ -134,7 +146,17 @@ class DrawerMenu extends StatelessWidget {
               // showDialog(barrierColor: Colors.black12,context: context, builder: (context)=>DialogMessage(messages: messages,));
             },
           ),
-          ListTile(
+          user.side == 'مدیر کل'?ListTile(
+            title: Text('بازگشت به مدیریت', style: theme.textTheme.headline2),
+            onTap: () {
+              scaffoldKey.currentState.openEndDrawer();
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (context) => MyApp(),
+                ),
+              );
+            },
+          ):ListTile(
             title: Text('خروج', style: theme.textTheme.headline2),
             onTap: () async{
               MySharedPreferences().clean();

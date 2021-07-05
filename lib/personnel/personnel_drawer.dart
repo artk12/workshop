@@ -45,7 +45,7 @@ class PersonnelDrawer extends StatelessWidget {
               height: 200,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  fit: BoxFit.fill,
+                  fit: BoxFit.cover,
                   image: NetworkImage(MyRequest.baseUrl + '/' + user.profile),
                 ),
               ),
@@ -55,22 +55,34 @@ class PersonnelDrawer extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      user.level,
-                      style: theme.textTheme.headline2.copyWith(
-                        color: Colors.white.withOpacity(0.7),
-                        fontSize: 14,
-                        shadows: [Shadow(color: Colors.black, blurRadius: 3)],
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+                      decoration: BoxDecoration(
+                          color: Colors.white54,
+                          borderRadius: BorderRadius.circular(5)),
+                      child: Text(
+                        user.level,
+                        style: theme.textTheme.headline2.copyWith(
+                          color: Colors.white.withOpacity(0.9),
+                          fontSize: 15,
+                          shadows: [Shadow(color: Colors.black, blurRadius: 3)],
+                        ),
                       ),
                     ),
                     SizedBox(
                       height: 10,
                     ),
-                    Text(
-                      user.name,
-                      style: theme.textTheme.headline1.copyWith(
-                        color: Colors.white.withOpacity(0.7),
-                        fontSize: 14,
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+                      decoration: BoxDecoration(
+                          color: Colors.white54,
+                          borderRadius: BorderRadius.circular(5)),
+                      child: Text(
+                        user.name,
+                        style: theme.textTheme.headline1.copyWith(
+                          color: Colors.white.withOpacity(0.9),
+                          fontSize: 15,
+                        ),
                       ),
                     ),
                     SizedBox(
@@ -78,11 +90,17 @@ class PersonnelDrawer extends StatelessWidget {
                     ),
                     BlocBuilder(
                       cubit: scoreCubit,
-                      builder: (BuildContext context, ScoreState state) => Text(
-                        "امتیاز کل : " + state.score.toString(),
-                        style: theme.textTheme.headline1.copyWith(
-                          color: Colors.white.withOpacity(0.7),
-                          fontSize: 14,
+                      builder: (BuildContext context, ScoreState state) => Container(
+                        padding: EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+                        decoration: BoxDecoration(
+                            color: Colors.white54,
+                            borderRadius: BorderRadius.circular(5)),
+                        child: Text(
+                          "امتیاز کل : " + state.score.toString(),
+                          style: theme.textTheme.headline1.copyWith(
+                            color: Colors.white.withOpacity(0.9),
+                            fontSize: 15,
+                          ),
                         ),
                       ),
                     ),

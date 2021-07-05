@@ -3,14 +3,15 @@ import 'dart:convert';
 import 'package:workshop/bloc/general_manager/new_project_size_bloc.dart';
 
 class Project {
-  final String id;
-  final String type;
-  final String brand;
-  final String roll;
-  final String styleCode;
-  final String size;
-  final String description;
-  final List<SizesAndStyle> sizeAndStyle;
+  String id;
+  String type;
+  String brand;
+  String roll;
+  String rollComplete;
+  String styleCode;
+  String size;
+  String description;
+  List<SizesAndStyle> sizeAndStyle;
 
   Project(
       {this.description,
@@ -20,7 +21,7 @@ class Project {
       this.roll,
       this.brand,
       this.id,
-      this.sizeAndStyle});
+      this.sizeAndStyle,this.rollComplete});
 
   static List<SizesAndStyle> getSizeAndStyleAsList(String size){
     final json = jsonDecode(size).cast<Map<String, dynamic>>();
@@ -39,6 +40,7 @@ class Project {
       styleCode: map['style_code'],
       size: map['size'],
       description: map['description'],
+      rollComplete: map['roll_complete'],
       sizeAndStyle: getSizeAndStyleAsList(map['size']),
     );
   }

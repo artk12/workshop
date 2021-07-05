@@ -11,9 +11,11 @@ class MyRequest {
 
   static Future getUser(String user, String pass) async {
     try {
+      // print(user);
+      // print(pass);
       http.Response response = await http.post(baseUrl + "sign_in.php",
-          body: {'user': user, 'pass': pass}).timeout(Duration(seconds: 5));
-      print(response.body);
+          body: {'user': user, 'pass': pass});
+      // print(response.body);
       if (response.statusCode != 200) {
         return 'not ok';
       } else {

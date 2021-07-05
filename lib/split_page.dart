@@ -66,7 +66,7 @@ class SplitPages extends StatelessWidget {
               FutureProvider(create: (_) => MyList.getAllProjects(),),
               FutureProvider(create: (_) => MyList.getAllStyleCode(),),
             ],
-            child: GeneralManager(),
+            child: GeneralManager(user: s,),
           ),
         );
       }
